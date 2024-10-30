@@ -30,9 +30,10 @@ export default function ArtistForm() {
     web: "",
   });
 
-  // State to handle file inputs
+  // States to handle file inputs and descriptions
   const [profilePicture, setProfilePicture] = useState(null); // Single profile picture
   const [obras, setObras] = useState([]); // Multiple images
+  const [descriptions, setDescriptions] = useState([]); // Descriptions for each gallery image
 
   // Handle form input changes
   const handleChange = (e) => {
@@ -52,6 +53,13 @@ export default function ArtistForm() {
     setObras(e.target.files); // Multiple selected files
   };
 
+  // Handle description input for each gallery image
+  const handleDescriptionChange = (index, value) => {
+    const updatedDescriptions = [...descriptions];
+    updatedDescriptions[index] = value;
+    setDescriptions(updatedDescriptions);
+  };
+
   // Upload profile picture to Firebase Storage
   const uploadProfilePicture = async (artistName) => {
     if (!profilePicture) return null; // Skip if no profile picture
@@ -68,11 +76,13 @@ export default function ArtistForm() {
     return profilePicURL;
   };
 
-  // Upload gallery images to Firebase Storage and get their URLs with custom filenames
+  // Upload gallery images to Firebase Storage and get their URLs with descriptions
   const uploadImages = async (artistName) => {
-    const imageUrls = [];
+    const galleryData = []; // Array to store objects with image URLs and descriptions
+
     for (let i = 0; i < obras.length; i++) {
       const imageFile = obras[i];
+      const description = descriptions[i] || ""; // Get corresponding description or an empty string
 
       // Create custom filename: artistName_0, artistName_1, etc.
       const customFileName = `${artistName}_${i}`;
@@ -86,10 +96,10 @@ export default function ArtistForm() {
       // Get download URL
       const downloadURL = await getDownloadURL(imageRef);
 
-      // Add URL to the list
-      imageUrls.push(downloadURL);
+      // Add image URL and description to the gallery data array
+      galleryData.push({ url: downloadURL, description });
     }
-    return imageUrls; // Return the array of URLs
+    return galleryData; // Return array of objects with URLs and descriptions
   };
 
   // Function to upload new artist data to Firestore
@@ -100,14 +110,14 @@ export default function ArtistForm() {
       // First, upload profile picture
       const profilePicURL = await uploadProfilePicture(nombre);
 
-      // Then, upload gallery images
-      const imageUrls = await uploadImages(nombre);
+      // Then, upload gallery images with descriptions
+      const galleryData = await uploadImages(nombre);
 
-      // Save the artist data along with the profile picture and image URLs in Firestore
+      // Save the artist data along with the profile picture and gallery data in Firestore
       const newArtist = await addDoc(artistsCollection, {
         ...formData,
         profilePicture: profilePicURL, // Save the profile picture URL
-        obras: imageUrls, // Save the gallery image URLs
+        obras: galleryData, // Save the gallery data (URLs and descriptions)
       });
 
       console.log(`Document created at ${newArtist.path}`);
@@ -120,6 +130,7 @@ export default function ArtistForm() {
       });
       setProfilePicture(null); // Clear profile picture input
       setObras([]); // Clear gallery file input
+      setDescriptions([]); // Clear descriptions
     } catch (error) {
       console.error("Error adding document: ", error);
     }
@@ -127,41 +138,50 @@ export default function ArtistForm() {
 
   return (
     <div className={styles.form}>
-        <p>ARTIST UPLOADER</p>
-        
-        <input
-            name="nombre"
-            placeholder="Nombre"
-            value={formData.nombre}
-            onChange={handleChange}
-        />
-        <input
-            name="bio"
-            placeholder="Bio"
-            value={formData.bio}
-            onChange={handleChange}
-        />
-      
-        <input
-            name="web"
-            placeholder="Website"
-            value={formData.web}
-            onChange={handleChange}
-        />
-        {/* Profile picture input */}
-        <input
-            type="file"
-            name="profilePicture"
-            onChange={handleProfilePictureChange}
-        />
-        {/* Gallery images input */}
-        <input
-            type="file"
-            name="obras"
-            multiple // Allow multiple file selection
-            onChange={handleFileChange}
-        />
-        <button onClick={addNewArtist}>Upload</button>
+      <input
+        name="bio"
+        placeholder="Bio"
+        value={formData.bio}
+        onChange={handleChange}
+      />
+      <input
+        name="nombre"
+        placeholder="Nombre"
+        value={formData.nombre}
+        onChange={handleChange}
+      />
+      <input
+        name="web"
+        placeholder="Website"
+        value={formData.web}
+        onChange={handleChange}
+      />
+      {/* Profile picture input */}
+      <input
+        type="file"
+        name="profilePicture"
+        onChange={handleProfilePictureChange}
+      />
+      {/* Gallery images input */}
+      <input
+        type="file"
+        name="obras"
+        multiple // Allow multiple file selection
+        onChange={handleFileChange}
+      />
+      {/* Description inputs for each selected gallery image */}
+      {Array.from(obras).map((file, index) => (
+        <div key={index}>
+          <label>{file.name}</label> {/* Display the file name */}
+          <input
+            type="text"
+            placeholder={`Description for ${file.name}`}
+            value={descriptions[index] || ""}
+            onChange={(e) => handleDescriptionChange(index, e.target.value)}
+          />
+        </div>
+      ))}
+      <button onClick={addNewArtist}>Upload</button>
     </div>
   );
 }

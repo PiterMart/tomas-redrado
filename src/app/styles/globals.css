@@ -5,8 +5,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #ffffff;
+    --foreground: #000000;
   }
 }
 
@@ -28,6 +28,31 @@ body {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+}
+a:hover{
+  animation-duration: 5ms;
+  transition: color .3s ease-in-out;
+  box-shadow: black;
+  color: black;
+  text-decoration: underline;
+  text-underline-offset: 8px;
+}
+
+button{
+  background-color: white;
+  box-shadow: rgb(163 155 155) -10px 11px 6px 0px;
+  background-color: #ffffff;
+  color: black;
+  font-size: 1rem;
+  padding: 0.5rem;
+}
+::-webkit-file-upload-button{
+  background-color: white;
+  box-shadow: rgb(163 155 155) -10px 11px 6px 0px;
+  background-color: #ffffff;
+  color: black;
+  font-size: 1rem;
+  padding: 0.5rem;
 }
 
 a {
