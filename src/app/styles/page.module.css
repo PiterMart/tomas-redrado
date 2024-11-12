@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-
 .page {
   --gray-rgb: 0, 0, 0;
   --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
@@ -27,9 +26,15 @@
   font-family: Inter;
   width: 100%;
 }
+/* FONTS AND TEXTS */
+
 .title{
   font-size: 3.25rem;
   font-weight: 300;
+}
+.subtitle{
+  font-size: 1.5rem;
+  font-weight: 400;
 }
 .hero{
   width: 100%;
@@ -41,57 +46,6 @@
   width: auto;
   max-width: 100%;
   background-color: lightgray;
-}
-.name_list{
-  width: 25vw;
-}
-.name_list ul{
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  font-size: 1.5rem;
-}
-
-/* artist page */
-
-.artist_page{
-  display: flex;
-  flex-direction: row;
-  justify-content: normal;
-  margin-top: 2rem;
-  gap: 3rem;
-}
-.artist_page_contents{
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-}
-.artist_page_contents_bio{
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-.artist_page_image_container{
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-}
-.artist_page_image_container img{
-  height: auto;
-  width: 300px;
-}
-
-
-.sedes{
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  width: 100%;
-  margin: auto;
-  height: 70vh;
-  font-size: 2rem;
-  margin-top: 2rem;
 }
 
 /*NAVBAR*/
@@ -105,12 +59,21 @@
   width: 100%;
   z-index: 1000;
   margin: auto;
-  /* background: #00000000; */
-  background-color: white;
+  background-color: #f3f3f3;
   color: black;
   padding: 4vw;
   padding-top: 3rem;
-  padding-bottom: 0rem;
+  border-bottom: 1px dotted black;
+  padding-bottom: 1rem;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.nav_hidden {
+  transform: translateY(-100%);
+  border-bottom: none;
+}
+
+.nav_visible {
+  transform: translateY(0);
 }
 .nav:hover{
   color: rgba(0, 0, 0, 0.442);
@@ -135,28 +98,114 @@
   height: 5rem;
   width: auto;
 }
-/* FORM */
 
-.form{
-  margin-top: 2rem;
+/* ARTIST PAGE */
+
+.name_list{
+  width: 25vw;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  font-size: 1rem;
-  max-width: 1000px;
-  border: 1px solid;
-  padding: 1.5rem;
+  gap: 5rem;
 }
-.form input{
-  font-size: 1rem;
-  padding: 0.5rem;
+.name_list ul{
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-size: 1.5rem;
 }
-.form textarea{
-  font-size: 1rem;
-  padding: 0.5rem;
-  height: 30vh;
+.artist_page{
+  display: flex;
+  flex-direction: row;
+  justify-content: normal;
+  margin-top: 2rem;
+  gap: 3rem;
 }
-/* UPLOADER */
+.artist_page_contents{
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  max-width:   86%;
+}
+.artist_page_contents_bio{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.artist_page_contents_obras{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.artist_page_image_container {
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  width: auto;
+  height: 30vw; 
+  background-color: lightgray;
+  overflow: hidden; 
+  margin: auto;
+}
+
+.artist_page_image_container img {
+  height: 100%; 
+  width: auto; 
+  object-fit: cover; 
+  padding: 1rem;
+  margin: auto;
+}
+
+.sedes{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: 100%;
+  margin: auto;
+  height: 70vh;
+  font-size: 2rem;
+  margin-top: 2rem;
+}
+
+/* EXCHIBITION PAGE */
+
+.sedeCard{
+  height: auto;
+  margin: auto;
+  text-align: center;
+  align-content: center;
+  border: 1px solid black;
+  background: lightgray;
+  position: relative;
+  display: inline-block;
+  font-size: 3rem; 
+}
+.sedeCard img{
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+.sedeCard img:hover{
+  opacity: 20%;
+  transition: opacity .3s ease-in-out;
+}
+.overlayText {
+  position: absolute;
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  background-color: #000000; 
+  color: #fff; 
+  padding: 10px 20px;
+  text-align: center;
+}
+.sedeCard:hover {
+  font-size: 5rem; 
+  transition: .3s ease-in-out;
+}
+
+/* UPLOADER PAGE */
+
 .profilePictureContainer {
   display: flex;
   flex-direction: column-reverse;
@@ -172,7 +221,9 @@
 }
 .obraContainer {
   display: flex;
+  flex-direction: column;
   align-items: center;
+  flex-wrap: wrap;
   gap: 1rem;
   margin-top: 1rem;
 }
@@ -182,6 +233,33 @@
   object-fit: cover;
   border-radius: 5px;
 }
+.artworkPreviewImage{
+  width: 100%;
+}
+/* FORM */
+
+.form{
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  font-size: 1rem;
+  max-width: 1000px;
+  border: 1px solid;
+  padding: 1.5rem;
+}
+.form input{
+  font-size: 1rem;
+  padding: 0.5rem;
+  width: 100%;
+}
+.form textarea{
+  font-size: 1rem;
+  padding: 0.5rem;
+  height: 30vh;
+  width: 100%;
+}
+
 /* Artist List */
 
 .artist_list{

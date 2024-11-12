@@ -1,25 +1,43 @@
 "use client";
-import { app, firestore, storage } from "./firebaseConfig";
-import { getFirestore, addDoc, collection } from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { firestore, storage } from "./firebaseConfig";
+import { addDoc, collection, Timestamp } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import styles from "../styles/page.module.css";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 export default function ArtistForm() {
-  const artistsCollection = collection(firestore, "artistas");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+
+  const fileInputRef = useRef(null);
+
+  const artistsCollection = collection(firestore, "artists");
 
   const [formData, setFormData] = useState({
-    nombre: "",
+    name: "",
+    origin: "",
     bio: [],
+    manifesto: [],
     web: "",
   });
+  const [birthDate, setBirthDate] = useState("");
   const [profilePicture, setProfilePicture] = useState(null);
   const [profilePicturePreview, setProfilePicturePreview] = useState(null);
-  const [obras, setObras] = useState([]);
-  const [descriptions, setDescriptions] = useState([]);
-  const [previewImages, setPreviewImages] = useState([]);
-  const [cvFile, setCvFile] = useState(null); // State for CV file
-  const [newBioParagraph, setNewBioParagraph] = useState(""); // State for new bio paragraph
+  const [artworks, setArtworks] = useState([]);
+  const [newArtwork, setNewArtwork] = useState({
+    file: null,
+    title: "",
+    date: "",
+    medium: "",
+    measurements: "",
+    description: "",
+    extras: [],
+  });
+  const [cvFile, setCvFile] = useState(null);
+  const [newExtra, setNewExtra] = useState("");
+  const [newManifestoParagraph, setNewManifestoParagraph] = useState("");
+  const [newBioParagraph, setNewBioParagraph] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,29 +47,47 @@ export default function ArtistForm() {
     }));
   };
 
+  const handleBirthDateChange = (e) => {
+    setBirthDate(e.target.value);
+  };
+
   const handleProfilePictureChange = (e) => {
     const file = e.target.files[0];
     setProfilePicture(file);
     setProfilePicturePreview(file ? URL.createObjectURL(file) : null);
   };
 
-  const handleFileChange = (e) => {
-    const files = Array.from(e.target.files);
-    setObras(files);
-
-    const previewURLs = files.map((file) => URL.createObjectURL(file));
-    setPreviewImages(previewURLs);
-  };
-
-  const handleCvChange = (e) => {
+  const handleNewArtworkFileChange = (e) => {
     const file = e.target.files[0];
-    setCvFile(file);
+    setNewArtwork((prevArtwork) => ({
+      ...prevArtwork,
+      file,
+    }));
   };
 
-  const handleDescriptionChange = (index, value) => {
-    const updatedDescriptions = [...descriptions];
-    updatedDescriptions[index] = value;
-    setDescriptions(updatedDescriptions);
+  const handleNewArtworkChange = (field, value) => {
+    setNewArtwork((prevArtwork) => ({
+      ...prevArtwork,
+      [field]: value,
+    }));
+  };
+
+  const addArtwork = () => {
+    if (!newArtwork.file) {
+      setError("Please select an artwork file before adding.");
+      return;
+    }
+    setArtworks([...artworks, newArtwork]);
+    setNewArtwork({
+      file: null,
+      title: "",
+      date: "",
+      medium: "",
+      measurements: "",
+      description: "",
+      extras: [],
+    });
+    setError(null);
   };
 
   const handleBioParagraphChange = (e) => {
@@ -59,39 +95,77 @@ export default function ArtistForm() {
   };
 
   const addBioParagraph = () => {
-    if (newBioParagraph) {
+    if (newBioParagraph.trim()) {
       setFormData((prevData) => ({
         ...prevData,
-        bio: [...prevData.bio, newBioParagraph],
+        bio: [...prevData.bio, newBioParagraph.trim()],
       }));
-      setNewBioParagraph(""); // Clear the input after adding
+      setNewBioParagraph("");
+    }
+  };
+
+  const handleManifestoParagraphChange = (e) => {
+    setNewManifestoParagraph(e.target.value);
+  };
+
+  const addManifestoParagraph = () => {
+    if (newManifestoParagraph.trim()) {
+      setFormData((prevData) => ({
+        ...prevData,
+        manifesto: [...prevData.manifesto, newManifestoParagraph.trim()],
+      }));
+      setNewManifestoParagraph("");
     }
   };
 
   const uploadProfilePicture = async (artistSlug) => {
     if (!profilePicture) return null;
-    const profilePicRef = ref(storage, `${artistSlug}/profilePicture/${artistSlug}_profilePicture`);
+    const profilePicRef = ref(storage, `artists/${artistSlug}/profilePicture/${artistSlug}_profilePicture`);
     await uploadBytes(profilePicRef, profilePicture);
     return await getDownloadURL(profilePicRef);
   };
 
+  const handleCvChange = (e) => {
+    const file = e.target.files[0];
+    setCvFile(file);
+  };
+
+  const addExtra = (index) => {
+    if (newExtra.trim()) {
+      handleExtraChange(index, newExtra.trim());
+      setNewExtra("");
+    }
+  };
+
   const uploadImages = async (artistSlug) => {
     const galleryData = [];
-    for (let i = 0; i < obras.length; i++) {
-      const imageFile = obras[i];
-      const description = descriptions[i] || "";
-      const customFileName = `${artistSlug}_${i}`; // Use the slug here
-      const imageRef = ref(storage, `${artistSlug}/gallery/${customFileName}`);
-      await uploadBytes(imageRef, imageFile);
+    for (let i = 0; i < artworks.length; i++) {
+      const { file, title, date, medium, measurements, description, extras } = artworks[i];
+      const artworkId = `${artistSlug}_${String(i + 1).padStart(3, '0')}`;
+      const artworkSlug = `${artworkId}-${generateSlug(title)}`;
+
+      const imageRef = ref(storage, `artists/${artistSlug}/artworks/${artworkId}`);
+      await uploadBytes(imageRef, file);
       const downloadURL = await getDownloadURL(imageRef);
-      galleryData.push({ url: downloadURL, description });
+
+      galleryData.push({
+        artworkId,
+        slug: artworkSlug,
+        url: downloadURL,
+        title,
+        date,
+        medium,
+        measurements,
+        extras,
+        description,
+      });
     }
     return galleryData;
   };
 
   const uploadCv = async (artistSlug) => {
     if (!cvFile) return null;
-    const cvRef = ref(storage, `${artistSlug}/cv/${artistSlug}_CV.pdf`);
+    const cvRef = ref(storage, `artists/${artistSlug}/cv/${artistSlug}_CV.pdf`);
     await uploadBytes(cvRef, cvFile);
     return await getDownloadURL(cvRef);
   };
@@ -99,51 +173,84 @@ export default function ArtistForm() {
   const generateSlug = (name) => {
     return name
       .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric characters with hyphens
-      .replace(/^-+|-+$/g, ''); // Trim hyphens from start and end
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
   };
 
-  async function addNewArtist() {
-    try {
-      const { nombre } = formData;
-      const slug = generateSlug(nombre); // Generate slug from the artist's name
-      const profilePicURL = await uploadProfilePicture(slug);
-      const galleryData = await uploadImages(slug);
-      const cvURL = await uploadCv(slug);
+  function resetForm() {
+    setFormData({ bio: [], manifesto: [], name: "", origin: "", web: "" });
+    setBirthDate("");
+    setProfilePicture(null);
+    setProfilePicturePreview(null);
+    setArtworks([]);
+    setNewArtwork({
+      file: null,
+      title: "",
+      date: "",
+      medium: "",
+      measurements: "",
+      description: "",
+      extras: [],
+    });
+    setCvFile(null);
+    setNewBioParagraph("");
+    setNewManifestoParagraph("");
+    setNewExtra("");
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  }
 
-      const newArtist = await addDoc(artistsCollection, {
+  async function addNewArtist() {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const { name, origin, bio, manifesto, web } = formData;
+
+      if (!name.trim()) throw new Error("Artist name is required.");
+      if (!origin.trim()) throw new Error("Artist origin is required.");
+
+      const slug = generateSlug(name);
+      const profilePicURL = await uploadProfilePicture(slug);
+      if (!profilePicURL) throw new Error("Profile picture upload failed.");
+
+      const galleryData = await uploadImages(slug);
+      if (!galleryData || galleryData.length === 0) throw new Error("Artwork images upload failed.");
+
+      const cvURL = await uploadCv(slug);
+      const birthDateTimestamp = birthDate ? Timestamp.fromDate(new Date(birthDate)) : null;
+
+      await addDoc(artistsCollection, {
         ...formData,
-        slug, // Add the slug to the artist document
+        slug,
         profilePicture: profilePicURL,
-        obras: galleryData,
+        artworks: galleryData,
         cv: cvURL,
+        birthDate: birthDateTimestamp,
       });
 
-      console.log(`Document created at ${newArtist.path}`);
-
-      // Reset form data
-      setFormData({ bio: [], nombre: "", web: "" });
-      setProfilePicture(null);
-      setProfilePicturePreview(null);
-      setObras([]);
-      setDescriptions([]);
-      setPreviewImages([]);
-      setCvFile(null);
-      setNewBioParagraph(""); // Reset new paragraph input
-    } catch (error) {
-      console.error("Error adding document: ", error);
+      setSuccess(`Successfully added artist ${name}.`);
+      resetForm();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
     <div className={styles.form}>
-      {/* Profile picture input and preview */}
+      {/* Profile Picture Input */}
       <div className={styles.profilePictureContainer}>
         <input
           type="file"
           name="profilePicture"
+          accept="image/*" // Optional: Restrict to image files
           onChange={handleProfilePictureChange}
+          ref={fileInputRef} // Attach ref to file input
         />
+        <p className={styles.subtitle}>PROFILE PICTURE</p>
         {profilePicturePreview && (
           <img
             src={profilePicturePreview}
@@ -151,24 +258,45 @@ export default function ArtistForm() {
             className={styles.profilePreviewImage}
           />
         )}
-        <p>FOTO DE PERFIL</p>
+
       </div>
 
+      {/* Name Input */}
+      <p className={styles.subtitle}>NAME</p>
       <input
-        name="nombre"
+        name="name"
         placeholder="Nombre"
-        value={formData.nombre}
+        value={formData.name}
         onChange={handleChange}
+      />
+      <p className={styles.subtitle}>ORIGIN</p>
+
+      {/* Origin Input */}
+      <input
+        name="origin"
+        placeholder="Origen"
+        value={formData.origin}
+        onChange={handleChange}
+      />
+      <p className={styles.subtitle}>BIRTH DATEE</p>
+      {/* Birth Date Input */}
+      <input
+        type="date"
+        name="birthDate"
+        value={birthDate}
+        onChange={handleBirthDateChange}
+        placeholder="Fecha de nacimiento"
       />
 
       {/* Bio Paragraphs Input */}
       <div>
+      <p className={styles.subtitle}>BIO</p>
         <textarea
           placeholder="Add a paragraph to your bio"
           value={newBioParagraph}
           onChange={handleBioParagraphChange}
         />
-        <button onClick={addBioParagraph}>Add Bio Paragraph</button>
+        <button type="button" onClick={addBioParagraph}>Add Bio Paragraph</button>
       </div>
       <div>
         {formData.bio.map((paragraph, index) => (
@@ -176,6 +304,24 @@ export default function ArtistForm() {
         ))}
       </div>
 
+      {/* Manifesto Paragraphs Input */}
+      <div>
+        <p className={styles.subtitle}>MANIFESTO</p>
+        <textarea
+          placeholder="Add a paragraph to your manifesto"
+          value={newManifestoParagraph}
+          onChange={handleManifestoParagraphChange}
+        />
+        <button type="button" onClick={addManifestoParagraph}>Add Manifesto Paragraph</button>
+      </div>
+      <div>
+        {formData.manifesto.map((paragraph, index) => (
+          <p key={index}>{paragraph}</p>
+        ))}
+      </div>
+
+      {/* Website Input */}
+      <p className={styles.subtitle}>WEBSITE</p>
       <input
         name="web"
         placeholder="Website"
@@ -183,38 +329,85 @@ export default function ArtistForm() {
         onChange={handleChange}
       />
 
-      {/* CV file input */}
-      <p>CV (PDF)</p>
+      {/* CV File Input */}
+      <p className={styles.subtitle}>CV (PDF)</p>
       <input type="file" name="cv" accept=".pdf" onChange={handleCvChange} />
 
-      {/* Gallery images input with previews and description inputs */}
-      <p>Obras</p>
+      {/* Gallery Images Input */}
+      <p className={styles.subtitle}>Artworks</p>
+                {/* Current Artwork Preview */}
+    {newArtwork.file && (
+      <div className={styles.artworkPreview}>
+        <p>Artwork Preview</p>
+        <img
+          src={URL.createObjectURL(newArtwork.file)}
+          alt="New Artwork Preview"
+          className={styles.artworkPreviewImage}
+        />
+      </div>
+    )}
       <input
         type="file"
-        name="obras"
-        multiple
-        onChange={handleFileChange}
+        name="newArtwork"
+        accept="image/*"
+        onChange={handleNewArtworkFileChange}
       />
-      {Array.from(obras).map((file, index) => (
-        <div key={index} className={styles.obraContainer}>
-          <label>{file.name}</label>
-          <input
-            type="text"
-            placeholder={`Description for ${file.name}`}
-            value={descriptions[index] || ""}
-            onChange={(e) => handleDescriptionChange(index, e.target.value)}
-          />
-          {previewImages[index] && (
-            <img
-              src={previewImages[index]}
-              alt={`Preview ${index + 1}`}
-              className={styles.obraPreviewImage}
-            />
-          )}
+      <input
+        type="text"
+        placeholder="Title"
+        value={newArtwork.title}
+        onChange={(e) => handleNewArtworkChange("title", e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Date"
+        value={newArtwork.date}
+        onChange={(e) => handleNewArtworkChange("date", e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Medium"
+        value={newArtwork.medium}
+        onChange={(e) => handleNewArtworkChange("medium", e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Measurements"
+        value={newArtwork.measurements}
+        onChange={(e) => handleNewArtworkChange("measurements", e.target.value)}
+      />
+      <textarea
+        placeholder="Description"
+        value={newArtwork.description}
+        onChange={(e) => handleNewArtworkChange("description", e.target.value)}
+      />
+
+      <button type="button" onClick={addArtwork}>
+        Add Artwork
+      </button>
+
+      {artworks.map((artwork, index) => (
+        <div key={index} className={styles.artwork}>
+          <p>Artwork {index + 1}</p>
+          <img src={URL.createObjectURL(artwork.file)} alt="Artwork Preview" className={styles.artworkPreviewImage} />
+          <p>Title: {artwork.title}</p>
+          <p>Date: {artwork.date}</p>
+          <p>Medium: {artwork.medium}</p>
+          <p>Measurements: {artwork.measurements}</p>
+          <p>Description: {artwork.description}</p>
         </div>
       ))}
 
-      <button onClick={addNewArtist}>Upload</button>
+      {/* Error Message */}
+      {error && <p className={styles.error}>{error}</p>}
+
+      {/* Success Message */}
+      {success && <p className={styles.success}>{success}</p>} {/* Optional: Add CSS for success messages */}
+
+      {/* Submit Button */}
+      <button type="button" onClick={addNewArtist} disabled={loading}>
+        {loading ? "Uploading..." : "Add Artist"}
+      </button>
     </div>
   );
 }

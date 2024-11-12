@@ -2,7 +2,8 @@ import { app, firestore, storage } from "./firebaseConfig";
 import { deleteDoc, doc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
 
-const deleteArtist = async () => {
+// Updated deleteArtist function to accept artistId and artistData as parameters
+const deleteArtist = async (artistId, artistData, onClose) => {
   // Check if artistId prop is provided
   if (!artistId) {
     console.error("Artist ID is not defined");
@@ -33,4 +34,4 @@ const deleteArtist = async () => {
   }
 };
 
-export { deleteArtist};
+export { deleteArtist };

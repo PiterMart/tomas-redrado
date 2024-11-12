@@ -5,47 +5,30 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { app, firestore, storage } from "../firebase/firebaseConfig";
-import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 
-export default function ArtistPage() {
-  
-  const firebaseConfig = {
-    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const firestore = getFirestore(app);
+export default function ArtistsPage() {
 
   const [artists, setArtists] = useState([]);
-  const [selectedArtist, setSelectedArtist] = useState(null); // Store selected artist for editing
 
   // Fetch artists from Firestore
   useEffect(() => {
     async function fetchArtists() {
       try {
-        const querySnapshot = await getDocs(collection(firestore, "artistas"));
+        const querySnapshot = await getDocs(collection(firestore, "artists"));
         const artistsData = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           display: false,
           ...doc.data(),
         }));
-        
-        // Sort artists alphabetically by nombre
-        artistsData.sort((a, b) => a.nombre.localeCompare(b.nombre));
-        
+
+        artistsData.sort((a, b) => a.name.localeCompare(b.nombre));
         setArtists(artistsData);
       } catch (error) {
         console.error("Error fetching artists:", error);
       }
     }
-  
+
     fetchArtists();
   }, []);
 
@@ -65,7 +48,7 @@ export default function ArtistPage() {
             {artists.map((artist) => (
             <li key={artist.id}>
             <Link href={`/artists/${artist.slug}`}>
-              {artist.nombre}
+              {artist.name}
             </Link>
               </li>
         ))}
