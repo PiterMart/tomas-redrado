@@ -12,10 +12,12 @@ export default function Nav() {
     const currentPath = usePathname();
 
     const pages = [
-        { name: 'ARTISTAS', path: '/artists' },
-        { name: 'EXHIBICIONES', path: '/exhibiciones' },
-        { name: 'FERIAS', path: '/ferias' },
-        { name: 'SOBRE TRA', path: '/tra' },
+        { name: 'ARTISTS', path: '/artists' },
+        { name: 'HEADQUARTERS', path: '/exhibiciones' },
+        { name: 'FAIRS', path: '/ferias' },
+        { name: 'ABOUT', path: '/tra' },
+        { name: 'RESIDENCIES', path: '/tra' },
+        { name: 'CONTACT', path: '/tra' },
     ];
 
     const isCurrent = (path) => {
