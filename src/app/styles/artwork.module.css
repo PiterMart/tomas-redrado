@@ -1,0 +1,25 @@
+.artwork_page{
+    display: flex;
+    flex-direction: row;
+    padding-top: 10rem;
+    width: 1300px;
+    margin: auto;
+}
+
+.artwork_details{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+}
+.artwork_image_container{
+    max-width: 100%;
+}
+
+@media (max-width: 600px) {
+    .artwork_page{
+        flex-direction: column;
+        max-width: 90%;
+        gap: 1rem;
+    }
+}

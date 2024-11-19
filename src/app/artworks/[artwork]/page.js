@@ -1,5 +1,6 @@
 "use client";
-import styles from "../../styles/page.module.css";
+import styles from "../../styles/artwork.module.css";
+import "../../styles/page.module.css"
 import { firestore } from "../../firebase/firebaseConfig";
 import { query, collection, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
@@ -50,21 +51,24 @@ export default function Artwork({ params }) {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <div className={styles.artwork_page} style={{margin: 'auto', display: 'flex', flexDirection: 'column', gap: '3rem'}}>
-        <h1 className={styles.title}>{title}</h1>
+        <div className={styles.artwork_page}>
           <div className={styles.artwork_image_container}>
-            <img src={url} alt={title} style={{ width: "100%", height: "auto", maxHeight: '80vh', width: 'auto' }} />
+            <img src={url} alt={title} style={{ width: "100%", height: "auto"}} />
           </div>
           <div className={styles.artwork_details}>
-            <h2>Details</h2>
-            <p><strong>Artist:</strong> {artistName}</p>
-            <p><strong>Date:</strong> {date}</p>
-            <p><strong>Medium:</strong> {medium}</p>
-            <p><strong>Measurements:</strong> {measurements}</p>
-            {/* <p><strong>Extras:</strong> {Array.isArray(extra) ? extra.join(", ") : extra}</p>  */}
-            <p><strong>Description:</strong> {description}</p>
+          <h1 className={styles.title}>{title}</h1>
+            <div>
+              <p><strong>Artist:</strong> {artistName}</p>
+              <p><strong>Date:</strong> {date}</p>
+              <p><strong>Medium:</strong> {medium}</p>
+              <p><strong>Measurements:</strong> {measurements}</p>
+              {/* <p><strong>Extras:</strong> {Array.isArray(extra) ? extra.join(", ") : extra}</p>  */}
+              <p><strong>Description:</strong> {description}</p>
+            </div>
+            <div>
+              <Link href={`/artists/${artistSlug}`} className={styles.back_link}>{">"} Artist Page {"<"}</Link>
+            </div>
           </div>
-          <Link href={`/artists/${artistSlug}`} className={styles.back_link}>Back to Artist</Link>
         </div>
       </main>
       <footer className={styles.footer}>
