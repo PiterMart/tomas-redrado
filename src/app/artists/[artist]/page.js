@@ -76,7 +76,7 @@ export default function Artist({ params }) {
                 )}
               <div className={styles.name_list} style={{marginTop: '2rem'}}>
                 <ul>
-                  <li><a href="#obras">OBRAS</a></li>
+                  <li><a href="#obras">ARTWORKS</a></li>
                   <li><a href="#bio">BIO</a></li>
                   <li><a href={artist.cv} target="_blank"> CV </a></li>
                 </ul>
@@ -90,7 +90,7 @@ export default function Artist({ params }) {
                 <Link href="#bio"><button style={{padding: "0px", marginTop: "1.5rem", marginRight: "0px", width: "100%", textAlign: "right", color: "gray"}}>Read More</button></Link>
               </div>
               <div className={styles.artist_page_contents_obras} id="obras" style={{scrollMargin: '10rem'}}>
-                <p className={styles.title}>OBRAS</p>
+                <p className={styles.title}>ARTWORKS</p>
                 <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem', overflow: 'visible',}}>
                   {artist.artworks.map((artwork, index) => (
                     <Link href={`/artworks/${artwork.slug}`} key={index}>
