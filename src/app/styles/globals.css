@@ -28,16 +28,17 @@ a:hover{
   transition: color .3s ease-in-out;
   box-shadow: black;
   color: black;
-  text-decoration: underline;
+  /* text-decoration: underline; */
   text-underline-offset: 8px;
 }
 
 button{
-  background-color: #FAF9F6;
-  background-color: #ffffff;
+  background-color: var(--background);
   color: black;
   font-size: 1rem;
   padding: 0.5rem;
+  box-shadow: none;
+  border: none;
 }
 ::-webkit-file-upload-button{
   background-color: #FAF9F6;

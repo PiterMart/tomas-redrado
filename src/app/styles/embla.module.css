@@ -46,24 +46,27 @@
 .embla__slide__img {
   width: 100%; /* Ensure the image takes the full width */
   height: auto;
-  transition: transform 0.3s ease-in-out;
+  transition: transform 1.3s ease-in-out;
 }
 
 /* Text styling for the slide */
 .embla__slide__text {
+  gap: 3px;
   position: absolute;
   display: flex;
   flex-direction: column;
   text-align: left;
   letter-spacing: 1px;
   z-index: 100;
-  left: 3rem;
-  bottom: 3rem;
+  left: 2rem;
+  bottom: 2rem;
   max-width: 100%;
-  width: 100%;
+  width: 300px;
+  height: 150px;
   color: black;
-  background: #f3f3f346;
-  padding: 1rem;
+  background: var(--background);
+  padding: 0.75rem;
+  border: 1px solid white;
 }
 
 .embla__slide:hover .embla__slide__img {
@@ -126,7 +129,7 @@
   height: 100px;
   background: rgba(0, 0, 0, 0);
   position: absolute;
-  top: 50%;
+  top: 50vh;
   transform: translateY(-50%);
   z-index: 10;
   color: white;
@@ -135,6 +138,7 @@
   filter: invert();
   border: none;
   right: 0;
+  height: 50vw;
 }
 
 .embla__button__next img{
@@ -162,6 +166,9 @@
   }
   .embla__button__prev{
     display: NONE;
+  }
+  .embla__slide__inner{
+    height: 100vh;
   }
 }
 

@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { app, firestore, storage } from "../firebase/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
+import { motion } from "framer-motion";
 
 export default function ArtistsPage() {
   const [artists, setArtists] = useState([]);
@@ -20,6 +21,10 @@ export default function ArtistsPage() {
           id: doc.id,
           ...doc.data(),
         }));
+                      // Add a small delay
+      setTimeout(() => {
+        setArtists(artistsData);
+      }, 1000);
 
         // Sort artists alphabetically by name
         artistsData.sort((a, b) => a.name.localeCompare(b.name));
@@ -33,6 +38,7 @@ export default function ArtistsPage() {
             setRandomArtwork(randomArt);
           }
         }
+
       } catch (error) {
         console.error("Error fetching artists:", error);
       }
@@ -47,6 +53,33 @@ export default function ArtistsPage() {
     return currentPath === path;
   };
 
+  const listVariants = {
+    hidden: { opacity: 0, x: -50 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        staggerChildren: 0.5, // Adjust time between each child's animation
+      },
+    },
+  };
+  
+  const itemVariants = {
+    hidden: { opacity: 0, x: -50 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeInOut", // Smooth start and stop
+      },
+    },
+  };
+  
+  
+
+  
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -54,18 +87,30 @@ export default function ArtistsPage() {
           {/* <p className={styles.title}>ARTISTAS</p> */}
           <div className={styles.artist_page}>
             <div className={styles.name_list}>
-              <ul>
+              <motion.ul
+                initial="hidden"
+                animate="visible"
+                variants={listVariants}
+                className={styles.name_list}
+              >
                 {artists.map((artist) => (
-                  <li key={artist.id}>
-                    <Link href={`/artists/${artist.slug}`}>
-                      {artist.name}
-                    </Link>
-                  </li>
+                  <motion.li 
+                    key={artist.id} 
+                    variants={itemVariants}
+                  >
+                    <Link href={`/artists/${artist.slug}`}>{artist.name}</Link>
+                  </motion.li>
                 ))}
-              </ul>
+              </motion.ul>
             </div>
-            <div style={{ background: "transparent", width: "100%",height: 'auto', justifyContent: "center", alignContent: "center" }}>
+            <motion.div 
+            initial="hidden"
+            animate="visible"
+            variants={itemVariants}
+            className={styles.name_list}
+            style={{ background: "transparent", width: "100%",height: 'auto', justifyContent: "center", alignContent: "center" }}>
               {randomArtwork ? (
+                <Link href={`/artworks/${randomArtwork.slug}`} >
                 <img
                   src={randomArtwork.url}
                   alt={randomArtwork.title}
@@ -74,10 +119,11 @@ export default function ArtistsPage() {
                   loading="lazy"
                   style={{ margin: "auto", width: "auto", maxHeight: '50vh', height: '100%', display: "block" }}
                 />
+                </Link>
               ) : (
                 <p></p>
               )}
-            </div>
+            </motion.div>
           </div>
         </div>
       </main>

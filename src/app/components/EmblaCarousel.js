@@ -39,9 +39,10 @@ const EmblaCarousel = (props) => {
             <div className={styles.embla__slide} key={index}>
               <div className={styles.embla__slide__inner}>
               <div className={styles.embla__slide__text}>
-                <p style={{fontSize: '2rem', fontWeight: '600'}}>{slide.name}</p>
-                <p style={{fontSize: '1.25rem', fontWeight: '400'}}>TRA - {slide.sedeSlug}</p>
-                <p style={{fontSize: '1.25rem', fontWeight: '400'}}>{formatDate(slide.openingDate)} - {formatDate(slide.closingDate)}</p>
+                <p style={{fontSize: '1.25rem', fontWeight: '600'}}>{slide.name}</p>
+                <p style={{fontSize: '1rem', fontWeight: '400'}}>TRA - {slide.sedeSlug}</p>
+                <p style={{fontSize: '1rem', fontWeight: '400'}}>{formatDate(slide.openingDate)} - {formatDate(slide.closingDate)}</p>
+                <p style={{fontSize: '1rem', fontWeight: '100', bottom: '0', position: 'absolute', alignSelf: 'end', paddingBottom: '1rem'}}>[exhibition]</p>
               </div>
               <Link href={`/exhibiciones/${slide.sedeSlug}/${slide.slug}`} style={{margin: '0px', padding: '0px', width: '100%'}}>
                 <img
@@ -56,10 +57,11 @@ const EmblaCarousel = (props) => {
         </div>
         {/* Navigation buttons */}
         <button className={styles.embla__button__prev} onClick={scrollPrev}>
-          <img src="iconmonstr-arrow-left-circle-thin.svg" />
+          {/* <img src="iconmonstr-arrow-left-circle-thin.svg" /> */}
         </button>
         <button className={styles.embla__button__next} onClick={scrollNext}>
-          <img src="iconmonstr-arrow-right-circle-thin.svg" />
+          {/* <img src="iconmonstr-arrow-right-circle-thin.svg" /> */}
+          {">"}
         </button>
       </div>  
     </section>

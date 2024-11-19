@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import styles from "../styles/page.module.css";
+import styles2 from "../styles/embla.module.css";
 import Link from "next/link";
 import { app, firestore, storage } from "../firebase/firebaseConfig";
 import { collection, addDoc, getDocs, Timestamp, updateDoc, arrayUnion, doc } from "firebase/firestore";
@@ -29,14 +30,16 @@ export default function Home() {
     <div className={styles.page}>
       <main className={styles.main}>
         <div className={styles.page_container}>
-          <p className={styles.title}>SEDES</p>
+          <p className={styles.title}>HEADQUARTERS</p>
           <div className={styles.exhibition_page}>
             {headquarters.map((hq) => (
               <div key={hq.id}>
                 <div className={styles.sedes}>
                   <Link href={`/exhibiciones/${hq.slug}`}>
                     <div className={styles.sedeCard} >
-                      <p className={styles.overlayText}>{hq.name}</p>
+                      <div className={styles2.embla__slide__text} style={{height:  'auto', width: 'auto', paddingRight: '4rem'}}>
+                      <p >{hq.name}</p>
+                      </div>
                       <img src={hq.image} style={{overflow: 'hidden'}} />
                     </div>
                   </Link>

@@ -70,7 +70,7 @@
   justify-content: normal;
   margin-top: 2rem;
   gap: 3rem;
-  width: 50%;
+  width: 800px;
   margin: auto;
   padding-top: 7rem;
 }
@@ -139,21 +139,18 @@
   height: auto;
 }
 .sedeCard img:hover{
-  opacity: 20%;
-  transition: opacity .3s ease-in-out;
 }
 .overlayText {
   position: absolute;
   top: 50%; 
   left: 50%; 
   transform: translate(-50%, -50%); 
-  background-color: #000000; 
-  color: #fff; 
+  background-color: var(--background); 
+  color: black; 
   padding: 10px 20px;
   text-align: center;
 }
 .sedeCard:hover {
-  font-size: 5rem; 
   transition: .3s ease-in-out;
 }
 
@@ -241,14 +238,19 @@
 
 @media (max-width: 600px) {
 
+  .page{
+    margin-top: 0px;
+  }
 
   .main {
     align-items: center;
   }
+
   .footer {
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
   }
+  
 }
 

@@ -6,19 +6,24 @@ import { usePathname } from 'next/navigation';
 import styles from '../styles/nav.module.css';
 
 export default function Nav() {
-    const [isActive, setIsActive] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
     const [lastScrollY, setLastScrollY] = useState(0);
     const currentPath = usePathname();
 
     const pages = [
-        { name: 'ARTISTS', path: '/artists' },
-        { name: 'HEADQUARTERS', path: '/exhibiciones' },
-        { name: 'FAIRS', path: '/ferias' },
-        { name: 'ABOUT', path: '/tra' },
-        { name: 'RESIDENCIES', path: '/tra' },
-        { name: 'CONTACT', path: '/tra' },
+        { name: 'ARTISTS', path: '/artists', delay: '0s' },
+        { name: 'EXHIBITIONS', path: '/exhibiciones', delay: '0.1s' },
+        { name: 'HEADQUARTERS', path: '/exhibiciones', delay: '0.2s' },
+        { name: 'FAIRS', path: '/ferias', delay: '0.3s' },
+        { name: 'RESIDENCIES', path: '/tra', delay: '0.4s' },
+        { name: 'ABOUT', path: '/tra', delay: '0.5s' },
+        { name: 'CONTACT', path: '/tra', delay: '0.6s' },
     ];
+
+    const toggleMenu = () => {
+        setIsMenuOpen((prev) => !prev);
+    };
 
     const isCurrent = (path) => {
         return currentPath === path;
@@ -58,24 +63,22 @@ export default function Nav() {
                     className={styles.nav_logo}
                 />
             </Link>
-            <div className={styles.nav_list}>
+            <button className={styles.navButton} id="menuButton" onClick={toggleMenu}>
+                ☰
+            </button>
+            <div className={`${styles.nav_list} ${isMenuOpen ? styles.active : ''}`} id="navMenu">
                 <ul>
-                    {pages.map((page, index) => {
-                        return (
-                            <li key={index}>
-                                <Link
-                                    onClick={() => {
-                                        setIsActive(!isActive);
-                                    }}
-                                    href={page.path}
-                                    alt={page.name}
-                                    className={isCurrent(page.path) ? 'page_current__pRY1c' : ''}
-                                >
-                                    {page.name}
-                                </Link>
-                            </li>
-                        );
-                    })}
+                    {pages.map((page, index) => (
+                        <li key={index} style={{ '--delay': page.delay }}>
+                            <Link
+                                href={page.path}
+                                className={isCurrent(page.path) ? styles.page_current : ''}
+                                onClick={() => setIsMenuOpen(false)} // Close menu on click
+                            >
+                                {page.name}
+                            </Link>
+                        </li>
+                    ))}
                 </ul>
             </div>
         </div>
