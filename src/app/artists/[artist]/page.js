@@ -64,33 +64,41 @@ export default function Artist({ params }) {
     <div className={styles.page}>
       <main className={styles.main}>
         <div className={styles.page_container}>
-          <h1 className={styles.title} style={{paddingTop: '5rem'}}>{artist.name}</h1>
-          <h1 className={styles.subtitle}>{artist.origen}</h1>
-          <h1 className={styles.subtitle}>{artist.birthDate}</h1>
-          <div className={styles.artist_page}>
-            <div className={styles.name_list}>
-              {artist.profilePicture && (
-                <img src={artist.profilePicture} alt={`${artist.nombre}'s profile`} style={{width: '200px', height: 'auto', overflow: 'hidden'}} />
-              )}
-              <ul>
-                <li><a href="#obras">OBRAS</a></li>
-                <li><a href="#bio">BIO</a></li>
-                <li><a href={artist.cv} target="_blank"> CV</a></li>
-              </ul>
+          <div className={styles.artist_page_NameCard}>
+            <h1 className={styles.title} style={{paddingTop: '5rem'}}>{artist.name}</h1>
+            <div>
+              <h1 className={styles.subtitle}>{artist.origin},</h1>
+              <h1 className={styles.subtitle}>{artist.birthDate}.</h1>
             </div>
+            <div className={styles.artist_page_nav}>
+              {artist.profilePicture && (
+                  <img src={artist.profilePicture} alt={`${artist.nombre}'s profile`} style={{width: '200px', height: 'auto', overflow: 'hidden'}} />
+                )}
+              <div className={styles.name_list} style={{marginTop: '2rem'}}>
+                <ul>
+                  <li><a href="#obras">OBRAS</a></li>
+                  <li><a href="#bio">BIO</a></li>
+                  <li><a href={artist.cv} target="_blank"> CV </a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div className={styles.artist_page}>
             <div className={styles.artist_page_contents}>
-              <p>{artist.bio[0]}</p>
-              <a href="#bio"><button>leer mas </button></a>
+              <div>
+                <p style={{fontSize: '1.5rem'}}>{artist.bio[0]}</p>
+                <Link href="#bio"><button style={{padding: "0px", marginTop: "1.5rem", marginRight: "0px", width: "100%", textAlign: "right", color: "gray"}}>Read More</button></Link>
+              </div>
               <div className={styles.artist_page_contents_obras} id="obras" style={{scrollMargin: '10rem'}}>
                 <p className={styles.title}>OBRAS</p>
-                <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem', overflow: 'hidden'}}>
+                <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem', overflow: 'visible',}}>
                   {artist.artworks.map((artwork, index) => (
                     <Link href={`/artworks/${artwork.slug}`} key={index}>
                       <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
                         <div className={styles.artist_page_image_container}>
                           <img src={artwork.url} alt={`Gallery image ${index + 1}`} />
                         </div>
-                        <div>
+                        <div style={{ border: "1px solid white", padding: "1rem", background: 'white'}}>
                           <div>
                             <p>{artist.name}</p>
                             <div style={{display: 'flex', flexDirection: 'row', gap: '0.25rem'}}>

@@ -57,12 +57,23 @@
   flex-direction: column;
   gap: 5rem;
 }
+.name_list:hover {
+  color: rgba(0, 0, 0, 0.442);
+  transition: color 0.3s ease-in-out;
+}
+
 .name_list ul{
   list-style: none;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   font-size: 1.25rem;
+}
+.artist_page_NameCard{
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 .artist_page{
   display: flex;
@@ -72,7 +83,7 @@
   gap: 3rem;
   width: 800px;
   margin: auto;
-  padding-top: 7rem;
+  padding-top: 10rem;
 }
 .artist_page_contents{
   display: flex;
@@ -96,7 +107,7 @@
   align-items: center; 
   width: auto;
   height: 30vw; 
-  background-color: lightgray;
+  background-color: white;
   overflow: hidden; 
   margin: auto;
 }
@@ -236,10 +247,17 @@
   gap: 1rem;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 1300px) {
 
   .page{
     margin-top: 0px;
+  }
+  .name_list{ 
+    width: 100%;
+  }
+  .name_list ul{
+    gap: 2rem;
+    width: 100%;
   }
 
   .main {
@@ -250,6 +268,28 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
+  }
+  
+  .artist_page{
+    width: 100%;
+    flex-direction: column;
+  }
+  .artist_page_contents{
+    max-width: 100%;
+    margin: auto;
+  }
+  .artist_page_nav{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: baseline;
+  }
+  .artist_page_NameCard{
+    margin-top: 1.5rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
   
 }
