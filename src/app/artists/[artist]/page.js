@@ -101,7 +101,7 @@ export default function Artist({ params }) {
                         <div style={{ border: "1px solid white", padding: "1rem", background: 'white'}}>
                           <div>
                             <p>{artist.name}</p>
-                            <div style={{display: 'flex', flexDirection: 'row', gap: '0.25rem'}}>
+                            <div style={{display: 'flex', flexDirection: 'column', gap: '0.25rem'}}>
                               <p>{artwork.title}</p>
                               <p>{artwork.date}</p>
                             </div>
