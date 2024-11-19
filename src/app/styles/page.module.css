@@ -247,6 +247,12 @@
   gap: 1rem;
 }
 
+@media (max-width: 800px) {
+  .artist_page_image_container{
+    height: 95vw;
+  }
+}
+
 @media (max-width: 1300px) {
 
   .page{
@@ -270,7 +276,7 @@
     justify-content: center;
   }
   .artist_page_image_container{
-    height: 95vw;
+    height: 55vw;
   }
   .artist_page{
     width: 100%;
