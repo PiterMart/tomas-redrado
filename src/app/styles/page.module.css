@@ -10,13 +10,16 @@
 
   display: flex;
   flex-direction: column;
-  margin-top: 7rem;
+  margin-top: 10vh;
   align-items: center;
   justify-items: center;
   min-height: 100svh;
-  padding: 5rem;
   gap: 64px;
   font-family: Inter;
+}
+.page_container{
+  width: 95%;
+  margin: auto;
 }
 .main {
   display: flex;
@@ -39,64 +42,11 @@
 .hero{
   width: 100%;
   margin: auto;
-  background-color: lightgray;
 }
 .hero_image{
   height: 800px;
   width: auto;
   max-width: 100%;
-  background-color: lightgray;
-}
-
-/*NAVBAR*/
-.nav{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: fixed;
-  font-size: 1.25rem;
-  font-weight: 500;
-  width: 100%;
-  z-index: 1000;
-  margin: auto;
-  background-color: #f3f3f3;
-  color: black;
-  padding: 4vw;
-  padding-top: 3rem;
-  border-bottom: 1px dotted black;
-  padding-bottom: 1rem;
-  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-}
-.nav_hidden {
-  transform: translateY(-100%);
-  border-bottom: none;
-}
-
-.nav_visible {
-  transform: translateY(0);
-}
-.nav:hover{
-  color: rgba(0, 0, 0, 0.442);
-  transition: color .3s ease-in-out;
-}
-.nav_list{
-  position: relative;
-  display: flex;
-  justify-content: space-around;
-  height: 100%;
-  height: 5rem;
-  align-items: flex-start;
-}
-.nav_list ul{
-  list-style: none;
-  display: flex;
-  justify-content: space-around;
-  gap: 3rem;
-}
-
-.nav_logo{
-  height: 5rem;
-  width: auto;
 }
 
 /* ARTIST PAGE */
@@ -112,7 +62,7 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
 }
 .artist_page{
   display: flex;
@@ -120,6 +70,9 @@
   justify-content: normal;
   margin-top: 2rem;
   gap: 3rem;
+  width: 50%;
+  margin: auto;
+  padding-top: 7rem;
 }
 .artist_page_contents{
   display: flex;
@@ -287,10 +240,7 @@
 }
 
 @media (max-width: 600px) {
-  .page {
-    padding: 32px;
-    padding-bottom: 80px;
-  }
+
 
   .main {
     align-items: center;

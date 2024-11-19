@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import styles from '../styles/page.module.css';
+import styles from '../styles/nav.module.css';
 
 export default function Nav() {
     const [isActive, setIsActive] = useState(false);

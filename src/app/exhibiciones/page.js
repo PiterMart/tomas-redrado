@@ -28,20 +28,22 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <p className={styles.title}>SEDES</p>
-        <div className={styles.exhibition_page}>
-          {headquarters.map((hq) => (
-            <div key={hq.id}>
-              <div className={styles.sedes}>
-                <Link href={`/exhibiciones/${hq.slug}`}>
-                  <div className={styles.sedeCard} >
-                    <p className={styles.overlayText}>{hq.name}</p>
-                    <img src={hq.image} style={{overflow: 'hidden'}} />
-                  </div>
-                </Link>
+        <div className={styles.page_container}>
+          <p className={styles.title}>SEDES</p>
+          <div className={styles.exhibition_page}>
+            {headquarters.map((hq) => (
+              <div key={hq.id}>
+                <div className={styles.sedes}>
+                  <Link href={`/exhibiciones/${hq.slug}`}>
+                    <div className={styles.sedeCard} >
+                      <p className={styles.overlayText}>{hq.name}</p>
+                      <img src={hq.image} style={{overflow: 'hidden'}} />
+                    </div>
+                  </Link>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </main>
       <footer className={styles.footer}></footer>

@@ -1,0 +1,51 @@
+/*NAVBAR*/
+.nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    font-size: 1rem;
+    font-weight: 500;
+    width: 100%;
+    z-index: 1000;
+    margin: auto;
+    background-color: #f3f3f3;
+    color: black;
+    padding: 4vw;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  .nav_hidden {
+    transform: translateY(-100%);
+    border-bottom: none;
+  }
+  
+  .nav_visible {
+    transform: translateY(0);
+  }
+  .nav:hover{
+    color: rgba(0, 0, 0, 0.442);
+    transition: color .3s ease-in-out;
+  }
+  .nav_list{
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    height: 100%;
+    height: 2rem;
+    margin-top: auto;
+    align-items: flex-start;
+  }
+  .nav_list ul{
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    gap: 2rem;
+  }
+  
+  .nav_logo{
+    height: 3rem;
+    width: auto;
+  }
+  

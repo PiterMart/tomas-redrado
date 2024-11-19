@@ -63,27 +63,29 @@ export default function Sede({ params }) {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-      <img src={headquarters.image} />
-        <h1 className={styles.title}>{headquarters.name}</h1>
-        <p>{headquarters.location}</p>
-        {headquarters.about.map((paragraph, index) => (
-          <p key={index}>{paragraph}</p>
-        ))}
-        
-        <h1>EXHIBICIONES</h1>
-        {exhibitions.length > 0 ? (
-          exhibitions.map((exhibition) => (
-            <div key={exhibition.id} className={styles.obraContainer}>
-              <Link href={`/exhibiciones/${headquarters.slug}/${exhibition.slug}`}>
-                <p>{exhibition.name}</p>
-                <img src={exhibition.gallery[0].url} className={styles.artist_page_image_container} />
-                <p>{exhibition.gallery.description}</p>
-              </Link>
-            </div>
-          ))
-        ) : (
-          <p>Looking for exhibitions.</p>
-        )}
+        <div className={styles.page_container}>
+          <img src={headquarters.image} />
+          <h1 className={styles.title}>{headquarters.name}</h1>
+          <p>{headquarters.location}</p>
+          {headquarters.about.map((paragraph, index) => (
+            <p key={index}>{paragraph}</p>
+          ))}
+          
+          <h1>EXHIBICIONES</h1>
+          {exhibitions.length > 0 ? (
+            exhibitions.map((exhibition) => (
+              <div key={exhibition.id} className={styles.obraContainer}>
+                <Link href={`/exhibiciones/${headquarters.slug}/${exhibition.slug}`}>
+                  <p>{exhibition.name}</p>
+                  <img src={exhibition.gallery[0].url} className={styles.artist_page_image_container} />
+                  <p>{exhibition.gallery.description}</p>
+                </Link>
+              </div>
+            ))
+          ) : (
+            <p>Looking for exhibitions.</p>
+          )}
+        </div>
       </main>
       <footer className={styles.footer}></footer>
     </div>

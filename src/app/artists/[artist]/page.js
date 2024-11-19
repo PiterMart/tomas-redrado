@@ -63,59 +63,61 @@ export default function Artist({ params }) {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <h1 className={styles.title}>{artist.name}</h1>
-        <h1 className={styles.subtitle}>{artist.origen}</h1>
-        <h1 className={styles.subtitle}>{artist.birthDate}</h1>
-        <div className={styles.artist_page}>
-          <div className={styles.name_list}>
-            {artist.profilePicture && (
-              <img src={artist.profilePicture} alt={`${artist.nombre}'s profile`} style={{width: '200px', height: 'auto', overflow: 'hidden'}} />
-            )}
-            <ul>
-              <li><a href="#obras">OBRAS</a></li>
-              <li><a href="#bio">BIO</a></li>
-              <li><a href={artist.cv} target="_blank"> CV</a></li>
-            </ul>
-          </div>
-          <div className={styles.artist_page_contents}>
-            <p>{artist.bio[0]}</p>
-            <a href="#bio"><button>leer mas </button></a>
-            <div className={styles.artist_page_contents_obras} id="obras" style={{scrollMargin: '10rem'}}>
-              <p className={styles.title}>OBRAS</p>
-              <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem', overflow: 'hidden'}}>
-                {artist.artworks.map((artwork, index) => (
-                  <Link href={`/artworks/${artwork.slug}`} key={index}>
-                    <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
-                      <div className={styles.artist_page_image_container}>
-                        <img src={artwork.url} alt={`Gallery image ${index + 1}`} />
-                      </div>
-                      <div>
+        <div className={styles.page_container}>
+          <h1 className={styles.title} style={{paddingTop: '5rem'}}>{artist.name}</h1>
+          <h1 className={styles.subtitle}>{artist.origen}</h1>
+          <h1 className={styles.subtitle}>{artist.birthDate}</h1>
+          <div className={styles.artist_page}>
+            <div className={styles.name_list}>
+              {artist.profilePicture && (
+                <img src={artist.profilePicture} alt={`${artist.nombre}'s profile`} style={{width: '200px', height: 'auto', overflow: 'hidden'}} />
+              )}
+              <ul>
+                <li><a href="#obras">OBRAS</a></li>
+                <li><a href="#bio">BIO</a></li>
+                <li><a href={artist.cv} target="_blank"> CV</a></li>
+              </ul>
+            </div>
+            <div className={styles.artist_page_contents}>
+              <p>{artist.bio[0]}</p>
+              <a href="#bio"><button>leer mas </button></a>
+              <div className={styles.artist_page_contents_obras} id="obras" style={{scrollMargin: '10rem'}}>
+                <p className={styles.title}>OBRAS</p>
+                <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem', overflow: 'hidden'}}>
+                  {artist.artworks.map((artwork, index) => (
+                    <Link href={`/artworks/${artwork.slug}`} key={index}>
+                      <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+                        <div className={styles.artist_page_image_container}>
+                          <img src={artwork.url} alt={`Gallery image ${index + 1}`} />
+                        </div>
                         <div>
-                          <p>{artist.name}</p>
-                          <div style={{display: 'flex', flexDirection: 'row', gap: '0.25rem'}}>
-                            <p>{artwork.title}</p>
-                            <p>{artwork.date}</p>
+                          <div>
+                            <p>{artist.name}</p>
+                            <div style={{display: 'flex', flexDirection: 'row', gap: '0.25rem'}}>
+                              <p>{artwork.title}</p>
+                              <p>{artwork.date}</p>
+                            </div>
+                          </div>
+                          <div style={{color: 'gray'}}>
+                            <p>{artwork.measurements}</p>
+                            <p>{artwork.technique}</p>
+                            <p>{artwork.extra}</p>
+                            <p>{artwork.description}</p>
                           </div>
                         </div>
-                        <div style={{color: 'gray'}}>
-                          <p>{artwork.measurements}</p>
-                          <p>{artwork.technique}</p>
-                          <p>{artwork.extra}</p>
-                          <p>{artwork.description}</p>
-                        </div>
                       </div>
-                    </div>
-                  </Link>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+              <div className={styles.artist_page_contents_bio} id="bio">
+                <p className={styles.title}>BIO</p>
+                {artist.bio.map((paragraph, index) => (
+                  <div key={index}>
+                    <p>{paragraph}</p>
+                  </div>
                 ))}
               </div>
-            </div>
-            <div className={styles.artist_page_contents_bio} id="bio">
-              <p className={styles.title}>BIO</p>
-              {artist.bio.map((paragraph, index) => (
-                <div key={index}>
-                  <p>{paragraph}</p>
-                </div>
-              ))}
             </div>
           </div>
         </div>
