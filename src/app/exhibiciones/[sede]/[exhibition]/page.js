@@ -100,6 +100,7 @@ export default function Exhibition({ params }) {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
+      <div className={styles.artist_page} style={{padding: '1rem', marginTop: '6rem'}}>
         <h1>{exhibition.name}</h1>
 
         {/* Render Exhibition Images */}
@@ -161,6 +162,7 @@ export default function Exhibition({ params }) {
         ) : (
           <p>No artists found in this exhibition.</p>
         )}
+        </div>
       </main>
       <footer className={styles.footer}></footer>
     </div>
