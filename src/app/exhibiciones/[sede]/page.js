@@ -63,7 +63,7 @@ export default function Sede({ params }) {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <div className={styles.page_container}>
+        <div className={styles.artist_page} style={{padding: '1rem'}}>
           <img src={headquarters.image} />
           <h1 className={styles.title}>{headquarters.name}</h1>
           <p>{headquarters.location}</p>
