@@ -95,8 +95,7 @@ export default function ArtistsPage() {
               >
                 {artists.map((artist) => (
                   <motion.li 
-                    key={artist.id} 
-                    variants={itemVariants}
+g                    variants={itemVariants}
                   >
                     <Link href={`/artists/${artist.slug}`}>{artist.name}</Link>
                   </motion.li>

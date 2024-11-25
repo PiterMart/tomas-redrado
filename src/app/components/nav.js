@@ -13,12 +13,12 @@ export default function Nav() {
 
     const pages = [
         { name: 'ARTISTS', path: '/artists', delay: '0s' },
-        { name: 'EXHIBITIONS', path: '/exhibiciones', delay: '0.1s' },
-        { name: 'HEADQUARTERS', path: '/exhibiciones', delay: '0.2s' },
-        { name: 'FAIRS', path: '/ferias', delay: '0.3s' },
-        { name: 'RESIDENCIES', path: '/tra', delay: '0.4s' },
-        { name: 'ABOUT', path: '/tra', delay: '0.5s' },
-        { name: 'CONTACT', path: '/tra', delay: '0.6s' },
+        { name: 'EXHIBITIONS', path: '/exhibitions', delay: '0.1s' },
+        { name: 'HEADQUARTERS', path: '/headquarters', delay: '0.2s' },
+        { name: 'FAIRS', path: '/fairs', delay: '0.3s' },
+        // { name: 'RESIDENCIES', path: '/tra', delay: '0.4s' },
+        { name: 'ABOUT', path: '/about', delay: '0.4s' },
+        { name: 'CONTACT', path: '/contact', delay: '0.5s' },
     ];
 
     const toggleMenu = () => {

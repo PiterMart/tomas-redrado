@@ -5,6 +5,7 @@ import { firestore } from "../../firebase/firebaseConfig";
 import { query, collection, where, getDocs, documentId } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import EmblaCarousel from "@/app/carousel/EmblaCarousel";
 
 export default function Sede({ params }) {
   const { sede: sedeSlug } = params; // Get slug from params
@@ -48,6 +49,14 @@ export default function Sede({ params }) {
       console.error("Error fetching exhibitions:", error);
     }
   };
+  const exhibitionSlides = exhibitions.map((exhibition) => ({
+    name: exhibition.name,
+    image: exhibition.gallery[0]?.url || "/placeholder.jpg", // Fallback si no hay imagen
+    openingDate: exhibition.openingDate,
+    closingDate: exhibition.closingDate,
+    slug: exhibition.slug,
+    // sedeSlug: headquarters.find((hq) => hq.exhibitions.includes(exhibition.id))?.slug,
+  }));
 
   useEffect(() => {
     fetchHeadquarters();
@@ -72,10 +81,11 @@ export default function Sede({ params }) {
           ))}
           
           <h1>EXHIBICIONES</h1>
-          {exhibitions.length > 0 ? (
+          <EmblaCarousel slides={exhibitionSlides} type="exhibition" />
+          {/* {exhibitions.length > 0 ? (
             exhibitions.map((exhibition) => (
               <div key={exhibition.id} className={styles.obraContainer}>
-                <Link href={`/exhibiciones/${headquarters.slug}/${exhibition.slug}`}>
+                <Link href={`/headquarters/${headquarters.slug}/${exhibition.slug}`}>
                   <p>{exhibition.name}</p>
                   <img src={exhibition.gallery[0].url} className={styles.artist_page_image_container} />
                   <p>{exhibition.gallery.description}</p>
@@ -84,7 +94,7 @@ export default function Sede({ params }) {
             ))
           ) : (
             <p>Looking for exhibitions.</p>
-          )}
+          )} */}
         </div>
       </main>
       <footer className={styles.footer}></footer>

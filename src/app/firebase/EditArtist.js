@@ -6,7 +6,7 @@ import styles from "../styles/page.module.css";
 import React, { useState, useEffect } from "react";
 import { deleteArtist } from "./DeleteArtist";
 
-export default function EditArtistForm({ artistId, onClose }) {
+export default function EditArtist({ artistId, onClose }) {
   const [artistData, setArtistData] = useState({
     bio: [],
     name: "",

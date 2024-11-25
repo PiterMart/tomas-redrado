@@ -1,7 +1,7 @@
 "use client"
 import { collection, onSnapshot } from "firebase/firestore";  // Use onSnapshot for real-time updates
 import React, { useState, useEffect } from "react";
-import EditArtistForm from "./EditArtistForm";
+import EditArtist from "./EditArtist";
 import styles from "../styles/page.module.css";
 import { firestore } from "./firebaseConfig";
 
@@ -125,7 +125,7 @@ export default function ArtistList() {
       </ul>
 
       {selectedArtist && (
-        <EditArtistForm
+        <EditArtist
           artistId={selectedArtist.id}
           onClose={() => setSelectedArtist(null)}
         />

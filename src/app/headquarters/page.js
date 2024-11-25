@@ -35,7 +35,7 @@ export default function Home() {
             {headquarters.map((hq) => (
               <div key={hq.id}>
                 <div className={styles.sedes}>
-                  <Link href={`/exhibiciones/${hq.slug}`}>
+                  <Link href={`/headquarters/${hq.slug}`}>
                     <div className={styles.sedeCard} >
                       <div className={styles2.embla__slide__text} style={{height:  'auto', width: 'auto', paddingRight: '4rem'}}>
                       <p >{hq.name}</p>

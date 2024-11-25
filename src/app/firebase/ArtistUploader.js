@@ -5,7 +5,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import styles from "../styles/page.module.css";
 import React, { useState, useRef } from "react";
 
-export default function ArtistForm() {
+export default function ArtistUploader() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);

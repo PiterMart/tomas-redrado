@@ -4,6 +4,7 @@ import { firestore } from "../../../firebase/firebaseConfig";
 import { query, collection, where, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import EmblaCarousel from "../../../carousel/EmblaCarousel";
 
 export default function Exhibition({ params }) {
   const { exhibition: exhibitionSlug } = params; // Get slug from params
@@ -97,14 +98,20 @@ export default function Exhibition({ params }) {
   if (exhibition === null) return <p>Loading exhibition data...</p>;
   if (!exhibition) return <p>No exhibition found.</p>;
 
+  const exhibitionSlides = exhibition.gallery.map((gallery) => ({
+    image: gallery.url,
+  }));
+  const OPTIONS = {}
+  const SLIDE_COUNT = 5
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-      <div className={styles.artist_page} style={{padding: '1rem', marginTop: '6rem'}}>
+      <div className={styles.artist_page} style={{padding: '1.5rem', marginTop: '6rem'}}>
         <h1>{exhibition.name}</h1>
-
+        <EmblaCarousel slides={exhibitionSlides} type="picture" />
         {/* Render Exhibition Images */}
-        <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem', overflow: 'scroll'}}>
+        {/* <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem', overflow: 'scroll'}}>
         {exhibition.gallery && exhibition.gallery.length > 0 ? (
           exhibition.gallery.map((image, index) => (
             <div key={index} className={styles.imageContainer}>
@@ -119,7 +126,7 @@ export default function Exhibition({ params }) {
         ) : (
           <p>No images available for this exhibition.</p>
         )}
-        </div>
+        </div> */}
         <p>{exhibition.description}</p>
 
         {/* Render Artists and Artworks */}

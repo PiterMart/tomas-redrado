@@ -1,7 +1,7 @@
 "use client"
 import Image from "next/image";
 import styles from "./styles/page.module.css";
-import EmblaCarousel from "./components/EmblaCarousel";
+import EmblaCarousel from "./carousel/EmblaCarousel";
 import { firestore } from "./firebase/firebaseConfig";
 import { collection, getDocs, query, where, documentId } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
@@ -53,7 +53,7 @@ export default function Home() {
   }, [exhibitionIds]);
 
 
-  const SLIDES = exhibitions.map((exhibition) => ({
+  const exhibitionSlides = exhibitions.map((exhibition) => ({
     name: exhibition.name,
     image: exhibition.gallery[0]?.url || "/placeholder.jpg", // Fallback si no hay imagen
     openingDate: exhibition.openingDate,
@@ -71,7 +71,8 @@ export default function Home() {
 
         {/* Carousel con exhibiciones */}
         <div className={styles.hero}>
-          <EmblaCarousel slides={SLIDES} options={OPTIONS} />
+          <EmblaCarousel slides={exhibitionSlides} options={OPTIONS} />
+          <EmblaCarousel slides={exhibitionSlides} type="exhibition" />;
         </div>
       </main>
       <footer className={styles.footer}></footer>

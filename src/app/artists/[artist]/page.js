@@ -5,6 +5,7 @@ import { firestore } from "../../firebase/firebaseConfig";
 import { query, collection, where, getDocs } from "firebase/firestore"; 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import EmblaCarousel from "../../carousel/EmblaCarousel";
 
 // Helper function to convert Firestore timestamp to a date string
 function convertTimestampToYear(timestamp) {
@@ -60,6 +61,20 @@ export default function Artist({ params }) {
   if (artist === null) return <p>Error fetching artist. Please try again.</p>;
   if (!artist) return <p>Loading...</p>;
 
+  const artworkSlides = artist.artworks.map((artwork, index) => ({
+    title: artwork.title,
+    url: artwork.url,
+    medium: artwork.medium,
+    extra: artwork.extra,
+    slug: artwork.slug,
+    date: artwork.date,
+    measurements: artwork.measurements,
+    description: artwork.description,
+    // artistSlug: artists.find((hq) => hq.artists.includes(artists.id))?.slug,
+  }));
+  const OPTIONS = {}
+
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -90,33 +105,8 @@ export default function Artist({ params }) {
                 <Link href="#bio"><button style={{padding: "0px", marginTop: "1.5rem", marginRight: "0px", width: "100%", textAlign: "right", color: "gray"}}>Read More</button></Link>
               </div>
               <div className={styles.artist_page_contents_obras} id="obras" style={{scrollMargin: '10rem'}}>
-                <p className={styles.title}>ARTWORKS</p>
-                <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem', overflow: 'visible',}}>
-                  {artist.artworks.map((artwork, index) => (
-                    <Link href={`/artworks/${artwork.slug}`} key={index}>
-                      <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
-                        <div className={styles.artist_page_image_container}>
-                          <img src={artwork.url} alt={`Gallery image ${index + 1}`} />
-                        </div>
-                        <div style={{ border: "1px solid white", padding: "1rem", background: 'white'}}>
-                          <div>
-                            <p>{artist.name}</p>
-                            <div style={{display: 'flex', flexDirection: 'column', gap: '0.25rem'}}>
-                              <p>{artwork.title}</p>
-                              <p>{artwork.date}</p>
-                            </div>
-                          </div>
-                          <div style={{color: 'gray'}}>
-                            <p>{artwork.measurements}</p>
-                            <p>{artwork.technique}</p>
-                            <p>{artwork.extra}</p>
-                            <p>{artwork.description}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
+              <p className={styles.title}>ARTWORKS</p>
+              <EmblaCarousel slides={artworkSlides} type="artwork" />
               </div>
               <div className={styles.artist_page_contents_bio} id="bio">
                 <p className={styles.title}>BIO</p>
