@@ -18,8 +18,8 @@ const ArtworkLayout = ({ slide }) => {
         <div style={{ color: "gray" }}>
           <p>{slide.medium}</p>
           <p>{slide.measurements}</p>
-          <p>{slide.extra}</p>
-          <p>{slide.description}</p>
+          {/* <p>{slide.extra}</p>
+          <p>{slide.description}</p> */}
         </div>
       </div>
     </div>
