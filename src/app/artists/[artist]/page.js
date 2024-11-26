@@ -88,7 +88,7 @@ export default function Artist({ params }) {
               </div>
               <div className={styles.artist_page_nav}>
                 {artist.profilePicture && (
-                    <img src={artist.profilePicture} alt={`${artist.nombre}'s profile`} style={{width: '200px', height: 'auto', overflow: 'hidden'}} />
+                    <img src={artist.profilePicture} alt={`${artist.nombre}'s profile`} style={{width: '200px', height: 'auto', overflow: 'hidden', filter: 'grayscale(1)'}} />
                   )}
                 <div className={styles.name_list} style={{marginTop: '2rem'}}>
                   <ul>
