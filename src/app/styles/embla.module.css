@@ -39,7 +39,7 @@
   justify-content: center;
   text-align: center;
   max-height: 90vh;
-  overflow: visible;
+  overflow: hidden;
 }
 
 /* Image styling for the slide */
