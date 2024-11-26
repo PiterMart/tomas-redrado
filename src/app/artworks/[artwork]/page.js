@@ -1,6 +1,6 @@
 "use client";
 import styles from "../../styles/artwork.module.css";
-import "../../styles/page.module.css"
+import "../../styles/page.module.css";
 import { firestore } from "../../firebase/firebaseConfig";
 import { query, collection, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
@@ -52,22 +52,30 @@ export default function Artwork({ params }) {
     <div className={styles.page}>
       <main className={styles.main}>
         <div className={styles.artwork_page}>
-          <div className={styles.artwork_image_container}>
-            <img src={url} alt={title} style={{ width: "100%", height: "auto"}} />
-          </div>
-          <div className={styles.artwork_details}>
+        <div className={styles.artwork_details}>
           <h1 className={styles.title}>{title}</h1>
             <div>
-              <p><strong>Artist:</strong> {artistName}</p>
-              <p><strong>Date:</strong> {date}</p>
-              <p><strong>Medium:</strong> {medium}</p>
-              <p><strong>Measurements:</strong> {measurements}</p>
-              {/* <p><strong>Extras:</strong> {Array.isArray(extra) ? extra.join(", ") : extra}</p>  */}
-              <p><strong>Description:</strong> {description}</p>
+              <p><strong></strong></p>
+              <Link href={`/artists/${artistSlug}`}> <h2 style={{fontWeight: '200'}}>{artistName}</h2></Link>
+              <p><strong></strong> {date}</p>
+              <p><strong></strong> {medium}</p>
+              <p><strong></strong> {measurements}</p>
+              <p><strong></strong> {description}</p>
             </div>
-            <div>
-              <Link href={`/artists/${artistSlug}`} className={styles.back_link}>{">"} Artist Page {"<"}</Link>
+            <div style={{alignSelf: "flex-end"}}>
+              <button 
+                onClick={() => window.history.back()} 
+                className={styles.back_link}
+              >
+                <p style={{fontSize: '1rem', fontWeight: '100', bottom: '0',  alignSelf: 'end', paddingBottom: '1rem'}}>
+                  Back {"<-"}
+                </p>
+              </button>
             </div>
+
+          </div>
+          <div className={styles.artwork_image_container}>
+            <img src={url} alt={title} style={{ width: "100%", height: "auto"}} />
           </div>
         </div>
       </main>

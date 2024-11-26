@@ -1,5 +1,6 @@
 import React from "react";
-import styles from "../../styles/embla.module.css"
+// import styles from "../../styles/embla.module.css"
+import styles from "../../styles/page.module.css";
 
 const PictureLayout = ({ slide }) => {
 
@@ -10,13 +11,11 @@ const PictureLayout = ({ slide }) => {
   };
 
   return (
-    <div className={styles.embla__slide__inner}>
-      <img
-          className={styles.embla__slide__img}
-          src={slide.image}
-          alt={slide.name}
-        />
-    </div>
+    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+    <div className={styles.artist_page_image_container}>
+          <img src={slide.image} alt={slide.title} />
+        </div>
+        </div>
   );
 };
 

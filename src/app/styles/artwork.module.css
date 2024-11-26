@@ -15,11 +15,16 @@
 .artwork_image_container{
     max-width: 90%;
 }
+.back_link{
+    margin-top: 5rem;
+    align-self: flex-end;
+}
 
-@media (max-width: 600px) {
+@media (max-width: 1300px) {
     .artwork_page{
-        flex-direction: column;
+        flex-direction: column-reverse;
         max-width: 90%;
-        gap: 1rem;
+        gap: 3rem;
+        margin-bottom: 5rem;
     }
 }

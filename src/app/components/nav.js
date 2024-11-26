@@ -63,8 +63,10 @@ export default function Nav() {
                     className={styles.nav_logo}
                 />
             </Link>
-            <button className={styles.navButton} id="menuButton" onClick={toggleMenu}>
-                ☰
+            <button className={`${styles.navButton} ${isMenuOpen ? styles.open : ''}`} onClick={toggleMenu}>
+                <span className={styles.bar}></span>
+                <span className={styles.bar}></span>
+                <span className={styles.bar}></span>
             </button>
             <div className={`${styles.nav_list} ${isMenuOpen ? styles.active : ''}`} id="navMenu">
                 <ul>

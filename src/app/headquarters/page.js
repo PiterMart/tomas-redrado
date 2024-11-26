@@ -40,7 +40,7 @@ export default function Home() {
                       <div className={styles2.embla__slide__text} style={{height:  'auto', width: 'auto', paddingRight: '4rem'}}>
                       <p >{hq.name}</p>
                       </div>
-                      <img src={hq.image} style={{overflow: 'hidden'}} />
+                      {/* <img src={hq.image} style={{overflow: 'hidden'}} /> */}
                     </div>
                   </Link>
                 </div>

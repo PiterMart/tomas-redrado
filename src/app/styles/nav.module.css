@@ -66,18 +66,43 @@
 /* Mobile Menu Button */
 .navButton {
   display: none;
-  z-index: 20;
-
+  flex-direction: column;
+  justify-content: space-between;
+  width: 20px;
+  height: 19px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 100; /* Make sure it stays above the menu */
 }
 
-.navButton:hover {
-  background-color: transparent;
+.navButton .bar {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: #000; /* Adjust color as needed */
+  /* border-radius: 2px; */
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
+
+.navButton.open .bar:nth-child(1) {
+  transform: translateY(10px) rotate(45deg);
+}
+
+.navButton.open .bar:nth-child(2) {
+  opacity: 0;
+}
+
+.navButton.open .bar:nth-child(3) {
+  transform: translateY(-10px) rotate(-45deg);
+}
+
 
 /* Mobile-Specific Styles */
 @media (max-width: 1000px) {
   .navButton {
-    display: block;
+    display: flex;
   }
 
   .nav {

@@ -71,7 +71,6 @@ export default function Home() {
 
         {/* Carousel con exhibiciones */}
         <div className={styles.hero}>
-          <EmblaCarousel slides={exhibitionSlides} options={OPTIONS} />
           <EmblaCarousel slides={exhibitionSlides} type="exhibition" />;
         </div>
       </main>

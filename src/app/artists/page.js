@@ -85,7 +85,7 @@ export default function ArtistsPage() {
       <main className={styles.main}>
         <div className={styles.page_container}>
           {/* <p className={styles.title}>ARTISTAS</p> */}
-          <div className={styles.artist_page}>
+          <div className={styles.artists_page}>
             <div className={styles.name_list}>
               <motion.ul
                 initial="hidden"

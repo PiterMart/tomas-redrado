@@ -79,42 +79,44 @@ export default function Artist({ params }) {
     <div className={styles.page}>
       <main className={styles.main}>
         <div className={styles.page_container}>
-          <div className={styles.artist_page_NameCard}>
-            <h1 className={styles.title} style={{paddingTop: '5rem'}}>{artist.name}</h1>
             <div>
-              <h1 className={styles.subtitle}>{artist.origin},</h1>
-              <h1 className={styles.subtitle}>{artist.birthDate}.</h1>
-            </div>
-            <div className={styles.artist_page_nav}>
-              {artist.profilePicture && (
-                  <img src={artist.profilePicture} alt={`${artist.nombre}'s profile`} style={{width: '200px', height: 'auto', overflow: 'hidden'}} />
-                )}
-              <div className={styles.name_list} style={{marginTop: '2rem'}}>
-                <ul>
-                  <li><a href="#obras">ARTWORKS</a></li>
-                  <li><a href="#bio">BIO</a></li>
-                  <li><a href={artist.cv} target="_blank"> CV </a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div className={styles.artist_page}>
-            <div className={styles.artist_page_contents}>
+            <div className={styles.artist_page_NameCard}>
+              <h1 className={styles.title} style={{paddingTop: '5rem'}}>{artist.name}</h1>
               <div>
-                <p style={{fontSize: '1.5rem'}}>{artist.bio[0]}</p>
-                <Link href="#bio"><button style={{padding: "0px", marginTop: "1.5rem", marginRight: "0px", width: "100%", textAlign: "right", color: "gray"}}>Read More</button></Link>
+                <h1 className={styles.subtitle}>{artist.origin},</h1>
+                <h1 className={styles.subtitle}>{artist.birthDate}.</h1>
               </div>
-              <div className={styles.artist_page_contents_obras} id="obras" style={{scrollMargin: '10rem'}}>
-              <p className={styles.title}>ARTWORKS</p>
-              <EmblaCarousel slides={artworkSlides} type="artwork" />
+              <div className={styles.artist_page_nav}>
+                {artist.profilePicture && (
+                    <img src={artist.profilePicture} alt={`${artist.nombre}'s profile`} style={{width: '200px', height: 'auto', overflow: 'hidden'}} />
+                  )}
+                <div className={styles.name_list} style={{marginTop: '2rem'}}>
+                  <ul>
+                    <li><a href="#obras">ARTWORKS</a></li>
+                    <li><a href="#bio">BIO</a></li>
+                    <li><a href={artist.cv} target="_blank"> CV </a></li>
+                  </ul>
+                </div>
               </div>
-              <div className={styles.artist_page_contents_bio} id="bio">
-                <p className={styles.title}>BIO</p>
-                {artist.bio.map((paragraph, index) => (
-                  <div key={index}>
-                    <p>{paragraph}</p>
-                  </div>
-                ))}
+            </div>
+            <div className={styles.artist_page}>
+              <div className={styles.artist_page_contents}>
+                <div>
+                  <p style={{fontSize: '1.5rem'}}>{artist.bio[0]}</p>
+                  <Link href="#bio"><button style={{padding: "0px", marginTop: "1.5rem", marginRight: "0px", width: "100%", textAlign: "right", color: "gray"}}>Read More</button></Link>
+                </div>
+                <div className={styles.artist_page_contents_obras} id="obras" style={{scrollMargin: '10rem'}}>
+                <p className={styles.title}>ARTWORKS</p>
+                <EmblaCarousel slides={artworkSlides} type="artwork" />
+                </div>
+                <div className={styles.artist_page_contents_bio} id="bio">
+                  <p className={styles.title}>BIO</p>
+                  {artist.bio.map((paragraph, index) => (
+                    <div key={index}>
+                      <p>{paragraph}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

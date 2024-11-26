@@ -20,6 +20,9 @@
 .page_container{
   width: 95%;
   margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap:3rem;
 }
 .main {
   display: flex;
@@ -29,6 +32,7 @@
   font-family: Inter;
   width: 100%;
 }
+
 /* FONTS AND TEXTS */
 
 .title{
@@ -74,8 +78,26 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  z-index: 10;
+  background: var(--background);
+  Width: 26vw;
+  height: 100vh;
+  margin-left: -5rem;
+  padding-left: 5rem;
+  padding-top: 10rem;
+  margin-top: -10rem;
 }
 .artist_page{
+  display: flex;
+  flex-direction: row;
+  justify-content: normal;
+  margin-top: 2rem;
+  gap: 3rem;
+  width: 800px;
+  margin: auto;
+  padding-top: 10rem;
+}
+.artists_page{
   display: flex;
   flex-direction: row;
   justify-content: normal;
@@ -120,13 +142,26 @@
   margin: auto;
 }
 
+/*EXHIBIITON*/
+
+.exhibition_page{
+  display: flex;
+  flex-direction: row;
+  justify-content: normal;
+  margin-top: 2rem;
+  gap: 3rem;
+  width: 1500px;
+  margin: auto;
+  padding-top: 10rem;
+}
+
 .sedes{
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
   width: 100%;
   margin: auto;
-  height: 70vh;
+  height: auto;
   font-size: 2rem;
   margin-top: 2rem;
 }
@@ -149,8 +184,10 @@
   max-width: 100%;
   height: auto;
 }
+
 .sedeCard img:hover{
 }
+
 .overlayText {
   position: absolute;
   top: 50%; 
@@ -248,6 +285,24 @@
 }
 
 
+@media (max-width: 1600px) {
+  .artist_page_NameCard{
+    position: relative;
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: auto;
+    width: 100%;
+    margin-top: 0rem;
+    padding-top: 6rem;
+  }
+  .exhibition_page{
+    margin-top: 6rem;
+  }
+
+}
+
 @media (max-width: 1300px) {
 
   .page{
@@ -276,6 +331,7 @@
   .artist_page{
     width: 100%;
     flex-direction: column;
+    padding: 1rem;
   }
   .artist_page_contents{
     max-width: 100%;
@@ -287,19 +343,19 @@
     gap: 1rem;
     align-items: baseline;
   }
-  .artist_page_NameCard{
-    margin-top: 1.5rem;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
+  
   
 }
 
-@media (max-width: 600px) {
+@media (max-width: 800px) {
   .artist_page_image_container{
     height: 105vw;
+  }
+  .artists_page{
+    width: 100%;
+    flex-direction: column;
+    padding: 1rem;
+    margin-top: 6rem;
   }
 }
 
