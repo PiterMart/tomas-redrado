@@ -86,6 +86,7 @@
   padding-left: 5rem;
   padding-top: 10rem;
   margin-top: -10rem;
+  padding-bottom: 50%;
 }
 .artist_page{
   display: flex;
@@ -296,6 +297,7 @@
     width: 100%;
     margin-top: 0rem;
     padding-top: 6rem;
+    padding-bottom: 0px;
   }
   .exhibition_page{
     margin-top: 6rem;
