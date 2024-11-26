@@ -50,7 +50,7 @@ const EmblaCarousel = ({ slides, options = {}, type }) => {
         onClick={scrollPrev}
         aria-label="Scroll to previous slide"
       >
-        {"<"}
+        {/* {"<"} */}
       </button>
       <button
         className={styles.embla__button__next}
