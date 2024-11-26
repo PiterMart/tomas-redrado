@@ -6,7 +6,7 @@ export default function About() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <div>
+        <div className={styles.page_container}>
           <div style={{display: 'flex', flexDirection: 'column', gap: '2rem', width: '100%'}}>
             <p className={styles.title}>Tomas Redrado Art</p>
             <p> Contemporary art asks that we begin to look at the world in a different way, outside of the prevailing logic and status quo. It puts us into situations of inquisitiveness and outside of the security of assured answers. This is a way of being where the interior of the artist prevails before what is deemed politically correct. In this way, the artist breaks through the dams of contention of the establishment, surging out abstractions with infinite textures, materials and colors. What emerges gives us an art object that we can question, and questions us in return.</p>
