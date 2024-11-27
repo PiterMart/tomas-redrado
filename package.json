@@ -20,7 +20,8 @@
     "react": "^18",
     "react-datepicker": "^7.5.0",
     "react-dom": "^18",
-    "react-image-lightbox": "^5.1.4"
+    "react-image-lightbox": "^5.1.4",
+    "react-scroll-parallax": "^3.4.5"
   },
   "devDependencies": {
     "eslint": "^8",

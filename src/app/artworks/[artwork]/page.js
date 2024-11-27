@@ -58,10 +58,10 @@ export default function Artwork({ params }) {
       <main className={styles.main}>
         <div className={styles.artwork_page}>
         <div className={styles.artwork_details}>
-          <h1 className={styles.title}>{title}</h1>
+          <h1 className={styles.title} style={{fontWeight: '400'}}>{title}</h1>
             <div style={{display: 'flex', flexDirection: 'column', gap: '0.25rem'}}>
               <p><strong></strong></p>
-              <Link href={`/artists/${artistSlug}`}> <h2 style={{fontWeight: '200',marginBottom: '0.5rem'}}>{artistName}</h2></Link>
+              <Link href={`/artists/${artistSlug}`}> <h2 style={{fontWeight: '300'}}>{artistName}</h2></Link>
               <p><strong></strong> {date}</p>
               <p><strong></strong> {medium}</p>
               <p><strong></strong> {measurements}</p>
@@ -73,7 +73,7 @@ export default function Artwork({ params }) {
                 className={styles.back_link}
               >
                 <p style={{fontSize: '1rem', fontWeight: '100', bottom: '0',  alignSelf: 'end', paddingBottom: '1rem'}}>
-                  Back {"<-"}
+                {"<"} Back
                 </p>
               </button>
             </div>

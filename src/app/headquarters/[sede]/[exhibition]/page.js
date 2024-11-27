@@ -96,11 +96,11 @@ export default function Exhibition({ params }) {
       <main className={styles.main}>
         <div className={styles.page_container}>
           <div className={styles.exhibition_page}>
-            <h2>{exhibition.name}</h2>
+            <p className={styles.title}>{exhibition.name}</p>
             <EmblaCarousel slides={exhibitionSlides} type="picture" />
-            <p style={{fontSize: '1.5rem'}}>{exhibition.description}</p>
+            <p style={{fontSize: '2rem', width: '75%', margin: 'auto', textAlign: 'center'}}>{exhibition.description}</p>
             {/* Render Artists and Artworks */}
-            <h2 style={{marginTop: '3rem'}}>Represented Artists</h2>
+            <h2 style={{marginTop: '3rem', fontWeight: '200'}} className={styles.title}>Represented Artists</h2>
             {artistsData.map((artist) => {
               const artworkSlides = artist.selectedArtworks.map((artwork) => ({
                 title: artwork.title,
@@ -114,7 +114,7 @@ export default function Exhibition({ params }) {
               }));
               return (
                 <div key={artist.slug} className={styles.artist} style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
-                  <h3>{artist.name}</h3>
+                  <p style={{ fontWeight: '300', fontSize: '1.5rem'}}>{artist.name}</p>
                   {artworkSlides.length > 0 ? (
                     <EmblaCarousel slides={artworkSlides} type="artwork" />
                   ) : (

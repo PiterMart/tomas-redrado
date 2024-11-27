@@ -6,7 +6,7 @@ export default function Fairs() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <div style={{paddingTop: '5rem', margin: 'auto'}}>
+        <div style={{paddingTop: '6rem', margin: 'auto'}}>
           <p>Fairs page is currently under construction</p>
         </div>
       </main>

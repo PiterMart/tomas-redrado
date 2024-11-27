@@ -6,6 +6,7 @@ import { query, collection, where, getDocs, documentId } from "firebase/firestor
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import EmblaCarousel from "@/app/carousel/EmblaCarousel";
+import { Parallax, ParallaxProvider  } from "react-scroll-parallax";
 
 export default function Sede({ params }) {
   const { sede: sedeSlug } = params; // Get slug from params
@@ -69,19 +70,24 @@ export default function Sede({ params }) {
   if (headquarters === null) return <p>Loading headquarters data...</p>;
   if (!headquarters) return <p>No headquarters found.</p>;
 
+  
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
         
         <div className={styles.artist_page} style={{padding: '1rem'}}>
           <div className={styles.page_container}>
-            <img src={headquarters.image} />
-            <h1 className={styles.title}>{headquarters.name}</h1>
-            <p>{headquarters.location}</p>
-            {headquarters.about.map((paragraph, index) => (
-              <p key={index}>{paragraph}</p>
-            ))}
-            
+            <img src={headquarters.image} alt={headquarters.name} style={{ width: "100%" }} />
+            {/* <ParallaxProvider>
+              <Parallax speed={-10}> */}
+                <h1 className={styles.title}>{headquarters.name}</h1>
+                <p>{headquarters.location}</p>
+                {headquarters.about.map((paragraph, index) => (
+                  <p key={index}>{paragraph}</p>
+                ))}
+              {/* </Parallax>
+            </ParallaxProvider> */}
             <h1>EXHIBICIONES</h1>
             <EmblaCarousel slides={exhibitionSlides} type="exhibition" />
           </div>

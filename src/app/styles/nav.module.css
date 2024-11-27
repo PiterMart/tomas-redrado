@@ -5,7 +5,7 @@
   align-items: center;
   position: fixed;
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 400;
   width: 100%;
   z-index: 1000;
   margin: auto;
@@ -14,6 +14,7 @@
   padding: 4vw;
   padding-top: 1rem;
   padding-bottom: 1rem;
+  font-family: "Inter";
   transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
 

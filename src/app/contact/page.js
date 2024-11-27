@@ -6,8 +6,8 @@ export default function Contact() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <div style={{paddingTop: '5rem'}}>
-          <p>This is contact page</p>
+        <div style={{paddingTop: '6rem', margin: 'auto'}}>
+          <p>Contact page is currently under construction</p>
         </div>
       </main>
       <footer className={styles.footer}>
