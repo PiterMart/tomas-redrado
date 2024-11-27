@@ -14,7 +14,7 @@
   padding: 4vw;
   padding-top: 1rem;
   padding-bottom: 1rem;
-  font-family: "Inter";
+  font-family: "Source Code Pro";
   transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
@@ -51,6 +51,7 @@
 .nav_list li {
   font-size: 1rem;
   transition: color 0.3s ease;
+  font-family: "Source Code Pro", monospace !important;
 }
 
 .nav_list li:hover {

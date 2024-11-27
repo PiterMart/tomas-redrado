@@ -330,8 +330,8 @@ export default function ArtistUploader() {
       />
 
       {/* CV File Input */}
-      <p className={styles.subtitle}>CV (PDF)</p>
-      <input type="file" name="cv" accept=".pdf" onChange={handleCvChange} />
+      {/* <p className={styles.subtitle}>CV (PDF)</p>
+      <input type="file" name="cv" accept=".pdf" onChange={handleCvChange} /> */}
 
       {/* Gallery Images Input */}
       <p className={styles.subtitle}>Artworks</p>
