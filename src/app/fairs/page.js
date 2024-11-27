@@ -6,8 +6,8 @@ export default function Fairs() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <div style={{paddingTop: '5rem'}}>
-          <p>This is fairs page</p>
+        <div style={{paddingTop: '5rem', margin: 'auto'}}>
+          <p>Fairs page is currently under construction</p>
         </div>
       </main>
       <footer className={styles.footer}>

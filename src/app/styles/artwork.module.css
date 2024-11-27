@@ -4,14 +4,17 @@
     padding-top: 10rem;
     width: 1300px;
     margin: auto;
+    gap: 2rem;
 }
 
 .artwork_details{
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-
+    gap: 1.25rem;
+    width: 100%;
+    max-width: 28vw;
 }
+
 .artwork_image_container{
     max-width: 90%;
 }
@@ -26,5 +29,8 @@
         max-width: 90%;
         gap: 3rem;
         margin-bottom: 5rem;
+    }
+    .artwork_details{
+        max-width: 100%;
     }
 }

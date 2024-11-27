@@ -71,6 +71,7 @@ export default function Artist({ params }) {
     description: artwork.description,
     // artistSlug: artists.find((hq) => hq.artists.includes(artists.id))?.slug,
   }));
+  
   const OPTIONS = {}
 
 

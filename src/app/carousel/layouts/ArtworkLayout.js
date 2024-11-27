@@ -10,7 +10,7 @@ const ArtworkLayout = ({ slide }) => {
           <img src={slide.url} alt={slide.title} />
         </div>
       </Link>
-      <div>
+      <div className={styles.artwork_details}>
         <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
           <p>{slide.title}</p>
           <p>{slide.date}</p>
@@ -18,8 +18,6 @@ const ArtworkLayout = ({ slide }) => {
         <div style={{ color: "gray" }}>
           <p>{slide.medium}</p>
           <p>{slide.measurements}</p>
-          {/* <p>{slide.extra}</p>
-          <p>{slide.description}</p> */}
         </div>
       </div>
     </div>

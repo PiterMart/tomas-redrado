@@ -5,10 +5,15 @@ import { firestore } from "../../firebase/firebaseConfig";
 import { query, collection, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import Lightbox from "react-image-lightbox";
+import "react-image-lightbox/style.css";
+
 
 export default function Artwork({ params }) {
   const [artwork, setArtwork] = useState(undefined); // Undefined for initial loading state
   const artworkSlug = params.artwork; // Get slug from params
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+
 
   useEffect(() => {
     const fetchArtwork = async () => {
@@ -54,13 +59,13 @@ export default function Artwork({ params }) {
         <div className={styles.artwork_page}>
         <div className={styles.artwork_details}>
           <h1 className={styles.title}>{title}</h1>
-            <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+            <div style={{display: 'flex', flexDirection: 'column', gap: '0.25rem'}}>
               <p><strong></strong></p>
-              <Link href={`/artists/${artistSlug}`}> <h2 style={{fontWeight: '200'}}>{artistName}</h2></Link>
+              <Link href={`/artists/${artistSlug}`}> <h2 style={{fontWeight: '200',marginBottom: '0.5rem'}}>{artistName}</h2></Link>
               <p><strong></strong> {date}</p>
               <p><strong></strong> {medium}</p>
               <p><strong></strong> {measurements}</p>
-              <p><strong></strong> {description}</p>
+              <p style={{marginTop: '2rem'}}><strong></strong> {description}</p>
             </div>
             <div style={{alignSelf: "flex-end"}}>
               <button 
@@ -75,10 +80,17 @@ export default function Artwork({ params }) {
 
           </div>
           <div className={styles.artwork_image_container}>
-            <img src={url} alt={title} style={{ width: "100%", height: "auto"}} />
+            <img onClick={() => setIsLightboxOpen(true)} src={url} alt={title} style={{ width: "100%", height: "auto"}} />
           </div>
         </div>
       </main>
+      {isLightboxOpen && (
+        <Lightbox
+          mainSrc={url}
+          onCloseRequest={() => setIsLightboxOpen(false)}
+        />
+      )}
+
       <footer className={styles.footer}>
       </footer>
     </div>

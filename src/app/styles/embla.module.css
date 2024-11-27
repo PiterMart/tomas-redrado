@@ -1,5 +1,6 @@
 /* Embla container */
 .embla {
+  position: relative;
   max-width: 100%;
   height: auto;
   overflow: visible;
@@ -25,9 +26,9 @@
 /* Individual slide styling */
 .embla__slide {
   transform: translate3d(0, 0, 0);
-  flex: 0 0 var(--slide-size);
+  flex: 0 0 auto;
   min-width: 0;
-  padding-left: var(--slide-spacing);
+  padding-left: 2rem;
 }
 
 /* Inner slide content */
@@ -145,9 +146,59 @@
 }
 
 
-@media (max-width: 600px) {
+/* Only style the embla carousel with the emblaFullWidth class */
+/* .emblaFullWidth {
+  position: relative;
+  overflow: hidden;
+  width: 100vw;  
+}
+
+.emblaFullWidth .embla__viewport {
+  width: 100%; 
+  overflow: hidden;
+}
+
+.emblaFullWidth .embla__container {
+  display: flex;
+}
+
+.emblaFullWidth .embla__slide {
+  flex: 0 0 100%;
+  width: 100%; 
+}
+
+.emblaFullWidth .embla__slide img {
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover;  
+  object-position: center;  
+} */
+
+
+
+@media (max-width: 1000px) {
   .embla__slide__inner{
     height: 60vh;
+  }
+  /* Only style the embla carousel with the emblaFullWidth class */
+  .emblaFullWidth {
+    position: relative;
+    overflow: hidden;
+    width: 90%;  /* Makes the carousel span the full viewport width */
+  }
+
+  .emblaFullWidth .embla__viewport {
+    width: 100%; /* Ensures the viewport is 100% of its container */
+    overflow: hidden;
+  }
+
+  .emblaFullWidth .embla__container {
+    display: flex;
+  }
+
+  .emblaFullWidth .embla__slide {
+    flex: 0 0 100%; /* Ensures each slide takes up the full width of the viewport */
+    width: 100%;  /* Each slide will be 100% of the viewport width */
   }
 }
 

@@ -29,20 +29,27 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <div className={styles.page_container}>
+        <div className={styles.page_container} style={{marginTop: '6rem'}}>
           <p className={styles.title}>HEADQUARTERS</p>
-          <div className={styles.exhibition_page}>
+          <div>
             {headquarters.map((hq) => (
               <div key={hq.id}>
                 <div className={styles.sedes}>
-                  <Link href={`/headquarters/${hq.slug}`}>
-                    <div className={styles.sedeCard} >
-                      <div className={styles2.embla__slide__text} style={{height:  'auto', width: 'auto', paddingRight: '4rem'}}>
-                      <p >{hq.name}</p>
+                <Link href={`/headquarters/${hq.slug}`} key={hq.id}>
+                  <div className={styles.sedes}>
+                    <div className={styles.sedeCard}>
+                      <div className={styles2.embla__slide__text} style={{ height: 'auto', width: 'auto', paddingRight: '4rem' }}>
+                        <p>{hq.name}</p>
                       </div>
-                      {/* <img src={hq.image} style={{overflow: 'hidden'}} /> */}
+                      {/* <div className={styles2.embla__slide} style={{ width: '50%', height: 'auto' }}>
+                        <img
+                          src={hq.image}
+                          alt={hq.name}
+                        />
+                      </div> */}
                     </div>
-                  </Link>
+                  </div>
+                </Link>
                 </div>
               </div>
             ))}
