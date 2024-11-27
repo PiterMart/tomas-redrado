@@ -47,15 +47,21 @@ export default function Exhibitions() {
     <div className={styles.page}>
       <main className={styles.main}>
         <div className={styles.exhibitions_page} style={{ padding: "1.5rem" }}>
-          <h1>Exhibitions</h1>
+          {/* <h1>Exhibitions</h1> */}
           <section>
             <h2>Current Exhibitions</h2>
             {currentExhibitions.length > 0 ? (
               currentExhibitions.map((exhibition) => (
                 <div key={exhibition.id} className={styles.exhibition}>
+                  <img
+                    className={styles.embla__slide__img}
+                    src={exhibition.gallery[0].url}
+                    alt={exhibition.name}
+                    style={{maxHeight: "30vh"}}
+                  />
                   <h3>{exhibition.name}</h3>
                   <p>{exhibition.description}</p>
-                  <Link href={`/exhibiciones/${exhibition.slug}`}>
+                  <Link href={`/headquarters/${exhibition.sede}/${exhibition.slug}`}>
                     View Exhibition
                   </Link>
                 </div>
@@ -69,6 +75,12 @@ export default function Exhibitions() {
             {pastExhibitions.length > 0 ? (
               pastExhibitions.map((exhibition) => (
                 <div key={exhibition.id} className={styles.exhibition}>
+                  <img
+                    className={styles.embla__slide__img}
+                    src={exhibition.gallery[0].url}
+                    alt={exhibition.name}
+                    style={{maxHeight: "30vh"}}
+                  />
                   <h3>{exhibition.name}</h3>
                   <p>{exhibition.description}</p>
                   <Link href={`/exhibiciones/${exhibition.slug}`}>

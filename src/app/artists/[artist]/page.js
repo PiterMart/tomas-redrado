@@ -16,7 +16,6 @@ function convertTimestampToYear(timestamp) {
   return null;
 }
 
-
 export default function Artist({ params }) {
   const [artist, setArtist] = useState(null);
   const artistSlug = params.artist;

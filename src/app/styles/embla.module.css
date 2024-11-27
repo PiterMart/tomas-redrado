@@ -38,7 +38,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  max-height: 90vh;
+  max-height: 75vh;
   overflow: hidden;
 }
 
@@ -144,6 +144,12 @@
   /* filter: drop-shadow(3px 5px 2px rgba(255, 255, 255, 0.4)); */
 }
 
+
+@media (max-width: 600px) {
+  .embla__slide__inner{
+    height: 60vh;
+  }
+}
 
 /*mobile*/
 @media (max-width: 600px) {
