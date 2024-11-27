@@ -94,7 +94,6 @@ export default function Artist({ params }) {
                   <ul>
                     <li><a href="#obras">ARTWORKS</a></li>
                     <li><a href="#bio">BIO</a></li>
-                    {/* <li><a href={artist.cv} target="_blank"> CV </a></li> */}
                   </ul>
                 </div>
               </div>
