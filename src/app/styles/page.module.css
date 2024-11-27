@@ -258,6 +258,7 @@
   max-width: 1000px;
   border: 1px solid;
   padding: 1.5rem;
+  margin: auto;
 }
 .form input{
   font-size: 1rem;
