@@ -1,9 +1,11 @@
 "use client";
+import { useEffect } from "react";
 import { firestore, storage } from "./firebaseConfig";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import styles from "../styles/page.module.css";
 import React, { useState, useRef } from "react";
+import imageCompression from 'browser-image-compression';
 
 export default function ArtistUploader() {
   const [loading, setLoading] = useState(false);
@@ -27,6 +29,7 @@ export default function ArtistUploader() {
   const [artworks, setArtworks] = useState([]);
   const [newArtwork, setNewArtwork] = useState({
     file: null,
+    images: [],
     title: "",
     date: "",
     medium: "",
@@ -65,6 +68,13 @@ export default function ArtistUploader() {
     }));
   };
 
+  // Handle file input for multiple images
+
+  const handleArtworkImagesChange = (e) => {
+    const files = Array.from(e.target.files);
+    setNewArtwork((prev) => ({ ...prev, images: files }));
+  };
+
   const handleNewArtworkChange = (field, value) => {
     setNewArtwork((prevArtwork) => ({
       ...prevArtwork,
@@ -80,6 +90,7 @@ export default function ArtistUploader() {
     setArtworks([...artworks, newArtwork]);
     setNewArtwork({
       file: null,
+      images: [],
       title: "",
       date: "",
       medium: "",
@@ -120,10 +131,24 @@ export default function ArtistUploader() {
 
   const uploadProfilePicture = async (artistSlug) => {
     if (!profilePicture) return null;
-    const profilePicRef = ref(storage, `artists/${artistSlug}/profilePicture/${artistSlug}_profilePicture`);
-    await uploadBytes(profilePicRef, profilePicture);
-    return await getDownloadURL(profilePicRef);
+  
+    try {
+      // Compress the profile picture
+      const compressedFile = await imageCompression(profilePicture, {
+        maxSizeMB: 0.25, // Adjust this value as needed
+        maxWidthOrHeight: 800, // Adjust this value as needed
+        useWebWorker: true,
+      });
+  
+      const profilePicRef = ref(storage, `artists/${artistSlug}/profilePicture/${artistSlug}_profilePicture`);
+      await uploadBytes(profilePicRef, compressedFile);
+      return await getDownloadURL(profilePicRef);
+    } catch (error) {
+      console.error("Error compressing the profile picture:", error);
+      throw new Error("Profile picture compression failed.");
+    }
   };
+  
 
   const handleCvChange = (e) => {
     const file = e.target.files[0];
@@ -138,30 +163,68 @@ export default function ArtistUploader() {
   };
 
   const uploadImages = async (artistSlug) => {
-    const galleryData = [];
+    const artworksCollection = collection(firestore, "artworks");
+    const uploadedArtworkIds = [];
+  
     for (let i = 0; i < artworks.length; i++) {
       const { file, title, date, medium, measurements, description, extras } = artworks[i];
       const artworkId = `${artistSlug}_${String(i + 1).padStart(3, '0')}`;
       const artworkSlug = `${artworkId}-${generateSlug(title)}`;
-
-      const imageRef = ref(storage, `artists/${artistSlug}/artworks/${artworkId}`);
-      await uploadBytes(imageRef, file);
-      const downloadURL = await getDownloadURL(imageRef);
-
-      galleryData.push({
-        artworkId,
-        slug: artworkSlug,
-        url: downloadURL,
-        title,
-        date,
-        medium,
-        measurements,
-        extras,
-        description,
-      });
+  
+      try {
+        // Compress the main artwork file
+        const compressedFile = await imageCompression(file, {
+          maxSizeMB: 1.5,
+          maxWidthOrHeight: 2000,
+          useWebWorker: true,
+        });
+  
+        const imageRef = ref(storage, `artists/${artistSlug}/artworks/${artworkId}/${artworkId}`);
+        await uploadBytes(imageRef, compressedFile);
+        const downloadURL = await getDownloadURL(imageRef);
+  
+        // Upload detailed images
+        const imagesData = [];
+        for (let imgIndex = 0; imgIndex < artworks[i].images.length; imgIndex++) {
+          const imageFile = artworks[i].images[imgIndex];
+  
+          const compressedImageFile = await imageCompression(imageFile, {
+            maxSizeMB: 1.5,
+            maxWidthOrHeight: 2000,
+            useWebWorker: true,
+          });
+  
+          const detailImageRef = ref(storage, `artists/${artistSlug}/artworks/${artworkId}/details/image_${imgIndex + 1}`);
+          await uploadBytes(detailImageRef, compressedImageFile);
+          const imgDownloadURL = await getDownloadURL(detailImageRef);
+          imagesData.push(imgDownloadURL);
+        }
+  
+        // Save artwork document to Firestore
+        const artworkDoc = await addDoc(artworksCollection, {
+          artworkId,
+          artistSlug,
+          title,
+          date,
+          medium,
+          measurements,
+          description,
+          extras,
+          url: downloadURL,
+          images: imagesData,
+        });
+  
+        uploadedArtworkIds.push(artworkDoc.id); // Save the artwork ID for referencing in artist
+      } catch (error) {
+        console.error(`Error uploading artwork: ${title}`, error);
+        throw new Error(`Failed to upload artwork: ${title}`);
+      }
     }
-    return galleryData;
+  
+    return uploadedArtworkIds;
   };
+  
+  
 
   const uploadCv = async (artistSlug) => {
     if (!cvFile) return null;
@@ -201,43 +264,45 @@ export default function ArtistUploader() {
     }
   }
 
-  async function addNewArtist() {
-    setLoading(true);
-    setError(null);
+async function addNewArtist() {
+  setLoading(true);
+  setError(null);
 
-    try {
-      const { name, origin, bio, manifesto, web } = formData;
+  try {
+    const { name, origin, bio, manifesto, web } = formData;
 
-      if (!name.trim()) throw new Error("Artist name is required.");
-      if (!origin.trim()) throw new Error("Artist origin is required.");
+    if (!name.trim()) throw new Error("Artist name is required.");
+    if (!origin.trim()) throw new Error("Artist origin is required.");
 
-      const slug = generateSlug(name);
-      const profilePicURL = await uploadProfilePicture(slug);
-      if (!profilePicURL) throw new Error("Profile picture upload failed.");
+    const slug = generateSlug(name);
+    const profilePicURL = await uploadProfilePicture(slug);
+    if (!profilePicURL) throw new Error("Profile picture upload failed.");
 
-      const galleryData = await uploadImages(slug);
-      if (!galleryData || galleryData.length === 0) throw new Error("Artwork images upload failed.");
+    const artworkIds = await uploadImages(slug); // Get artwork IDs
+    if (!artworkIds || artworkIds.length === 0) throw new Error("Artwork images upload failed.");
 
-      const cvURL = await uploadCv(slug);
-      const birthDateTimestamp = birthDate ? Timestamp.fromDate(new Date(birthDate)) : null;
+    const cvURL = await uploadCv(slug);
+    const birthDateTimestamp = birthDate ? Timestamp.fromDate(new Date(birthDate)) : null;
 
-      await addDoc(artistsCollection, {
-        ...formData,
-        slug,
-        profilePicture: profilePicURL,
-        artworks: galleryData,
-        cv: cvURL,
-        birthDate: birthDateTimestamp,
-      });
+    // Save the artist document with artwork references
+    await addDoc(artistsCollection, {
+      ...formData,
+      slug,
+      profilePicture: profilePicURL,
+      artworks: artworkIds, // Save array of artwork IDs
+      cv: cvURL,
+      birthDate: birthDateTimestamp,
+    });
 
-      setSuccess(`Successfully added artist ${name}.`);
-      resetForm();
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+    setSuccess(`Successfully added artist ${name}.`);
+    resetForm();
+  } catch (err) {
+    setError(err.message);
+  } finally {
+    setLoading(false);
   }
+}
+
 
   return (
     <div className={styles.form}>
@@ -333,6 +398,7 @@ export default function ArtistUploader() {
       <p className={styles.subtitle}>CV (PDF)</p>
       <input type="file" name="cv" accept=".pdf" onChange={handleCvChange} />
 
+
       {/* Gallery Images Input */}
       <p className={styles.subtitle}>Artworks</p>
                 {/* Current Artwork Preview */}
@@ -352,6 +418,34 @@ export default function ArtistUploader() {
         accept="image/*"
         onChange={handleNewArtworkFileChange}
       />
+
+            {/* Multiple Images Upload */}
+            <label>
+        Upload Artwork Images (Main and Details)
+        <input
+          type="file"
+          name="artworkImages"
+          accept="image/*"
+          multiple
+          onChange={handleArtworkImagesChange}
+        />
+      </label>
+
+      {/* Display Previews for Selected Images */}
+      {newArtwork.images && newArtwork.images.length > 0 && (
+        <div>
+          <h4>Selected Images</h4>
+          {newArtwork.images.map((file, index) => (
+            <img
+              key={index}
+              src={URL.createObjectURL(file)}
+              alt={`Preview ${index + 1}`}
+              style={{ width: '100px', marginRight: '10px' }}
+            />
+          ))}
+        </div>
+      )}
+
       <input
         type="text"
         placeholder="Title"
