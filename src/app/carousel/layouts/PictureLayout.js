@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Lightbox from "react-image-lightbox"; // Import Lightbox
 import "react-image-lightbox/style.css"; // Import Lightbox styles
 import styles from "../../styles/page.module.css";
+import Image from "next/image";
 
 const PictureLayout = ({ slide }) => {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false); // Lightbox state
@@ -16,11 +17,16 @@ const PictureLayout = ({ slide }) => {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
       <div className={styles.artist_page_image_container}>
-        <img
+        <Image
           src={slide.image}
           alt={slide.title}
-          style={{ width: "100%", cursor: "pointer" }} // Make image clickable
-          onClick={handleImageClick} // Open lightbox on click
+          style={{ width: "100%", cursor: "pointer" }} 
+          onClick={handleImageClick} 
+          width={0}
+          height={0}
+          sizes="100vw"
+          placeholder="empty"
+          loading="lazy"
         />
       </div>
 

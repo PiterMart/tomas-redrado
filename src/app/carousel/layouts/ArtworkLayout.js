@@ -1,13 +1,22 @@
 import React from "react";
 import Link from "next/link";
 import styles from "../../styles/page.module.css";
+import Image from "next/image";
 
 const ArtworkLayout = ({ slide }) => {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
       <Link href={`/artworks/${slide.slug}`}>
         <div className={styles.artist_page_image_container}>
-          <img src={slide.url} alt={slide.title} />
+          <Image
+          src={slide.url} 
+          alt={slide.title}
+          width={0}
+          height={0}
+          sizes="100vw"
+          placeholder="empty"
+          loading="lazy"
+          />
         </div>
       </Link>
       <div className={styles.artwork_details}>

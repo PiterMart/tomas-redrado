@@ -6,6 +6,7 @@ import ArtworkLayout from "./layouts/ArtworkLayout";
 import styles from "../styles/embla.module.css";
 import PictureLayout from "./layouts/PictureLayout"
 
+
 const layouts = {
   exhibition: ExhibitionLayout,
   artwork: ArtworkLayout,

@@ -105,7 +105,7 @@ g                    variants={itemVariants}
             initial="hidden"
             animate="visible"
             variants={itemVariants}
-            className={styles.name_list}
+            className={styles.artists_image}
             style={{ background: "transparent", width: "100%",height: 'auto', justifyContent: "center", alignContent: "center" }}>
               {randomArtwork ? (
                 <Link href={`/artworks/${randomArtwork.slug}`} >

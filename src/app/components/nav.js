@@ -59,8 +59,8 @@ export default function Nav() {
                     alt="TomasRedrado"
                     width={0}
                     height={0}
-                    loading="lazy"
                     className={styles.nav_logo}
+                    priority = {true}
                 />
             </Link>
             <button className={`${styles.navButton} ${isMenuOpen ? styles.open : ''}`} onClick={toggleMenu}>
