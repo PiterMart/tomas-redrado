@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { firestore, storage } from "./firebaseConfig";
-import { addDoc, collection, Timestamp } from "firebase/firestore";
+import { addDoc, collection, Timestamp, updateDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import styles from "../styles/page.module.css";
 import React, { useState, useRef } from "react";
@@ -162,14 +162,13 @@ export default function ArtistUploader() {
     }
   };
 
-  const uploadImages = async (artistSlug) => {
+  const uploadImages = async (artistSlug, artistId) => {
     const artworksCollection = collection(firestore, "artworks");
     const uploadedArtworkIds = [];
   
     for (let i = 0; i < artworks.length; i++) {
       const { file, title, date, medium, measurements, description, extras } = artworks[i];
-      const artworkId = `${artistSlug}_${String(i + 1).padStart(3, '0')}`;
-      const artworkSlug = `${artworkId}-${generateSlug(title)}`;
+      const artworkSlug = `${artistSlug}_${generateSlug(title)}`; // Create artworkSlug directly
   
       try {
         // Compress the main artwork file
@@ -179,7 +178,8 @@ export default function ArtistUploader() {
           useWebWorker: true,
         });
   
-        const imageRef = ref(storage, `artists/${artistSlug}/artworks/${artworkId}/${artworkId}`);
+        // Save main artwork in a folder with its slug as the name
+        const imageRef = ref(storage, `artists/${artistSlug}/artworks/${artworkSlug}/${artworkSlug}`);
         await uploadBytes(imageRef, compressedFile);
         const downloadURL = await getDownloadURL(imageRef);
   
@@ -194,16 +194,21 @@ export default function ArtistUploader() {
             useWebWorker: true,
           });
   
-          const detailImageRef = ref(storage, `artists/${artistSlug}/artworks/${artworkId}/details/image_${imgIndex + 1}`);
-          await uploadBytes(detailImageRef, compressedImageFile);
-          const imgDownloadURL = await getDownloadURL(detailImageRef);
-          imagesData.push(imgDownloadURL);
-        }
+        // Include artworkSlug and index in the file name
+        const detailImageRef = ref(
+          storage,
+          `artists/${artistSlug}/artworks/${artworkSlug}/details/${artworkSlug}_detail_${imgIndex + 1}`
+        );
+        await uploadBytes(detailImageRef, compressedImageFile);
+        const imgDownloadURL = await getDownloadURL(detailImageRef);
+        imagesData.push(imgDownloadURL);
+      }
   
-        // Save artwork document to Firestore
-        const artworkDoc = await addDoc(artworksCollection, {
-          artworkId,
-          artistSlug,
+        // Save artwork document to Firestore (Firestore auto-generates artworkId)
+        const artworkDocRef = await addDoc(artworksCollection, {
+          artworkSlug,  // Store artworkSlug for easy reference
+          artistSlug,   // Store artistSlug for reference
+          artistId,     // Keep the artistId for queries or relationships
           title,
           date,
           medium,
@@ -214,15 +219,16 @@ export default function ArtistUploader() {
           images: imagesData,
         });
   
-        uploadedArtworkIds.push(artworkDoc.id); // Save the artwork ID for referencing in artist
+        uploadedArtworkIds.push(artworkDocRef.id); // Store the Firestore-generated artworkId
       } catch (error) {
         console.error(`Error uploading artwork: ${title}`, error);
         throw new Error(`Failed to upload artwork: ${title}`);
       }
     }
   
-    return uploadedArtworkIds;
+    return uploadedArtworkIds; // Return Firestore document IDs (artworkIds)
   };
+  
   
   
 
@@ -264,44 +270,53 @@ export default function ArtistUploader() {
     }
   }
 
-async function addNewArtist() {
-  setLoading(true);
-  setError(null);
-
-  try {
-    const { name, origin, bio, manifesto, web } = formData;
-
-    if (!name.trim()) throw new Error("Artist name is required.");
-    if (!origin.trim()) throw new Error("Artist origin is required.");
-
-    const slug = generateSlug(name);
-    const profilePicURL = await uploadProfilePicture(slug);
-    if (!profilePicURL) throw new Error("Profile picture upload failed.");
-
-    const artworkIds = await uploadImages(slug); // Get artwork IDs
-    if (!artworkIds || artworkIds.length === 0) throw new Error("Artwork images upload failed.");
-
-    const cvURL = await uploadCv(slug);
-    const birthDateTimestamp = birthDate ? Timestamp.fromDate(new Date(birthDate)) : null;
-
-    // Save the artist document with artwork references
-    await addDoc(artistsCollection, {
-      ...formData,
-      slug,
-      profilePicture: profilePicURL,
-      artworks: artworkIds, // Save array of artwork IDs
-      cv: cvURL,
-      birthDate: birthDateTimestamp,
-    });
-
-    setSuccess(`Successfully added artist ${name}.`);
-    resetForm();
-  } catch (err) {
-    setError(err.message);
-  } finally {
-    setLoading(false);
+  async function addNewArtist() {
+    setLoading(true);
+    setError(null);
+  
+    try {
+      const { name, origin, bio, manifesto, web } = formData;
+  
+      if (!name.trim()) throw new Error("Artist name is required.");
+      if (!origin.trim()) throw new Error("Artist origin is required.");
+  
+      const slug = generateSlug(name);
+      const profilePicURL = await uploadProfilePicture(slug);
+      if (!profilePicURL) throw new Error("Profile picture upload failed.");
+  
+      const cvURL = await uploadCv(slug);
+      const birthDateTimestamp = birthDate ? Timestamp.fromDate(new Date(birthDate)) : null;
+  
+      // Save the artist document first to get artistId
+      const artistDocRef = await addDoc(artistsCollection, {
+        ...formData,
+        slug,
+        profilePicture: profilePicURL,
+        cv: cvURL,
+        birthDate: birthDateTimestamp,
+        artworks: [], // Placeholder for artworks
+      });
+      const artistId = artistDocRef.id; // Retrieve the artistId
+  
+      // Upload artworks with artistId
+      const artworkIds = await uploadImages(slug, artistId); // Pass artistId here
+      if (!artworkIds || artworkIds.length === 0) throw new Error("Artwork images upload failed.");
+  
+      // Update the existing artist document with artwork references
+      await updateDoc(artistDocRef, {
+        artworks: artworkIds, // Update with array of artwork IDs
+      });
+  
+      setSuccess(`Successfully added artist ${name}.`);
+      resetForm();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   }
-}
+  
+  
 
 
   return (
