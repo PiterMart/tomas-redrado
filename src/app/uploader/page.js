@@ -11,10 +11,10 @@ export default function Home() {
       <main className={styles.main}>
         <p className={styles.title}>ARTIST UPLOADER</p>
         <ArtistUploader/>
-        <p className={styles.title}>EXHIBITION UPLOADER</p>
+        {/* <p className={styles.title}>EXHIBITION UPLOADER</p>
         <ExhibitionForm/>
         <p className={styles.title}>ARTIST LIST</p>
-        <ArtistList/>
+        <ArtistList/> */}
       </main>
       <footer className={styles.footer}>
       </footer>
