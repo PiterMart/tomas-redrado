@@ -38,44 +38,58 @@ export default function Exhibition({ params }) {
       setExhibition(null);
     }
   };
-  
-  const fetchArtists = async (artists) => {
-    const artistSlugs = artists.map((artist) => artist.slug);
-    const q = query(collection(firestore, "artists"), where("slug", "in", artistSlugs));
-    const querySnapshot = await getDocs(q);
-  
-    const artistsDetails = querySnapshot.docs.map((doc) => {
-      const artistData = doc.data();
-      const exhibitionArtist = artists.find((a) => a.slug === artistData.slug);
-      const selectedArtworks = exhibitionArtist.selectedArtworks || [];
-  
-      // Filter artworks from artist's `artworks` array using `selectedArtworks`
-      const artworksDetails = artistData.artworks.filter((artwork) =>
-        selectedArtworks.includes(artwork.slug)
-      );
-  
-      return { ...artistData, selectedArtworks: artworksDetails };
+
+  // Add the fetchArtists function
+const fetchArtists = async (artists) => {
+  try {
+    // Fetch artist details for all artists in the exhibition
+    const artistPromises = artists.map(async (artist) => {
+      const artistDoc = await getDocs(query(collection(firestore, "artists"), where("slug", "==", artist.artistSlug)));
+      if (!artistDoc.empty) {
+        const artistData = artistDoc.docs[0].data();
+        const selectedArtworks = await fetchArtworks(artist.selectedArtworks);
+        return {
+          ...artistData,
+          slug: artist.artistSlug,
+          selectedArtworks, // Add fetched artworks for this artist
+        };
+      }
+      return null;
     });
-  
-    return artistsDetails;
-  };
-  
-  
-  const fetchArtworks = async (selectedArtworks) => {
-    if (!selectedArtworks || selectedArtworks.length === 0) return [];
-  
-    const q = query(collection(firestore, "artworks"), where("slug", "in", selectedArtworks));
-    const querySnapshot = await getDocs(q);
-  
-    if (querySnapshot.empty) {
-      console.warn(`No artworks found for slugs: ${selectedArtworks}`);
-      return [];
-    }
-  
-    return querySnapshot.docs.map(doc => doc.data());
-  };
-  
-  
+
+    // Wait for all artist data to be fetched
+    const fetchedArtists = await Promise.all(artistPromises);
+    return fetchedArtists.filter((artist) => artist !== null); // Remove any null entries
+  } catch (error) {
+    console.error("Error fetching artists:", error);
+    return [];
+  }
+};
+
+// Add the fetchArtworks function
+const fetchArtworks = async (artworks) => {
+  try {
+    // Fetch details for all artworks
+    const artworkPromises = artworks.map(async (artworkId) => {
+      const artworkDoc = await getDocs(query(collection(firestore, "artworks"), where("slug", "==", artworkId)));
+      if (!artworkDoc.empty) {
+        return {
+          id: artworkDoc.docs[0].id,
+          ...artworkDoc.docs[0].data(),
+        };
+      }
+      return null;
+    });
+
+    // Wait for all artworks to be fetched
+    const fetchedArtworks = await Promise.all(artworkPromises);
+    return fetchedArtworks.filter((artwork) => artwork !== null); // Remove any null entries
+  } catch (error) {
+    console.error("Error fetching artworks:", error);
+    return [];
+  }
+};
+
 
   useEffect(() => {
     fetchExhibition();
@@ -90,7 +104,6 @@ export default function Exhibition({ params }) {
 
   const OPTIONS = {}
 
-
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -98,9 +111,9 @@ export default function Exhibition({ params }) {
           <div className={styles.exhibition_page}>
             <p className={styles.title}>{exhibition.name}</p>
             <EmblaCarousel slides={exhibitionSlides} type="picture" />
-            <p style={{fontSize: '2rem', width: '75%', margin: 'auto', textAlign: 'center'}}>{exhibition.description}</p>
-            {/* Render Artists and Artworks */}
-            <h2 style={{marginTop: '3rem', fontWeight: '200'}} className={styles.title}>Represented Artists</h2>
+            <h2 style={{ marginTop: "3rem", fontWeight: "200" }} className={styles.title}>
+              Represented Artists
+            </h2>
             {artistsData.map((artist) => {
               const artworkSlides = artist.selectedArtworks.map((artwork) => ({
                 title: artwork.title,
@@ -113,8 +126,12 @@ export default function Exhibition({ params }) {
                 description: artwork.description,
               }));
               return (
-                <div key={artist.slug} className={styles.artist} style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
-                  <p style={{ fontWeight: '300', fontSize: '1.5rem'}}>{artist.name}</p>
+                <div
+                  key={artist.slug}
+                  className={styles.artist}
+                  style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+                >
+                  <p style={{ fontWeight: "300", fontSize: "1.5rem" }}>{artist.name}</p>
                   {artworkSlides.length > 0 ? (
                     <EmblaCarousel slides={artworkSlides} type="artwork" />
                   ) : (

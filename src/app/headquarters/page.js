@@ -14,7 +14,7 @@ export default function Home() {
   useEffect(() => {
     const fetchHeadquarters = async () => {
       try {
-        const headquartersSnapshot = await getDocs(collection(firestore, "sedes"));
+        const headquartersSnapshot = await getDocs(collection(firestore, "headquarters"));
         const headquartersData = headquartersSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
         console.log("Headquarters Data:", headquartersData); // Log the fetched data
         setHeadquarters(headquartersData);

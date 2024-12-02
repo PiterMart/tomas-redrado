@@ -15,7 +15,7 @@ export default function Home() {
   useEffect(() => {
     const fetchHeadquarters = async () => {
       try {
-        const headquartersSnapshot = await getDocs(collection(firestore, "sedes"));
+        const headquartersSnapshot = await getDocs(collection(firestore, "headquarters"));
         const headquartersData = headquartersSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
@@ -59,7 +59,7 @@ export default function Home() {
     openingDate: exhibition.openingDate,
     closingDate: exhibition.closingDate,
     slug: exhibition.slug,
-    sedeSlug: headquarters.find((hq) => hq.exhibitions.includes(exhibition.id))?.slug,
+    headquarterSlug: headquarters.find((hq) => hq.exhibitions.includes(exhibition.id))?.slug,
   }));
   const OPTIONS = {}
   const SLIDE_COUNT = 5

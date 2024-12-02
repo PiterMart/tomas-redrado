@@ -12,8 +12,8 @@ export default function Home() {
         <p className={styles.title}>ARTIST UPLOADER</p>
         <ArtistUploader/>
         {/* <p className={styles.title}>EXHIBITION UPLOADER</p>
-        <ExhibitionForm/>
-        <p className={styles.title}>ARTIST LIST</p>
+        <ExhibitionForm/> */}
+        {/* <p className={styles.title}>ARTIST LIST</p>
         <ArtistList/> */}
       </main>
       <footer className={styles.footer}>

@@ -8,17 +8,17 @@ import Link from "next/link";
 import EmblaCarousel from "@/app/carousel/EmblaCarousel";
 import { Parallax, ParallaxProvider  } from "react-scroll-parallax";
 
-export default function Sede({ params }) {
-  const { sede: sedeSlug } = params; // Get slug from params
+export default function Headquarter({ params }) {
+  const { headquarter: headquarterSlug } = params; // Get slug from params
   const [headquarters, setHeadquarters] = useState(null);
   const [exhibitions, setExhibitions] = useState([]); // State to store exhibitions
   const [exhibitionIds, setExhibitionIds] = useState([]); // State to store exhibition IDs
 
   // Define fetchHeadquarters outside of useEffect
   const fetchHeadquarters = async () => {
-    console.log("Fetching headquarters with slug:", sedeSlug); // Log the slug
+    console.log("Fetching headquarters with slug:", headquarterSlug); // Log the slug
     try {
-      const q = query(collection(firestore, "sedes"), where("slug", "==", sedeSlug));
+      const q = query(collection(firestore, "headquarters"), where("slug", "==", headquarterSlug));
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
@@ -52,16 +52,17 @@ export default function Sede({ params }) {
   };
   const exhibitionSlides = exhibitions.map((exhibition) => ({
     name: exhibition.name,
-    image: exhibition.gallery[0]?.url || "/placeholder.jpg", // Fallback si no hay imagen
+    image: exhibition.gallery[0]?.url || "/placeholder.jpg",
     openingDate: exhibition.openingDate,
     closingDate: exhibition.closingDate,
     slug: exhibition.slug,
-    // sedeSlug: headquarters.find((hq) => hq.exhibitions.includes(exhibition.id))?.slug,
+    headquarterSlug: headquarters.slug, // Use the `slug` from the single headquarter object
   }));
+  
 
   useEffect(() => {
     fetchHeadquarters();
-  }, [sedeSlug]);
+  }, [headquarterSlug]);
 
   useEffect(() => {
     fetchExhibitions();
@@ -79,15 +80,11 @@ export default function Sede({ params }) {
         <div className={styles.artist_page} style={{padding: '1rem'}}>
           <div className={styles.page_container}>
             <img src={headquarters.image} alt={headquarters.name} style={{ width: "100%" }} />
-            {/* <ParallaxProvider>
-              <Parallax speed={-10}> */}
-                <h1 className={styles.title}>{headquarters.name}</h1>
-                <p>{headquarters.location}</p>
-                {headquarters.about.map((paragraph, index) => (
-                  <p key={index}>{paragraph}</p>
-                ))}
-              {/* </Parallax>
-            </ParallaxProvider> */}
+              <h1 className={styles.title}>{headquarters.name}</h1>
+              <p>{headquarters.location}</p>
+              {headquarters.about.map((paragraph, index) => (
+                <p key={index}>{paragraph}</p>
+              ))}
             <h1>EXHIBICIONES</h1>
             <EmblaCarousel slides={exhibitionSlides} type="exhibition" />
           </div>

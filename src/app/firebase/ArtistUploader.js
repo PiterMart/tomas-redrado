@@ -42,6 +42,12 @@ export default function ArtistUploader() {
   const [newManifestoParagraph, setNewManifestoParagraph] = useState("");
   const [newBioParagraph, setNewBioParagraph] = useState("");
 
+
+  const deleteArtwork = (index) => {
+    setArtworks((prevArtworks) => prevArtworks.filter((_, i) => i !== index));
+  };
+  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -295,6 +301,9 @@ export default function ArtistUploader() {
         cv: cvURL,
         birthDate: birthDateTimestamp,
         artworks: [], // Placeholder for artworks
+        exhibitions: [], // Initialize empty array for exhibitions
+        fairs: [],       // Initialize empty array for fairs
+        news: [],        // Initialize empty array for news
       });
       const artistId = artistDocRef.id; // Retrieve the artistId
   
@@ -504,6 +513,10 @@ export default function ArtistUploader() {
           <p>Medium: {artwork.medium}</p>
           <p>Measurements: {artwork.measurements}</p>
           <p>Description: {artwork.description}</p>
+          {/* Delete Button */}
+          <button type="button" onClick={() => deleteArtwork(index)}>
+            Delete
+          </button>
         </div>
       ))}
 

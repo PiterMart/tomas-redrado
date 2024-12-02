@@ -19,7 +19,7 @@ const ExhibitionLayout = ({ slide }) => {
           {formatDate(slide.openingDate)} - {formatDate(slide.closingDate)}
           <p style={{fontSize: '1rem', fontWeight: '100', bottom: '0', position: 'absolute', alignSelf: 'end', paddingBottom: '1rem'}}>[exhibition]</p>
       </div>
-      <Link href={`/headquarters/${slide.sedeSlug}/${slide.slug}`} style={{margin: '0px', padding: '0px', width: '100vw'}}>
+      <Link href={`/headquarters/${slide.headquarterSlug}/${slide.slug}`} style={{margin: '0px', padding: '0px', width: '100vw'}}>
         <Image
           className={styles.embla__slide__img}
           src={slide.image}
