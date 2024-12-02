@@ -10,22 +10,22 @@ import EmblaCarousel from "../../carousel/EmblaCarousel";
 // Helper function to convert Firestore timestamp to a date string
 function convertTimestampToYear(timestamp) {
   if (timestamp && timestamp.seconds) {
-    const date = new Date(timestamp.seconds * 1000); // Convert seconds to milliseconds
-    return date.getFullYear().toString(); // Extract the year as a string
+    const date = new Date(timestamp.seconds * 1000); 
+    return date.getFullYear().toString(); 
   }
   return null;
 }
 
 export default function Artist({ params }) {
   const [artist, setArtist] = useState(null);
-  const [artworks, setArtworks] = useState([]); // State to store detailed artworks
+  const [artworks, setArtworks] = useState([]); 
   const artistSlug = params.artist;
 
   useEffect(() => {
     const fetchArtistData = async () => {
       console.log("Fetching artist with slug:", artistSlug);
       try {
-        // Query the artist's document based on the slug
+
         const artistQuery = query(
           collection(firestore, "artists"),
           where("slug", "==", artistSlug)
@@ -44,7 +44,7 @@ export default function Artist({ params }) {
 
           setArtist(formattedArtist);
 
-          // Fetch artwork details
+
           if (artistData.artworks && artistData.artworks.length > 0) {
             const artworkDetails = await fetchArtworksByIds(artistData.artworks);
             setArtworks(artworkDetails);

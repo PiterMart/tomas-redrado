@@ -1,17 +1,16 @@
 import React, { useState } from "react";
-import Lightbox from "react-image-lightbox"; // Import Lightbox
-import "react-image-lightbox/style.css"; // Import Lightbox styles
+import Lightbox from "react-image-lightbox"; 
+import "react-image-lightbox/style.css"; 
 import styles from "../../styles/page.module.css";
 import Image from "next/image";
 
 const PictureLayout = ({ slide }) => {
-  const [isLightboxOpen, setIsLightboxOpen] = useState(false); // Lightbox state
-  const [photoIndex, setPhotoIndex] = useState(0); // Photo index for lightbox
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [photoIndex, setPhotoIndex] = useState(0); 
 
-  // Function to open lightbox
   const handleImageClick = () => {
-    setPhotoIndex(0); // Reset to first image
-    setIsLightboxOpen(true); // Open the lightbox
+    setPhotoIndex(0);
+    setIsLightboxOpen(true);
   };
 
   return (
@@ -33,8 +32,8 @@ const PictureLayout = ({ slide }) => {
       {/* Lightbox */}
       {isLightboxOpen && (
         <Lightbox
-          mainSrc={slide.image} // Use the current slide image
-          onCloseRequest={() => setIsLightboxOpen(false)} // Close lightbox on request
+          mainSrc={slide.image} 
+          onCloseRequest={() => setIsLightboxOpen(false)}
         />
       )}
     </div>
