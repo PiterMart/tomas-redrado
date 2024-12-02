@@ -105,6 +105,7 @@ export default function Exhibition({ params }) {
           <div className={styles.exhibition_page}>
             <p className={styles.title}>{exhibition.name}</p>
             <EmblaCarousel slides={exhibitionSlides} type="picture" />
+            <p style={{fontSize: '2rem', width: '75%', margin: 'auto', textAlign: 'center'}}>{exhibition.description}</p>
             <h2 style={{ marginTop: "3rem", fontWeight: "200" }} className={styles.title}>
               Represented Artists
             </h2>
