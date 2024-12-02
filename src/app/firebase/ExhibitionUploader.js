@@ -1,7 +1,7 @@
 "use client"
 import { useEffect, useState, useRef } from "react";
 import { firestore, storage } from "./firebaseConfig";
-import { getDocs, addDoc, collection, doc, updateDoc, Timestamp, arrayUnion, getDoc } from "firebase/firestore";  // Correct imports for modular Firebase SDK
+import { getDocs, addDoc, collection, doc, updateDoc, Timestamp, arrayUnion, getDoc } from "firebase/firestore";  
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -13,7 +13,7 @@ export default function ExhibitionForm() {
   const [success, setSuccess] = useState(null);
 
   const [artists, setArtists] = useState([]);
-  const [artworks, setArtworks] = useState({}); // New state to hold artworks by artist slug
+  const [artworks, setArtworks] = useState({}); 
   const [selectedArtists, setSelectedArtists] = useState([]);
   const [selectedArtworks, setSelectedArtworks] = useState({});
   const [headquarters, setHeadquarters] = useState([]);
@@ -37,23 +37,22 @@ export default function ExhibitionForm() {
   useEffect(() => {
     const fetchArtistData = async () => {
       try {
-        // Fetch the list of artists
         const artistSnapshot = await getDocs(collection(firestore, "artists"));
         const artists = artistSnapshot.docs.map(doc => ({
           ...doc.data(),
           slug: doc.id,
         }));
   
-        // Fetch artworks for each artist
+
         const artistsWithArtworks = await Promise.all(artists.map(async (artist) => {
           const artworksData = artist.artworks || [];
           return {
             ...artist,
-            artworks: artworksData, // Attach fetched artworks data to the artist object
+            artworks: artworksData, 
           };
         }));
   
-        setArtists(artistsWithArtworks); // Set the artists with artworks data
+        setArtists(artistsWithArtworks);
       } catch (error) {
         console.error("Error fetching artist data:", error);
       }
@@ -61,7 +60,7 @@ export default function ExhibitionForm() {
   
     const fetchHeadquarters = async () => {
       try {
-        // Fetch headquarters collection
+
         const headquartersSnapshot = await getDocs(collection(firestore, "headquarters"));
         setHeadquarters(headquartersSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
       } catch (error) {
@@ -81,11 +80,11 @@ export default function ExhibitionForm() {
   
     setSelectedArtists(updatedArtists);
   
-    // Initialize artwork selection for the artist if not already initialized
+
     if (!isSelected) {
       setSelectedArtworks((prev) => ({
         ...prev,
-        [artist.slug]: [], // Initialize as an empty array if artist is newly selected
+        [artist.slug]: [], 
       }));
     }
   };
@@ -93,21 +92,21 @@ export default function ExhibitionForm() {
   const handleArtworkSelection = (artistSlug, artworkId) => {
     if (!artworkId) {
       console.error("Invalid artwork ID:", artworkId);
-      return; // Exit early if `artworkId` is invalid
+      return; 
     }
   
     setSelectedArtworks((prevSelectedArtworks) => {
       const artistArtworks = prevSelectedArtworks[artistSlug] || [];
       const isSelected = artistArtworks.includes(artworkId);
   
-      // Update the selected artworks for the artist
+
       const updatedArtworks = isSelected
-        ? artistArtworks.filter((id) => id !== artworkId) // Deselect if already selected
-        : [...artistArtworks, artworkId]; // Select if not selected
+        ? artistArtworks.filter((id) => id !== artworkId) 
+        : [...artistArtworks, artworkId]; 
   
       return {
         ...prevSelectedArtworks,
-        [artistSlug]: updatedArtworks, // Update only the selected artist's artworks
+        [artistSlug]: updatedArtworks, 
       };
     });
   };
@@ -130,7 +129,7 @@ export default function ExhibitionForm() {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,  // Store as a string
+      [name]: value,  
     }));
   };
 
@@ -190,7 +189,7 @@ export default function ExhibitionForm() {
     setNewCuratorialText("");
     setSelectedHeadquarters("");
     if (fileInputRef.current) {
-      fileInputRef.current.value = ""; // Clear the file input
+      fileInputRef.current.value = ""; 
     }
   }
 
@@ -202,21 +201,21 @@ export default function ExhibitionForm() {
     try {
       const { name, openingDate, closingDate, receptionTime } = formData;
   
-      // Validation for required fields
+
       if (!name || !openingDate || !closingDate || !selectedHeadquarters) {
         throw new Error("Please complete all required fields.");
       }
   
-      // Generate slug for the exhibition and upload images
+
       const slug = generateSlug(name);
       const galleryData = await uploadImages(slug);
       if (!galleryData) throw new Error("Image upload failed.");
   
-      // Convert dates to Firestore Timestamps
+
       const openingDateTimestamp = Timestamp.fromDate(new Date(openingDate));
       const closingDateTimestamp = Timestamp.fromDate(new Date(closingDate));
   
-      // Construct the new exhibition data
+
       const newExhibitionData = {
         ...formData,
         slug,
@@ -227,36 +226,36 @@ export default function ExhibitionForm() {
         headquartersId: selectedHeadquarters,
         artists: selectedArtists.map((artistSlug) => ({
           artistSlug,
-          selectedArtworks: selectedArtworks[artistSlug] || [], // Ensure this correctly references the state
+          selectedArtworks: selectedArtworks[artistSlug] || [], 
         })),
       };      
       
   
-      // Log the exhibition data before making any database operations
+
       console.log("Selected Artworks State:", selectedArtworks);
   
       console.log("Exhibition Data:", newExhibitionData);
   
-      // Add the document to Firestore
+
       const exhibitionRef = await addDoc(collection(firestore, "exhibitions"), newExhibitionData);
   
-      // Update the `exhibitions` field in the selected headquarters document
+
       const headquartersRef = doc(firestore, "headquarters", selectedHeadquarters);
       await updateDoc(headquartersRef, {
         exhibitions: arrayUnion(exhibitionRef.id),
       });
   
-      // Update the artist documents to reference the exhibition
+
       for (const artistSlug of selectedArtists) {
         const artist = artists.find((a) => a.slug === artistSlug);
-        if (artist?.slug) {  // Use artist.slug instead of artist.id
-          const artistRef = doc(firestore, "artists", artist.slug); // Use slug for referencing
+        if (artist?.slug) {  
+          const artistRef = doc(firestore, "artists", artist.slug); 
           await updateDoc(artistRef, {
             exhibitions: arrayUnion(exhibitionRef.id),
           });
         }
       }
-      // Update each artwork document to reference the exhibition
+
       for (const artistSlug of Object.keys(selectedArtworks)) {
         const artworks = selectedArtworks[artistSlug];
         for (const artworkId of artworks) {
@@ -268,7 +267,7 @@ export default function ExhibitionForm() {
       }
       
   
-      // Success
+
       setSuccess("Exhibition added successfully!");
       resetForm();
     } catch (error) {
@@ -309,7 +308,7 @@ export default function ExhibitionForm() {
         <button onClick={addCuratorialText}>Add Curatorial Text</button>
         <ul>
           {formData.curatorialTexts.map((text, index) => (
-            <li key={`${text}-${index}`}>{text}</li>  // Concatenate text and index for a unique key
+            <li key={`${text}-${index}`}>{text}</li>  
           ))}
         </ul>
       </div>
