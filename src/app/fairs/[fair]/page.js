@@ -105,7 +105,7 @@ export default function Fair({ params }) {
           <div className={styles.exhibition_page}>
             <p className={styles.title}>{fair.name}</p>
             <EmblaCarousel slides={fairSlides} type="picture" />
-            <div style={{display: 'flex', flexDirection: 'column', gap: '0.5rem'}}>
+            <div style={{display: 'flex', flexDirection: 'column', gap: '0.5rem', maxWidth: '900px', margin: 'auto'}}>
             {fair.curatorialTexts.map((paragraph, index) => (
                       <p key={index} >{paragraph}</p>
                   ))}
