@@ -348,9 +348,9 @@ export default function ExhibitionForm() {
           ))}
         </select>
       </div>
-      {/* Artist and Artwork selection */}
+
       <div>
-      {/* Loop through artists and display their selection options */}
+
       {artists.map((artist) => (
       <div key={artist.slug}>
         <input
@@ -363,7 +363,7 @@ export default function ExhibitionForm() {
           <h4>Debug Selected Artworks</h4>
           <pre>{JSON.stringify(selectedArtworks, null, 2)}</pre>
         </div>
-        {/* Show artworks only for selected artists */}
+
         {selectedArtists.includes(artist.slug) && (
           <div>
             <h4>Select Artworks</h4>
@@ -375,7 +375,7 @@ export default function ExhibitionForm() {
                   checked={selectedArtworks[artist.slug]?.includes(artworkId) || false}
                   onChange={() => handleArtworkSelection(artist.slug, artworkId)}
                 />
-                <label>{artworkId}</label> {/* Replace with artwork title if available */}
+                <label>{artworkId}</label>
               </div>
             );
           })}
@@ -390,7 +390,7 @@ export default function ExhibitionForm() {
         <p>Exhibition Images</p>
         <input type="file" multiple onChange={handleFileChange} ref={fileInputRef} />
         {images.map((_, index) => (
-          <div key={`image-${index}`}>  // Add a unique key using the index
+          <div key={`image-${index}`}>
             <textarea
               placeholder="Image Description"
               value={imageDescriptions[index] || ""}
@@ -407,13 +407,10 @@ export default function ExhibitionForm() {
         ))}
       </div>
 
-      {/* Error Message */}
       {error && <p className={styles.error}>{error}</p>}
 
-      {/* Success Message */}
-      {success && <p className={styles.success}>{success}</p>} {/* Optional: Add CSS for success messages */}
+      {success && <p className={styles.success}>{success}</p>} 
 
-      {/* Submit Button */}
       <button type="button" onClick={addNewExhibition} disabled={loading}>
         {loading ? "Uploading..." : "Add Exhibition"}
       </button>

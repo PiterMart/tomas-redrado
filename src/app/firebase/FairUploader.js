@@ -1,7 +1,7 @@
 "use client"
 import { useEffect, useState, useRef } from "react";
 import { firestore, storage } from "./firebaseConfig";
-import { getDocs, addDoc, collection, doc, updateDoc, Timestamp, arrayUnion, getDoc } from "firebase/firestore";  // Correct imports for modular Firebase SDK
+import { getDocs, addDoc, collection, doc, updateDoc, Timestamp, arrayUnion, getDoc } from "firebase/firestore"; 
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -345,9 +345,9 @@ export default function FairForm() {
           ))}
         </select>
       </div>
-      {/* Artist and Artwork selection */}
+
       <div>
-      {/* Loop through artists and display their selection options */}
+
       {artists.map((artist) => (
       <div key={artist.slug}>
         <input
@@ -360,7 +360,7 @@ export default function FairForm() {
           <h4>Debug Selected Artworks</h4>
           <pre>{JSON.stringify(selectedArtworks, null, 2)}</pre>
         </div>
-        {/* Show artworks only for selected artists */}
+
         {selectedArtists.includes(artist.slug) && (
           <div>
             <h4>Select Artworks</h4>
@@ -372,7 +372,7 @@ export default function FairForm() {
                   checked={selectedArtworks[artist.slug]?.includes(artworkId) || false}
                   onChange={() => handleArtworkSelection(artist.slug, artworkId)}
                 />
-                <label>{artworkId}</label> {/* Replace with artwork title if available */}
+                <label>{artworkId}</label> 
               </div>
             );
           })}
@@ -387,7 +387,7 @@ export default function FairForm() {
         <p>Exhibition Images</p>
         <input type="file" multiple onChange={handleFileChange} ref={fileInputRef} />
         {images.map((_, index) => (
-          <div key={`image-${index}`}>  // Add a unique key using the index
+          <div key={`image-${index}`}>  
             <textarea
               placeholder="Image Description"
               value={imageDescriptions[index] || ""}
