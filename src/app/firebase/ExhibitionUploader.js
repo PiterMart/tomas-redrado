@@ -38,29 +38,37 @@ export default function ExhibitionForm() {
     const fetchArtistData = async () => {
       try {
         const artistSnapshot = await getDocs(collection(firestore, "artists"));
-        const artists = artistSnapshot.docs.map(doc => ({
+        const artists = artistSnapshot.docs.map((doc) => ({
           ...doc.data(),
           slug: doc.id,
         }));
   
-
-        const artistsWithArtworks = await Promise.all(artists.map(async (artist) => {
-          const artworksData = artist.artworks || [];
-          return {
-            ...artist,
-            artworks: artworksData, 
-          };
-        }));
+        const artistsWithArtworks = await Promise.all(
+          artists.map(async (artist) => {
+            const artworksData = artist.artworks || [];
+            const artworks = await Promise.all(
+              artworksData.map(async (artworkId) => {
+                const artworkDoc = await getDoc(doc(firestore, "artworks", artworkId));
+                return artworkDoc.exists()
+                  ? { id: artworkDoc.id, ...artworkDoc.data() } // Include the id explicitly
+                  : null;
+              })
+            );
+            return {
+              ...artist,
+              artworks: artworks.filter((artwork) => artwork !== null),
+            };
+          })
+        );
   
         setArtists(artistsWithArtworks);
       } catch (error) {
         console.error("Error fetching artist data:", error);
       }
     };
-  
+
     const fetchHeadquarters = async () => {
       try {
-
         const headquartersSnapshot = await getDocs(collection(firestore, "headquarters"));
         setHeadquarters(headquartersSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
       } catch (error) {
@@ -71,6 +79,7 @@ export default function ExhibitionForm() {
     fetchArtistData();
     fetchHeadquarters();
   }, []);
+  
 
   const handleArtistSelection = (artist) => {
     const isSelected = selectedArtists.includes(artist.slug);
@@ -92,27 +101,23 @@ export default function ExhibitionForm() {
   const handleArtworkSelection = (artistSlug, artworkId) => {
     if (!artworkId) {
       console.error("Invalid artwork ID:", artworkId);
-      return; 
+      return;
     }
   
     setSelectedArtworks((prevSelectedArtworks) => {
       const artistArtworks = prevSelectedArtworks[artistSlug] || [];
       const isSelected = artistArtworks.includes(artworkId);
   
-
       const updatedArtworks = isSelected
-        ? artistArtworks.filter((id) => id !== artworkId) 
-        : [...artistArtworks, artworkId]; 
+        ? artistArtworks.filter((id) => id !== artworkId) // Remove if already selected
+        : [...artistArtworks, artworkId]; // Add if not selected
   
       return {
         ...prevSelectedArtworks,
-        [artistSlug]: updatedArtworks, 
+        [artistSlug]: updatedArtworks,
       };
     });
   };
-  
-  
-  
   
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
@@ -359,31 +364,23 @@ export default function ExhibitionForm() {
           onChange={() => handleArtistSelection(artist)}
         />
         <label>{artist.name}</label>
-        <div>
-          <h4>Debug Selected Artworks</h4>
-          <pre>{JSON.stringify(selectedArtworks, null, 2)}</pre>
-        </div>
-
         {selectedArtists.includes(artist.slug) && (
           <div>
             <h4>Select Artworks</h4>
-            {artist.artworks.map((artworkId) => {
-            return (
-              <div key={artworkId}>
-                <input
-                  type="checkbox"
-                  checked={selectedArtworks[artist.slug]?.includes(artworkId) || false}
-                  onChange={() => handleArtworkSelection(artist.slug, artworkId)}
-                />
-                <label>{artworkId}</label>
-              </div>
-            );
-          })}
+            {artist.artworks.map((artwork) => (
+            <div key={artwork.id}>
+              <input
+                type="checkbox"
+                checked={selectedArtworks[artist.slug]?.includes(artwork.id) || false} // Use artwork.id
+                onChange={() => handleArtworkSelection(artist.slug, artwork.id)} // Pass artwork.id
+              />
+              <label>{artwork.title}</label> {/* Display artwork title */}
+            </div>
+          ))}
           </div>
         )}
       </div>
     ))}
-
     </div>
 
       <div>

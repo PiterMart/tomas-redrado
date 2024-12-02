@@ -56,6 +56,11 @@
   max-width: 100%;
 }
 
+.video{
+  width: 50%;
+  height: auto;
+}
+
 /* ARTIST PAGE */
 
 .name_list{
@@ -99,7 +104,7 @@
   gap: 3rem;
   width: 800px;
   margin: auto;
-  padding-top: 10rem;
+  padding-top: 7rem;
 }
 .artists_page{
   display: flex;
@@ -383,5 +388,10 @@
     flex-direction: column;
     gap: 3rem;
   }
+  .video{
+    width: 100%;
+    height: auto;
+  }
+  
 }
 

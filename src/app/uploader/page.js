@@ -4,6 +4,7 @@ import Link from "next/link";
 import ArtistUploader from "../firebase/ArtistUploader";
 import ArtistList from "../firebase/artistList";
 import ExhibitionForm from "../firebase/ExhibitionUploader";
+import FairUploader from "../firebase/FairUploader";
 
 export default function Home() {
   return (
@@ -11,8 +12,10 @@ export default function Home() {
       <main className={styles.main}>
         <p className={styles.title}>ARTIST UPLOADER</p>
         <ArtistUploader/>
-        {/* <p className={styles.title}>EXHIBITION UPLOADER</p>
-        <ExhibitionForm/> */}
+        <p className={styles.title}>EXHIBITION UPLOADER</p>
+        <ExhibitionForm/>
+        <p className={styles.title}>FAIR UPLOADER</p>
+        <FairUploader/>
         {/* <p className={styles.title}>ARTIST LIST</p>
         <ArtistList/> */}
       </main>

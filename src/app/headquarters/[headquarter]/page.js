@@ -76,16 +76,19 @@ export default function Headquarter({ params }) {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        
         <div className={styles.artist_page} style={{padding: '1rem'}}>
           <div className={styles.page_container}>
             <img src={headquarters.image} alt={headquarters.name} style={{ width: "100%" }} />
               <h1 className={styles.title}>{headquarters.name}</h1>
-              <p>{headquarters.location}</p>
-              {headquarters.about.map((paragraph, index) => (
+              <div style={{display: 'flex', flexDirection: 'column', gap: '0.5rem'}}>
+                <p>{headquarters.location}</p>
+                <p>{headquarters.schedule}</p>
+                <p>{headquarters.phone}</p>
+              </div>
+              {/* {headquarters.about.map((paragraph, index) => (
                 <p key={index}>{paragraph}</p>
-              ))}
-            <h1>EXHIBICIONES</h1>
+              ))} */}
+            <h1>EXHIBITIONS</h1>
             <EmblaCarousel slides={exhibitionSlides} type="exhibition" />
           </div>
         </div>
