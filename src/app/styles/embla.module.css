@@ -224,5 +224,8 @@
   .embla__slide__inner{
     height: 100vh;
   }
+  .embla__slide{
+    max-width: 100%;
+  }
 }
 

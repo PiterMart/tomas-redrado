@@ -1,12 +1,9 @@
 "use client";
-import Image from "next/image";
 import styles from "../../styles/page.module.css";
 import { firestore } from "../../firebase/firebaseConfig";
 import { query, collection, where, getDocs, documentId } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
 import EmblaCarousel from "@/app/carousel/EmblaCarousel";
-import { Parallax, ParallaxProvider  } from "react-scroll-parallax";
 
 export default function Headquarter({ params }) {
   const { headquarter: headquarterSlug } = params; // Get slug from params
@@ -76,18 +73,21 @@ export default function Headquarter({ params }) {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <div className={styles.artist_page} style={{padding: '1rem'}}>
+        <div className={styles.artist_page} style={{ padding: "1rem", marginTop: '5rem' }}>
           <div className={styles.page_container}>
             <img src={headquarters.image} alt={headquarters.name} style={{ width: "100%" }} />
-              <h1 className={styles.title}>{headquarters.name}</h1>
-              <div style={{display: 'flex', flexDirection: 'column', gap: '0.5rem'}}>
-                <p>{headquarters.location}</p>
-                <p>{headquarters.schedule}</p>
-                <p>{headquarters.phone}</p>
-              </div>
-              {/* {headquarters.about.map((paragraph, index) => (
-                <p key={index}>{paragraph}</p>
-              ))} */}
+            <h1 className={styles.title}>{headquarters.name}</h1>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+              <p>{headquarters.location}</p>
+              <p>{headquarters.schedule}</p>
+              <p>{headquarters.phone}</p>
+            </div>
+            {/* Check if about is an array */}
+            {Array.isArray(headquarters.about) ? (
+              headquarters.about.map((paragraph, index) => <p key={index}>{paragraph}</p>)
+            ) : (
+              <p>{headquarters.about || "No information available about this headquarter."}</p>
+            )}
             <h1>EXHIBITIONS</h1>
             <EmblaCarousel slides={exhibitionSlides} type="exhibition" />
           </div>
@@ -96,4 +96,5 @@ export default function Headquarter({ params }) {
       <footer className={styles.footer}></footer>
     </div>
   );
+  
 }

@@ -175,8 +175,9 @@
   width: 100%;
   margin: auto;
   height: auto;
-  font-size: 2rem;
-  margin-top: 2rem;
+  font-size: 4rem;
+  font-weight: 200;
+  margin-top: 4rem;
 }
 
 /* EXCHIBITION PAGE */
@@ -191,7 +192,7 @@
   background: lightgray; */
   position: relative;
   display: inline-block;
-  font-size: 3rem; 
+  font-size: 4rem; 
 }
 .sedeCard img{
   display: block;

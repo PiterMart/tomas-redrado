@@ -1,39 +1,39 @@
 "use client";
-import styles from "../../../styles/page.module.css";
-import { firestore } from "../../../firebase/firebaseConfig";
+import styles from "../../styles/page.module.css";
+import { firestore } from "../../firebase/firebaseConfig";
 import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import EmblaCarousel from "../../../carousel/EmblaCarousel";
+import EmblaCarousel from "../../carousel/EmblaCarousel";
 
-export default function Exhibition({ params }) {
-  const { exhibition: exhibitionSlug } = params; // Get slug from params
-  const [exhibition, setExhibition] = useState(null); // State to store the exhibition data
+export default function Fair({ params }) {
+  const { fair: fairSlug } = params; // Get slug from params
+  const [fair, setFair] = useState(null); // State to store the fair data
   const [artistsData, setArtistsData] = useState([]); // State to store the artist details
 
-  // Fetch the exhibition details based on the slug
-  const fetchExhibition = async () => {
-    console.log("Fetching exhibition with slug:", exhibitionSlug);
+  // Fetch the fair details based on the slug
+  const fetchFair = async () => {
+    console.log("Fetching fair with slug:", fairSlug);
     try {
-      const q = query(collection(firestore, "exhibitions"), where("slug", "==", exhibitionSlug));
+      const q = query(collection(firestore, "fairs"), where("slug", "==", fairSlug));
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
         const docSnap = querySnapshot.docs[0];
-        const exhibitionData = docSnap.data();
-        setExhibition({ id: docSnap.id, ...exhibitionData });
+        const fairData = docSnap.data();
+        setFair({ id: docSnap.id, ...fairData });
 
         // Fetch the artists and their artworks
-        if (exhibitionData.artists && exhibitionData.artists.length > 0) {
-          const artistsDetails = await fetchArtists(exhibitionData.artists);
+        if (fairData.artists && fairData.artists.length > 0) {
+          const artistsDetails = await fetchArtists(fairData.artists);
           setArtistsData(artistsDetails);
         }
       } else {
-        console.error("No such exhibition found!");
-        setExhibition(null);
+        console.error("No such fair found!");
+        setFair(null);
       }
     } catch (error) {
-      console.error("Error fetching exhibition:", error);
-      setExhibition(null);
+      console.error("Error fetching fair:", error);
+      setFair(null);
     }
   };
 
@@ -88,13 +88,13 @@ export default function Exhibition({ params }) {
   };
 
   useEffect(() => {
-    fetchExhibition();
-  }, [exhibitionSlug]);
+    fetchFair();
+  }, [fairSlug]);
 
-  if (exhibition === null) return <p>Loading exhibition data...</p>;
-  if (!exhibition) return <p>No exhibition found.</p>;
+  if (fair === null) return <p>Loading fair data...</p>;
+  if (!fair) return <p>No fair found.</p>;
 
-  const exhibitionSlides = exhibition.gallery.map((gallery) => ({
+  const fairSlides = fair.gallery.map((gallery) => ({
     image: gallery.url,
   }));
 
@@ -103,8 +103,8 @@ export default function Exhibition({ params }) {
       <main className={styles.main}>
         <div className={styles.page_container}>
           <div className={styles.exhibition_page}>
-            <p className={styles.title}>{exhibition.name}</p>
-            <EmblaCarousel slides={exhibitionSlides} type="picture" />
+            <p className={styles.title}>{fair.name}</p>
+            <EmblaCarousel slides={fairSlides} type="picture" />
             <h2 style={{ marginTop: "3rem", fontWeight: "200" }} className={styles.title}>
               Represented Artists
             </h2>

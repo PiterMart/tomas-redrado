@@ -35,7 +35,7 @@ export default function Contact() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <div style={{ paddingTop: "15rem", margin: "auto" }}>
+        <div style={{ padding: "10rem 1rem 1rem 1rem", margin: "auto" }}>
           <p>Director</p>
           <p className={styles.title}>Tomas Redrado</p>
           <p style={{marginTop: '1rem'}}>
@@ -45,7 +45,7 @@ export default function Contact() {
           {/* <p className={styles.title}>HEADQUARTERS</p> */}
           <div>
             {headquarters.map((hq) => (
-              <div key={hq.id} className={styles.sedes} style={{justifyContent: 'center'}}>
+              <div key={hq.id} className={styles.sedes} style={{justifyContent: 'center', gap: '1.5rem'}}>
                 <Link href={`/headquarters/${hq.slug}`}>
                   <div className={styles.sedeCard}>
                     <div className={styles.sedeCardText} style={{ height: "auto", width: "auto"}}>

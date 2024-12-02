@@ -10,7 +10,6 @@ export default function Exhibitions() {
   const [currentExhibitions, setCurrentExhibitions] = useState([]);
   const [pastExhibitions, setPastExhibitions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [exhibitions, setExhibitions] = useState([]);
 
   const fetchExhibitions = async () => {
     try {
@@ -32,7 +31,6 @@ export default function Exhibitions() {
 
       setCurrentExhibitions(current);
       setPastExhibitions(past);
-      setExhibitions(exhibitionsData);
     } catch (error) {
       console.error("Error fetching exhibitions:", error);
     } finally {
@@ -46,64 +44,42 @@ export default function Exhibitions() {
 
   if (loading) return <p>Loading exhibitions...</p>;
 
-  const exhibitionSlides = exhibitions.map((exhibition) => ({
+  // Create separate slide arrays for current and past exhibitions
+  const currentExhibitionSlides = currentExhibitions.map((exhibition) => ({
     name: exhibition.name,
-    image: exhibition.gallery[0]?.url || "/placeholder.jpg", // Fallback si no hay imagen
-    openingDate: exhibition.openingDate,
-    closingDate: exhibition.closingDate,
-    slug: exhibition.slug,
-    sedeSlug: headquarters.find((hq) => hq.exhibitions.includes(exhibition.id))?.slug,
+    image: exhibition.gallery?.[0]?.url || "/placeholder.jpg",
+    openingDate: exhibition.openingDate?.toDate().toLocaleDateString() || "N/A",
+    closingDate: exhibition.closingDate?.toDate().toLocaleDateString() || "N/A",
+    slug: exhibition.slug || "",
+  }));
+
+  const pastExhibitionSlides = pastExhibitions.map((exhibition) => ({
+    name: exhibition.name,
+    image: exhibition.gallery?.[0]?.url || "/placeholder.jpg",
+    openingDate: exhibition.openingDate?.toDate().toLocaleDateString() || "N/A",
+    closingDate: exhibition.closingDate?.toDate().toLocaleDateString() || "N/A",
+    slug: exhibition.slug || "",
   }));
 
   return (
     <div className={styles.page}>
       <main className={styles.main}>
         <div className={styles.exhibitions_page}>
-          {/* <h1>Exhibitions</h1> */}
           <section>
             <p className={styles.title}>Current Exhibitions</p>
-            <EmblaCarousel slides={exhibitionSlides} type="exhibition" />
-            <div style={{display: "flex", flexDirection: 'row', gap: '2rem',}}>
-              {currentExhibitions.length > 0 ? (
-                currentExhibitions.map((exhibition) => (
-                  <div key={exhibition.id} className={styles.exhibition}>
-                    <Link href={`/headquarters/${exhibition.sede}/${exhibition.slug}`}>
-                      <img
-                        className={styles.embla__slide__img}
-                        src={exhibition.gallery[0].url}
-                        alt={exhibition.name}
-                        style={{maxHeight: "30vh"}}
-                      />
-                      <h3>{exhibition.name}</h3>
-                    </Link>
-                  </div>
-                ))
-              ) : (
-                <p>No current exhibitions.</p>
-              )}
-            </div>
+            {currentExhibitionSlides.length > 0 ? (
+              <EmblaCarousel slides={currentExhibitionSlides} type="exhibitionSimple" />
+            ) : (
+              <p>No current exhibitions taking place.</p>
+            )}
           </section>
           <section>
-          <p className={styles.title}>Past Exhibitions</p>
-            <div style={{display: "flex", flexDirection: 'row', gap: '2rem', overflow: 'hidden'}}>
-              {pastExhibitions.length > 0 ? (
-                pastExhibitions.map((exhibition) => (
-                  <div key={exhibition.id} className={styles.exhibition}>
-                    <Link href={`/headquarters/${exhibition.sede}/${exhibition.slug}`}>
-                      <img
-                        className={styles.embla__slide__img}
-                        src={exhibition.gallery[0].url}
-                        alt={exhibition.name}
-                        style={{maxHeight: "30vh"}}
-                      />
-                      <h3>{exhibition.name}</h3>
-                    </Link>
-                  </div>
-                ))
-              ) : (
-                <p>No past exhibitions.</p>
-              )}
-            </div>
+            <p className={styles.title}>Past Exhibitions</p>
+            {pastExhibitionSlides.length > 0 ? (
+              <EmblaCarousel slides={pastExhibitionSlides} type="exhibitionSimple" />
+            ) : (
+              <p>No past exhibitions available.</p>
+            )}
           </section>
         </div>
       </main>

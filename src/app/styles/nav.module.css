@@ -4,8 +4,7 @@
   justify-content: space-between;
   align-items: center;
   position: fixed;
-  font-size: 1rem;
-  font-weight: 400;
+  font-weight: 300;
   width: 100%;
   z-index: 1000;
   margin: auto;
@@ -49,7 +48,7 @@
 }
 
 .nav_list li {
-  font-size: 1rem;
+  font-size: 3rem;
   transition: color 0.3s ease;
   font-family: "Source Code Pro", monospace !important;
 }
@@ -137,14 +136,12 @@
     gap: 1em;
   }
   .nav_list li {
-    font-size: 2rem;
     margin: 1rem 0;
     /* color: transparent; */
 
   }
 
   .nav_list.active li {
-    font-size: 2rem;
     opacity: 0;
     transform: translateX(-100%);
     animation: slideIn 0.5s forwards;

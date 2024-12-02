@@ -233,8 +233,7 @@ export default function ExhibitionForm() {
           artistSlug,
           selectedArtworks: selectedArtworks[artistSlug] || [], 
         })),
-      };      
-      
+      };
   
 
       console.log("Selected Artworks State:", selectedArtworks);
@@ -271,8 +270,6 @@ export default function ExhibitionForm() {
         }
       }
       
-  
-
       setSuccess("Exhibition added successfully!");
       resetForm();
     } catch (error) {
