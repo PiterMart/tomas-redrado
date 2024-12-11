@@ -123,15 +123,21 @@ export default function Headquarter({ params }) {
                 <p>{headquarters.phone}</p>
               </div>
             </div>
-            {/* Check if about is an array */}
-            <div style={{display: 'flex', flexDirection: 'column', gap: "1rem"}}>
-            <p className={styles.title} >About</p>
-            {Array.isArray(headquarters.about) ? (
-              headquarters.about.map((paragraph, index) => <p key={index} style={{textAlign: 'justify', lineHeight: '1.3rem'}}>{paragraph}</p>)
-            ) : (
-              <p>{headquarters.about || "No information available about this headquarter."}</p>
+            {/* Conditionally render the about section */}
+            {headquarters.about && (
+              <div style={{display: 'flex', flexDirection: 'column', gap: "1rem"}}>
+                <p className={styles.title}>About</p>
+                {Array.isArray(headquarters.about) ? (
+                  headquarters.about.map((paragraph, index) => (
+                    <p key={index} style={{textAlign: 'justify', lineHeight: '1.3rem'}}>
+                      {paragraph}
+                    </p>
+                  ))
+                ) : (
+                  <p style={{textAlign: 'justify', lineHeight: '1.3rem'}}>{headquarters.about}</p>
+                )}
+              </div>
             )}
-            </div>
           {/* Conditionally render the exhibitions section */}
           {exhibitionSlides.length > 0 && (
             <>
