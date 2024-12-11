@@ -115,16 +115,19 @@ export default function Headquarter({ params }) {
         <div className={styles.artist_page} style={{ padding: "1rem", marginTop: '5rem' }}>
           <div className={styles.page_container}>
             <img src={headquarters.image} alt={headquarters.name} style={{ width: "100%" }} />
-            <h1 className={styles.title}>{headquarters.name}</h1>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-              <p>{headquarters.location}</p>
-              <p>{headquarters.schedule}</p>
-              <p>{headquarters.phone}</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+              <h1 className={styles.title}>{headquarters.name}</h1>
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                <p>{headquarters.location}</p>
+                <p>{headquarters.schedule}</p>
+                <p>{headquarters.phone}</p>
+              </div>
             </div>
             {/* Check if about is an array */}
-            <div style={{display: 'flex', flexDirection: 'column', gap: "0.5rem"}}>
+            <div style={{display: 'flex', flexDirection: 'column', gap: "1rem"}}>
+            <p className={styles.title} >About</p>
             {Array.isArray(headquarters.about) ? (
-              headquarters.about.map((paragraph, index) => <p key={index}>{paragraph}</p>)
+              headquarters.about.map((paragraph, index) => <p key={index} style={{textAlign: 'justify', lineHeight: '1.3rem'}}>{paragraph}</p>)
             ) : (
               <p>{headquarters.about || "No information available about this headquarter."}</p>
             )}
@@ -140,7 +143,7 @@ export default function Headquarter({ params }) {
           {headquarters.arthouse && (
             <div style={{display: 'flex', flexDirection: 'column', gap: "1rem"}}>
               <p className={styles.title} >Arthouse</p>
-              <p>{headquarters.arthouse}</p>
+              <p style={{textAlign: 'justify', lineHeight: '1.3rem'}}>{headquarters.arthouse}</p>
             </div>
           )}
           {/* Conditionally render the artist residencies section */}
