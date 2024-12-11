@@ -31,29 +31,95 @@ export default function Home() {
       <main className={styles.main}>
         <div className={styles.page_container} style={{marginTop: '6rem'}}>
           <p className={styles.title}>HEADQUARTERS</p>
-          <div>
+          {/* <div>
             {headquarters.map((hq) => (
               <div key={hq.id}>
                 <div className={styles.sedes}>
-                <Link href={`/headquarters/${hq.slug}`} key={hq.id}>
+                <Link href={`/headquarters/${hq.slug}`} key={hq.id} style={{width: "100%"}}>
                   <div className={styles.sedes}>
                     <div className={styles.sedeCard}>
-                      <div className={styles2.embla__slide__text} style={{ height: 'auto', width: 'auto', paddingRight: '4rem' }}>
+                      <div style={{ height: 'auto', width: 'auto', paddingRight: '4rem', margin: 'auto' }}>
                         <p>{hq.name}</p>
+                        <p style={{fontSize: '1rem', textAlign: "end"}}>{hq.type}</p>
                       </div>
-                      {/* <div className={styles2.embla__slide} style={{ width: '50%', height: 'auto' }}>
+                      <div className={styles2.embla__slide} style={{ width: '50%', height: 'auto' }}>
                         <img
                           src={hq.image}
                           alt={hq.name}
                         />
-                      </div> */}
+                      </div>
                     </div>
                   </div>
                 </Link>
                 </div>
               </div>
             ))}
-          </div>
+          </div> */}
+          <div>
+                  {headquarters.map((hq) => {
+                    // Render each headquarter with a unique style based on its ID
+                    if (hq.id === "m6NojPmUP9L1m1YT5IXt") {
+                      return (
+                        <Link href={`/headquarters/${hq.slug}`} key={hq.id} style={{width: "100%"}}>
+                        <div className={styles.sedes}>
+                          <div className={styles.sedeCard} style={{marginTop: '1rem'}}>
+                            <div style={{ height: 'auto', width: 'auto', paddingRight: '4rem', margin: 'auto' }}>
+                              <p>{hq.name}</p>
+                              <p style={{fontSize: '1rem', textAlign: "end"}}>({hq.type})</p>
+                            </div>
+                            {/* <div className={styles2.embla__slide} style={{ width: '50%', height: 'auto' }}>
+                              <img
+                                src={hq.image}
+                                alt={hq.name}
+                              />
+                            </div> */}
+                          </div>
+                        </div>
+                      </Link>
+                      );
+                    } else if (hq.id === "2qB0QydPmevqv2DOeGqX") {
+                      return (
+                        <Link href={`/headquarters/${hq.slug}`} key={hq.id} style={{width: "100%"}}>
+                        <div className={styles.sedes}>
+                          <div className={styles.sedeCard}>
+                            <div style={{ height: 'auto', width: 'auto', paddingRight: '4rem', margin: 'auto' }}>
+                              <p style={{fontSize: '5rem', fontWeight: '200'}}>{hq.name}</p>
+                              <p style={{fontSize: '1rem', textAlign: "end"}}>({hq.type})</p>
+                            </div>
+                            {/* <div className={styles2.embla__slide} style={{ width: '50%', height: 'auto' }}>
+                              <img
+                                src={hq.image}
+                                alt={hq.name}
+                              />
+                            </div> */}
+                          </div>
+                        </div>
+                      </Link>
+                      );
+                    } else if (hq.id === "BW6IqbaQ9DhsgQFyL8WC") {
+                      return (
+                        <Link href={`/headquarters/${hq.slug}`} key={hq.id} style={{width: "100%"}}>
+                        <div className={styles.sedes} >
+                          <div className={styles.sedeCard} style={{marginTop: '5rem'}}>
+                            <div style={{ height: 'auto', width: 'auto', paddingRight: '4rem', margin: 'auto' }}>
+                              <p>{hq.name}</p>
+                              <p style={{fontSize: '1rem', textAlign: "end"}}>({hq.type})</p>
+                            </div>
+                            {/* <div className={styles2.embla__slide} style={{ width: '50%', height: 'auto' }}>
+                              <img
+                                src={hq.image}
+                                alt={hq.name}
+                              />
+                            </div> */}
+                          </div>
+                        </div>
+                      </Link>
+                      );
+                    } else {
+                      return null; // Skip any extra items
+                    }
+                  })}
+                </div>
         </div>
       </main>
       <footer className={styles.footer}></footer>

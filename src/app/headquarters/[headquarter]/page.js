@@ -1,15 +1,18 @@
 "use client";
 import styles from "../../styles/page.module.css";
+import Link from "next/link";
 import { firestore } from "../../firebase/firebaseConfig";
 import { query, collection, where, getDocs, documentId } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import EmblaCarousel from "@/app/carousel/EmblaCarousel";
+import { motion } from "framer-motion";
 
 export default function Headquarter({ params }) {
   const { headquarter: headquarterSlug } = params; // Get slug from params
   const [headquarters, setHeadquarters] = useState(null);
   const [exhibitions, setExhibitions] = useState([]); // State to store exhibitions
   const [exhibitionIds, setExhibitionIds] = useState([]); // State to store exhibition IDs
+  const [artists, setArtists] = useState([]);
 
   // Define fetchHeadquarters outside of useEffect
   const fetchHeadquarters = async () => {
@@ -23,6 +26,19 @@ export default function Headquarter({ params }) {
         const headquartersData = docSnap.data();
         setHeadquarters({ id: docSnap.id, ...headquartersData });
         setExhibitionIds(headquartersData.exhibitions || []); // Store exhibition IDs
+
+        // Fetch artists if 'first-semester' field exists and is not empty
+        if (headquartersData["first-semester"] && headquartersData["first-semester"].length > 0) {
+          const artistIds = headquartersData["first-semester"];
+          const artistsQuery = query(
+            collection(firestore, "artists"),
+            where(documentId(), "in", artistIds)
+          );
+          const artistsSnapshot = await getDocs(artistsQuery);
+          const artistsData = artistsSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+          setArtists(artistsData);
+        }
+
       } else {
         console.error("No such headquarters found!");
         setHeadquarters(null);
@@ -68,6 +84,29 @@ export default function Headquarter({ params }) {
   if (headquarters === null) return <p>Loading headquarters data...</p>;
   if (!headquarters) return <p>No headquarters found.</p>;
 
+
+  const listVariants = {
+    hidden: { opacity: 0, x: -50 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        staggerChildren: 0.5, // Adjust time between each child's animation
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, x: -50 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeInOut", // Smooth start and stop
+      },
+    },
+  };
   
 
   return (
@@ -83,13 +122,47 @@ export default function Headquarter({ params }) {
               <p>{headquarters.phone}</p>
             </div>
             {/* Check if about is an array */}
+            <div style={{display: 'flex', flexDirection: 'column', gap: "0.5rem"}}>
             {Array.isArray(headquarters.about) ? (
               headquarters.about.map((paragraph, index) => <p key={index}>{paragraph}</p>)
             ) : (
               <p>{headquarters.about || "No information available about this headquarter."}</p>
             )}
-            <h1>EXHIBITIONS</h1>
-            <EmblaCarousel slides={exhibitionSlides} type="exhibition" />
+            </div>
+          {/* Conditionally render the exhibitions section */}
+          {exhibitionSlides.length > 0 && (
+            <>
+              <h1>EXHIBITIONS</h1>
+              <EmblaCarousel slides={exhibitionSlides} type="exhibition" />
+            </>
+          )}
+          {/* Conditionally render the 'arthouse' field text */}
+          {headquarters.arthouse && (
+            <div style={{display: 'flex', flexDirection: 'column', gap: "1rem"}}>
+              <p className={styles.title} >Arthouse</p>
+              <p>{headquarters.arthouse}</p>
+            </div>
+          )}
+          {/* Conditionally render the artist residencies section */}
+          {artists.length > 0 && (
+            <div style={{display: 'flex', flexDirection: 'column', gap: "1rem"}}>
+              <p className={styles.subtitle} style={{fontSize: '2rem', fontWeight: '300'}}>First Semester Artists</p>
+              <div className={styles.name_list}>
+              <motion.ul
+                initial="hidden"
+                animate="visible"
+                variants={listVariants}
+                className={styles.name_list}
+              >
+                {artists.map((artist) => (
+                  <motion.li key={artist.id} variants={itemVariants}>
+                    <Link href={`/artists/${artist.slug}`}>{artist.name}</Link>
+                  </motion.li>
+                ))}
+              </motion.ul>
+            </div>
+            </div>
+          )}
           </div>
         </div>
       </main>
