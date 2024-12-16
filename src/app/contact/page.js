@@ -9,6 +9,8 @@ export default function Contact() {
   const [headquarters, setHeadquarters] = useState([]); // State to store all headquarters
   const [loading, setLoading] = useState(true);
 
+  const excludedId = "m6NojPmUP9L1m1YT5IXt"; // Replace with the actual ID you want to exclude
+
   // Fetch all headquarters
   const fetchHeadquarters = async () => {
     try {
@@ -32,6 +34,9 @@ export default function Contact() {
   if (loading) return <p>Loading headquarters...</p>;
   if (!headquarters.length) return <p>No headquarters found.</p>;
 
+    // Filter out the excluded headquarter
+    const filteredHeadquarters = headquarters.filter((hq) => hq.id !== excludedId);
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -44,7 +49,7 @@ export default function Contact() {
           <div className={styles.page_container} style={{ marginTop: "7rem", margin: 'auto' }}>
           {/* <p className={styles.title}>HEADQUARTERS</p> */}
           <div>
-            {headquarters.map((hq) => (
+            {filteredHeadquarters.map((hq) => (
               <div key={hq.id} className={styles.sedes} style={{justifyContent: 'center', gap: '1.5rem'}}>
                 <Link href={`/headquarters/${hq.slug}`}>
                   <div className={styles.sedeCard}>

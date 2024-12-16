@@ -39,7 +39,7 @@
 /* FONTS AND TEXTS */
 
 .title{
-  font-size: 3.25rem;
+  font-size: 3rem;
   font-weight: 300;
 }
 .subtitle{
@@ -186,13 +186,13 @@
   height: 10vh;
   /* width: 30rem; */
   margin: auto;
-  text-align: center;
+  text-align: left;
   align-content: center;
   /* border: 1px solid black;
   background: lightgray; */
   position: relative;
   display: inline-block;
-  font-size: 4rem; 
+  font-size: 2rem; 
 }
 .sedeCard img{
   display: block;
