@@ -41,6 +41,7 @@
 .title{
   font-size: 3rem;
   font-weight: 300;
+  line-height: 1;
 }
 .subtitle{
   font-size: 1.5rem;
@@ -160,7 +161,7 @@
   gap: 5rem;
 }
 .exhibitions_page{
-  padding-top: 6rem;
+  padding-top: 8rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -355,6 +356,7 @@
     width: 100%;
     flex-direction: column;
     padding: 1rem;
+    margin-top: 2rem;
   }
   .artist_page_contents{
     max-width: 100%;

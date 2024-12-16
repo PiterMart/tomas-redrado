@@ -29,32 +29,8 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <div className={styles.page_container} style={{marginTop: '6rem'}}>
+        <div className={styles.page_container} style={{marginTop: '8rem'}}>
           <p className={styles.title}>HEADQUARTERS</p>
-          {/* <div>
-            {headquarters.map((hq) => (
-              <div key={hq.id}>
-                <div className={styles.sedes}>
-                <Link href={`/headquarters/${hq.slug}`} key={hq.id} style={{width: "100%"}}>
-                  <div className={styles.sedes}>
-                    <div className={styles.sedeCard}>
-                      <div style={{ height: 'auto', width: 'auto', paddingRight: '4rem', margin: 'auto' }}>
-                        <p>{hq.name}</p>
-                        <p style={{fontSize: '1rem', textAlign: "end"}}>{hq.type}</p>
-                      </div>
-                      <div className={styles2.embla__slide} style={{ width: '50%', height: 'auto' }}>
-                        <img
-                          src={hq.image}
-                          alt={hq.name}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-                </div>
-              </div>
-            ))}
-          </div> */}
           <div>
                   {headquarters.map((hq) => {
                     // Render each headquarter with a unique style based on its ID
@@ -64,7 +40,7 @@ export default function Home() {
                         <div className={styles.sedes}>
                           <div className={styles.sedeCard} style={{marginTop: '1rem'}}>
                             <div style={{ height: 'auto', width: 'auto', paddingRight: '4rem', margin: 'auto' }}>
-                              <p>{hq.name}</p>
+                              <p style={{fontSize: '5rem', fontWeight: '200', lineHeight: '4rem'}}>{hq.name}</p>
                               <p style={{fontSize: '1rem', textAlign: "end"}}>({hq.type})</p>
                             </div>
                             {/* <div className={styles2.embla__slide} style={{ width: '50%', height: 'auto' }}>
@@ -83,15 +59,9 @@ export default function Home() {
                         <div className={styles.sedes}>
                           <div className={styles.sedeCard}>
                             <div style={{ height: 'auto', width: 'auto', paddingRight: '4rem', margin: 'auto' }}>
-                              <p style={{fontSize: '5rem', fontWeight: '200'}}>{hq.name}</p>
+                              <p style={{fontSize: '5rem', fontWeight: '200', lineHeight: '4rem'}}>{hq.name}</p>
                               <p style={{fontSize: '1rem', textAlign: "end"}}>({hq.type})</p>
                             </div>
-                            {/* <div className={styles2.embla__slide} style={{ width: '50%', height: 'auto' }}>
-                              <img
-                                src={hq.image}
-                                alt={hq.name}
-                              />
-                            </div> */}
                           </div>
                         </div>
                       </Link>
@@ -100,9 +70,9 @@ export default function Home() {
                       return (
                         <Link href={`/headquarters/${hq.slug}`} key={hq.id} style={{width: "100%"}}>
                         <div className={styles.sedes} >
-                          <div className={styles.sedeCard} style={{marginTop: '5rem'}}>
+                          <div className={styles.sedeCard} >
                             <div style={{ height: 'auto', width: 'auto', paddingRight: '4rem', margin: 'auto' }}>
-                              <p>{hq.name}</p>
+                              <p style={{fontSize: '5rem', fontWeight: '200', lineHeight: '4rem'}}>{hq.name}</p>
                               <p style={{fontSize: '1rem', textAlign: "end"}}>({hq.type})</p>
                             </div>
                             {/* <div className={styles2.embla__slide} style={{ width: '50%', height: 'auto' }}>

@@ -15,7 +15,7 @@ const ExhibitionLayout = ({ slide }) => {
     <div className={styles.embla__slide__inner}>
       <div className={styles.embla__slide__text}>
         <p style={{ fontSize: "1.25rem", fontWeight: "600" }}>{slide.name}</p>
-        <p style={{ fontSize: "1rem", fontWeight: "400" }}>Tomas Redrado Art - {slide.sedeSlug}</p>
+        <p style={{ fontSize: "1rem", fontWeight: "400" }}>Tomas Redrado Art - {slide.headquarterSlug}</p>
           {formatDate(slide.openingDate)} - {formatDate(slide.closingDate)}
           <p style={{fontSize: '1rem', fontWeight: '100', bottom: '0', position: 'absolute', alignSelf: 'end', paddingBottom: '1rem'}}>[exhibition]</p>
       </div>

@@ -41,6 +41,7 @@
   text-align: center;
   max-height: 75vh;
   overflow: hidden;
+  width: 80%;
 }
 
 /* Image styling for the slide */
@@ -179,6 +180,7 @@
 @media (max-width: 1000px) {
   .embla__slide__inner{
     height: 60vh;
+    width: 100%;
   }
   /* Only style the embla carousel with the emblaFullWidth class */
   .emblaFullWidth {

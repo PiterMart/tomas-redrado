@@ -42,7 +42,7 @@ export default function Contact() {
       <main className={styles.main}>
         <div style={{ padding: "10rem 1rem 1rem 1rem", margin: "auto" }}>
           <p>Director</p>
-          <p className={styles.title}>Tomas Redrado</p>
+          <p className={styles.title} style={{marginTop: '1rem'}}>Tomas Redrado</p>
           <p style={{marginTop: '1rem'}}>
             <a href="mailto:tr@tomasredrado.com">tr@tomasredrado.com</a>
           </p>
@@ -54,8 +54,8 @@ export default function Contact() {
                 <Link href={`/headquarters/${hq.slug}`}>
                   <div className={styles.sedeCard}>
                     <div className={styles.sedeCardText} style={{ height: "auto", width: "auto"}}>
-                      <p style={{fontSize: '3rem', fontWeight: '300'}}>{hq.name}</p>
-                      <div style={{display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '1rem'}}>
+                      <p style={{fontSize: '3rem', fontWeight: '300', lineHeight: '4rem'}}>{hq.name}</p>
+                      <div style={{display: 'flex', flexDirection: 'column', fontSize: '1rem'}}>
                         <p>{hq.location}</p>
                         <p>{hq.schedule}</p>
                         <p>{hq.phone}</p>

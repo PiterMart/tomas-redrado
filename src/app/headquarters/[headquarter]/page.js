@@ -140,10 +140,10 @@ export default function Headquarter({ params }) {
             )}
           {/* Conditionally render the exhibitions section */}
           {exhibitionSlides.length > 0 && (
-            <>
-              <h1>EXHIBITIONS</h1>
+            <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+              <p className={styles.title}>EXHIBITIONS</p>
               <EmblaCarousel slides={exhibitionSlides} type="exhibition" />
-            </>
+            </div>
           )}
           {/* Conditionally render the 'arthouse' field text */}
           {headquarters.arthouse && (

@@ -6,9 +6,11 @@ import React, { useEffect, useState } from "react";
 import EmblaCarousel from "../carousel/EmblaCarousel";
 
 export default function Fairs() {
+  const [upcomingFairs, setUpcomingFairs] = useState([]);
   const [currentFairs, setCurrentFairs] = useState([]);
   const [pastFairs, setPastFairs] = useState([]);
   const [loading, setLoading] = useState(true);
+
 
   const fetchFairs = async () => {
     try {
@@ -21,13 +23,21 @@ export default function Fairs() {
       });
 
       const now = new Date();
+
+      // Filter fairs into categories
+      const upcoming = fairsData.filter(
+        (fair) => new Date(fair.openingDate.toDate()) > now
+      );
       const current = fairsData.filter(
-        (fair) => new Date(fair.closingDate.toDate()) >= now
+        (fair) =>
+          new Date(fair.openingDate.toDate()) <= now &&
+          new Date(fair.closingDate.toDate()) >= now
       );
       const past = fairsData.filter(
         (fair) => new Date(fair.closingDate.toDate()) < now
       );
 
+      setUpcomingFairs(upcoming);
       setCurrentFairs(current);
       setPastFairs(past);
     } catch (error) {
@@ -43,48 +53,48 @@ export default function Fairs() {
 
   if (loading) return <p>Loading fairs...</p>;
 
-  // Slides for current and past fairs
-  const currentFairSlides = currentFairs.map((fair) => ({
-    name: fair.name,
-    image: fair.gallery?.[0]?.url || "/placeholder.jpg",
-    openingDate: fair.openingDate?.toDate().toLocaleDateString() || "N/A",
-    closingDate: fair.closingDate?.toDate().toLocaleDateString() || "N/A",
-    slug: fair.slug,
-    location: fair.location,
-  }));
+  // Helper function to create slides
+  const createSlides = (fairs) =>
+    fairs.map((fair) => ({
+      name: fair.name,
+      image: fair.gallery?.[0]?.url || "/placeholder.jpg",
+      openingDate: fair.openingDate,
+      closingDate: fair.closingDate,
+      slug: fair.slug,
+      location: fair.location,
+    }));
 
-  const pastFairSlides = pastFairs.map((fair) => ({
-    name: fair.name,
-    image: fair.gallery?.[0]?.url || "/placeholder.jpg",
-    openingDate: fair.openingDate?.toDate().toLocaleDateString() || "N/A",
-    closingDate: fair.closingDate?.toDate().toLocaleDateString() || "N/A",
-    slug: fair.slug,
-    location: fair.location,
-  }));
+  const upcomingFairSlides = createSlides(upcomingFairs);
+  const currentFairSlides = createSlides(currentFairs);
+  const pastFairSlides = createSlides(pastFairs);
 
   return (
     <div className={styles.page}>
       <main className={styles.main}>
         <div className={styles.exhibitions_page}>
+          {/* Upcoming Fairs Section */}
+          {upcomingFairSlides.length > 0 && (
+            <section>
+              <p className={styles.title}>Upcoming Fairs</p>
+              <EmblaCarousel slides={upcomingFairSlides} type="fair" />
+            </section>
+          )}
+
           {/* Current Fairs Section */}
-          <section>
-            <p className={styles.title}>Current Fairs</p>
-            {currentFairSlides.length > 0 ? (
+          {currentFairSlides.length > 0 && (
+            <section>
+              <p className={styles.title}>Current Fairs</p>
               <EmblaCarousel slides={currentFairSlides} type="fair" />
-            ) : (
-              <p>No current fairs available.</p>
-            )}
-          </section>
+            </section>
+          )}
 
           {/* Past Fairs Section */}
-          <section>
-            <p className={styles.title}>Past Fairs</p>
-            {pastFairSlides.length > 0 ? (
+          {pastFairSlides.length > 0 && (
+            <section>
+              <p className={styles.title}>Past Fairs</p>
               <EmblaCarousel slides={pastFairSlides} type="fair" />
-            ) : (
-              <p>No past fairs available.</p>
-            )}
-          </section>
+            </section>
+          )}
         </div>
       </main>
       <footer className={styles.footer}></footer>

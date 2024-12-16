@@ -25,6 +25,16 @@ body {
   font-family: 'Roboto', sans-serif;
   font-display: swap;
 }
+section { 
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+p{
+  text-align: justify;
+  line-height: 1.5rem;
+}
+
 a:hover{
   animation-duration: 5ms;
   transition: color .3s ease-in-out;

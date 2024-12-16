@@ -124,7 +124,7 @@ export default function Artist({ params }) {
             <div className={styles.artist_page}>
               <div className={styles.artist_page_contents}>
                 <div>
-                  <p style={{ fontSize: "1.5rem" }}>{artist.bio[0]}</p>
+                  <p style={{ fontSize: '1.5rem', lineHeight: "1.75rem", textAlign: 'left'}}>{artist.bio[0]}</p>
                   <Link href="#bio">
                     <button
                       style={{
@@ -152,7 +152,7 @@ export default function Artist({ params }) {
                   className={styles.artist_page_contents_bio}
                   id="bio"
                 >
-                  <p className={styles.title}>BIO</p>
+                  <p className={styles.title} style={{marginBottom: '1rem', marginTop: '1rem'}}>BIO</p>
                   {artist.bio.map((paragraph, index) => (
                     <div key={index}>
                       <p>{paragraph}</p>

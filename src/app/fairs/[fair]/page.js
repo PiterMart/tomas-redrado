@@ -110,7 +110,7 @@ export default function Fair({ params }) {
                       <p key={index} >{paragraph}</p>
                   ))}
                   </div>
-            <p style={{fontSize: '2rem', width: '75%', margin: 'auto', textAlign: 'center'}}>{fair.description}</p>
+            <p style={{fontSize: '2rem', width: '75%', margin: 'auto', textAlign: 'center', lineHeight: "2.25rem"}}>{fair.description}</p>
             <h2 style={{ marginTop: "3rem", fontWeight: "200" }} className={styles.title}>
               Represented Artists
             </h2>

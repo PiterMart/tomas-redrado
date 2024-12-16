@@ -52,18 +52,16 @@ export default function Home() {
     fetchExhibitions();
   }, [exhibitionIds]);
 
-
   const exhibitionSlides = exhibitions.map((exhibition) => ({
     name: exhibition.name,
     image: exhibition.gallery[0]?.url || "/placeholder.jpg", // Fallback si no hay imagen
     openingDate: exhibition.openingDate,
     closingDate: exhibition.closingDate,
     slug: exhibition.slug,
-    headquarterSlug: headquarters.find((hq) => hq.exhibitions.includes(exhibition.id))?.slug,
+    headquarterSlug: headquarters.find((hq) => hq.exhibitions.includes(exhibition.id))?.name,
   }));
   const OPTIONS = {}
   const SLIDE_COUNT = 5
-  // const SLIDES = Array.from(Array(SLIDE_COUNT).keys())
 
   return (
     <div className={styles.page}>

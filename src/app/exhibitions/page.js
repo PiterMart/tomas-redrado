@@ -7,9 +7,31 @@ import Link from "next/link";
 import EmblaCarousel from "../carousel/EmblaCarousel";
 
 export default function Exhibitions() {
+  const [upcomingExhibitions, setUpcomingExhibitions] = useState([]);
   const [currentExhibitions, setCurrentExhibitions] = useState([]);
   const [pastExhibitions, setPastExhibitions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [headquarters, setHeadquarters] = useState([]);
+
+  useEffect(() => {
+    const fetchHeadquarters = async () => {
+      try {
+        const headquartersSnapshot = await getDocs(collection(firestore, "headquarters"));
+        const headquartersData = headquartersSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        const ids = headquartersData.flatMap((hq) => hq.exhibitions || []);
+        setHeadquarters(headquartersData);
+        setExhibitionIds(ids);
+      } catch (error) {
+        console.error("Error fetching headquarters:", error);
+      }
+    };
+
+    fetchHeadquarters();
+  }, []);
 
   const fetchExhibitions = async () => {
     try {
@@ -22,13 +44,21 @@ export default function Exhibitions() {
       });
 
       const now = new Date();
+
+      // Filter exhibitions
+      const upcoming = exhibitions.filter(
+        (exhibition) => new Date(exhibition.openingDate.toDate()) > now
+      );
       const current = exhibitions.filter(
-        (exhibition) => new Date(exhibition.closingDate.toDate()) >= now
+        (exhibition) =>
+          new Date(exhibition.openingDate.toDate()) <= now &&
+          new Date(exhibition.closingDate.toDate()) >= now
       );
       const past = exhibitions.filter(
         (exhibition) => new Date(exhibition.closingDate.toDate()) < now
       );
 
+      setUpcomingExhibitions(upcoming);
       setCurrentExhibitions(current);
       setPastExhibitions(past);
     } catch (error) {
@@ -44,43 +74,45 @@ export default function Exhibitions() {
 
   if (loading) return <p>Loading exhibitions...</p>;
 
-  // Create separate slide arrays for current and past exhibitions
-  const currentExhibitionSlides = currentExhibitions.map((exhibition) => ({
-    name: exhibition.name,
-    image: exhibition.gallery?.[0]?.url || "/placeholder.jpg",
-    openingDate: exhibition.openingDate?.toDate().toLocaleDateString() || "N/A",
-    closingDate: exhibition.closingDate?.toDate().toLocaleDateString() || "N/A",
-    slug: exhibition.slug || "",
-  }));
+  // Create slides for each category
+  const createSlides = (exhibitions) =>
+    exhibitions.map((exhibition) => ({
+      name: exhibition.name,
+      image: exhibition.gallery[0]?.url || "/placeholder.jpg", // Fallback si no hay imagen
+      openingDate: exhibition.openingDate,
+      closingDate: exhibition.closingDate,
+      slug: exhibition.slug,
+      headquarterSlug: headquarters.find((hq) => hq.exhibitions.includes(exhibition.id))?.slug,
+    }));
 
-  const pastExhibitionSlides = pastExhibitions.map((exhibition) => ({
-    name: exhibition.name,
-    image: exhibition.gallery?.[0]?.url || "/placeholder.jpg",
-    openingDate: exhibition.openingDate?.toDate().toLocaleDateString() || "N/A",
-    closingDate: exhibition.closingDate?.toDate().toLocaleDateString() || "N/A",
-    slug: exhibition.slug || "",
-  }));
+  const upcomingExhibitionSlides = createSlides(upcomingExhibitions);
+  const currentExhibitionSlides = createSlides(currentExhibitions);
+  const pastExhibitionSlides = createSlides(pastExhibitions);
 
   return (
     <div className={styles.page}>
       <main className={styles.main}>
         <div className={styles.exhibitions_page}>
-          <section>
-            <p className={styles.title}>Current Exhibitions</p>
-            {currentExhibitionSlides.length > 0 ? (
+          {upcomingExhibitionSlides.length > 0 && (
+            <section>
+              <p className={styles.title}>Upcoming Exhibitions</p>
+              <EmblaCarousel slides={upcomingExhibitionSlides} type="exhibitionSimple" />
+            </section>
+          )}
+
+          {currentExhibitionSlides.length > 0 && (
+            <section>
+              <p className={styles.title}>Current Exhibitions</p>
               <EmblaCarousel slides={currentExhibitionSlides} type="exhibitionSimple" />
-            ) : (
-              <p>No current exhibitions taking place.</p>
-            )}
-          </section>
-          <section>
-            <p className={styles.title}>Past Exhibitions</p>
-            {pastExhibitionSlides.length > 0 ? (
+            </section>
+          )}
+
+          {pastExhibitionSlides.length > 0 && (
+            <section>
+              <p className={styles.title}>Past Exhibitions</p>
               <EmblaCarousel slides={pastExhibitionSlides} type="exhibitionSimple" />
-            ) : (
-              <p>No past exhibitions available.</p>
-            )}
-          </section>
+            </section>
+          )}
         </div>
       </main>
       <footer className={styles.footer}></footer>
