@@ -87,7 +87,16 @@ const updateFair = async () => {
     }
 
     const slug = generateSlug(name);
-    const galleryData = await uploadImages(slug);
+
+    let galleryData;
+    if (images.length > 0) {
+      // Only upload images if new ones are added
+      galleryData = await uploadImages(slug);
+    } else {
+      // Fetch current gallery data from Firebase if no new images are provided
+      const fairDoc = await getDoc(doc(firestore, "fairs", selectedFair));
+      galleryData = fairDoc.exists() ? fairDoc.data().gallery || [] : [];
+    }
 
     const openingDateTimestamp = Timestamp.fromDate(new Date(openingDate));
     const closingDateTimestamp = Timestamp.fromDate(new Date(closingDate));
@@ -115,6 +124,7 @@ const updateFair = async () => {
     setLoading(false);
   }
 };
+
 
 
   useEffect(() => {

@@ -66,6 +66,7 @@ export default function Headquarter({ params }) {
   const exhibitionSlides = exhibitions.map((exhibition) => ({
     name: exhibition.name,
     image: exhibition.gallery[0]?.url || "/placeholder.jpg",
+    banner: exhibition.banner,
     openingDate: exhibition.openingDate,
     closingDate: exhibition.closingDate,
     slug: exhibition.slug,

@@ -12,13 +12,13 @@ export default function Home() {
     <div className={styles.page}>
       <main className={styles.main}>
         {/* <p className={styles.title}>ARTIST UPLOADER</p>
-        <ArtistUploader/>
+        <ArtistUploader/> */}
         <p className={styles.title}>EXHIBITION UPLOADER</p>
         <ExhibitionForm/>
-        <p className={styles.title}>FAIR UPLOADER</p>
+        {/* <p className={styles.title}>FAIR UPLOADER</p>
         <FairUploader/> */}
-        <p className={styles.title}>FAIR UPDATER</p>
-        <FairUpdater/>
+        {/* <p className={styles.title}>FAIR UPDATER</p>
+        <FairUpdater/> */}
         {/* <p className={styles.title}>ARTIST LIST</p>
         <ArtistList/> */}
       </main>

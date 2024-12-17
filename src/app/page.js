@@ -54,6 +54,7 @@ export default function Home() {
 
   const exhibitionSlides = exhibitions.map((exhibition) => ({
     name: exhibition.name,
+    banner: exhibition.banner,
     image: exhibition.gallery[0]?.url || "/placeholder.jpg", // Fallback si no hay imagen
     openingDate: exhibition.openingDate,
     closingDate: exhibition.closingDate,
