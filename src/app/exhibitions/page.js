@@ -82,6 +82,7 @@ export default function Exhibitions() {
       openingDate: exhibition.openingDate,
       closingDate: exhibition.closingDate,
       slug: exhibition.slug,
+      banner: exhibition.banner,
       headquarterSlug: headquarters.find((hq) => hq.exhibitions.includes(exhibition.id))?.name,
     }));
 

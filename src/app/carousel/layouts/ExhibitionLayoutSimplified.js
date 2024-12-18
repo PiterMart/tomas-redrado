@@ -22,7 +22,7 @@ const ExhibitionLayout = ({ slide }) => {
       <Link href={`/headquarters/${slide.headquarterSlug}/${slide.slug}`} style={{margin: '0px', padding: '0px', width: '100vw'}}>
         <Image
           className={styles.embla__slide__img}
-          src={slide.image}
+          src={slide.banner}
           alt= "image of the exhibition"
           width={0}
           height={0}
