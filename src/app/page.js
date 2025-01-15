@@ -52,7 +52,7 @@ export default function Home() {
     fetchExhibitions();
   }, [exhibitionIds]);
 
-  const EXCLUDED_EXHIBITION_ID = "0yPGjAIuqI3m5Uw24T47"; // Replace with the ID of the exhibition to exclude
+  const EXCLUDED_EXHIBITION_ID = ""; // Replace with the ID of the exhibition to exclude
 
   const exhibitionSlides = exhibitions
     .filter((exhibition) => exhibition.id !== EXCLUDED_EXHIBITION_ID) // Exclude the specific exhibition

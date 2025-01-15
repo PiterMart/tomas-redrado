@@ -29,27 +29,27 @@ export default function Nav() {
         return currentPath === path;
     };
 
-    const controlNavbar = () => {
-        if (typeof window !== 'undefined') {
-            if (window.scrollY > lastScrollY) {
-                // scrolling down
-                setIsVisible(false);
-            } else {
-                // scrolling up
-                setIsVisible(true);
-            }
-            setLastScrollY(window.scrollY);
-        }
-    };
+    // const controlNavbar = () => {
+    //     if (typeof window !== 'undefined') {
+    //         if (window.scrollY > lastScrollY) {
+    //             // scrolling down
+    //             setIsVisible(false);
+    //         } else {
+    //             // scrolling up
+    //             setIsVisible(true);
+    //         }
+    //         setLastScrollY(window.scrollY);
+    //     }
+    // };
 
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            window.addEventListener('scroll', controlNavbar);
-            return () => {
-                window.removeEventListener('scroll', controlNavbar);
-            };
-        }
-    }, [lastScrollY]);
+    // useEffect(() => {
+    //     if (typeof window !== 'undefined') {
+    //         window.addEventListener('scroll', controlNavbar);
+    //         return () => {
+    //             window.removeEventListener('scroll', controlNavbar);
+    //         };
+    //     }
+    // }, [lastScrollY]);
 
     return (
         <div className={`${styles.nav} ${isVisible ? styles.nav_visible : styles.nav_hidden}`}>

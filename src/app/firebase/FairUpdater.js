@@ -30,102 +30,105 @@ export default function FairUpdater() {
   const [imageDescriptions, setImageDescriptions] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
   const fileInputRef = useRef(null);
-
   const [fairs, setFairs] = useState([]);
-const [selectedFair, setSelectedFair] = useState(null);
+  const [selectedFair, setSelectedFair] = useState(null);
 
-// Fetch all fairs on load
-useEffect(() => {
-  const fetchFairs = async () => {
+  // Fetch all fairs on load
+  useEffect(() => {
+    const fetchFairs = async () => {
+      try {
+        const fairSnapshot = await getDocs(collection(firestore, "fairs"));
+        const fairsData = fairSnapshot.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        setFairs(fairsData);
+      } catch (error) {
+        console.error("Error fetching fairs:", error);
+      }
+    };
+    fetchFairs();
+  }, []);
+
+  // Load selected fair data into the form
+  const handleFairSelection = async (fairId) => {
     try {
-      const fairSnapshot = await getDocs(collection(firestore, "fairs"));
-      const fairsData = fairSnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      setFairs(fairsData);
+      const fairDoc = await getDoc(doc(firestore, "fairs", fairId));
+      if (fairDoc.exists()) {
+        const fairData = fairDoc.data();
+        setSelectedFair(fairId);
+        setFormData({
+          ...fairData,
+          openingDate: fairData.openingDate.toDate(),
+          closingDate: fairData.closingDate.toDate(),
+        });
+        setImageDescriptions(fairData.gallery?.map((img) => img.description) || []);
+        setImagePreviews(fairData.gallery?.map((img) => img.url) || []);
+        setSelectedArtists(fairData.artists?.map((a) => a.artistSlug) || []);
+        const artworksByArtist = {};
+        (fairData.artists || []).forEach((artist) => {
+          artworksByArtist[artist.artistSlug] = artist.selectedArtworks || [];
+        });
+        setSelectedArtworks(artworksByArtist);
+
+      }
     } catch (error) {
-      console.error("Error fetching fairs:", error);
+      console.error("Error fetching fair:", error);
     }
   };
-  fetchFairs();
-}, []);
 
+  const updateFair = async () => {
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
 
+    try {
+      if (!selectedFair) throw new Error("No fair selected for updating.");
 
-// Load selected fair data into the form
-const handleFairSelection = async (fairId) => {
-  try {
-    const fairDoc = await getDoc(doc(firestore, "fairs", fairId));
-    if (fairDoc.exists()) {
-      const fairData = fairDoc.data();
-      setSelectedFair(fairId);
-      setFormData({
-        ...fairData,
-        openingDate: fairData.openingDate.toDate(),
-        closingDate: fairData.closingDate.toDate(),
-      });
-      setImageDescriptions(fairData.gallery?.map((img) => img.description) || []);
+      const { name, openingDate, closingDate, location, direction } = formData;
+
+      if (!name || !openingDate || !closingDate || !location || !direction) {
+        throw new Error("Please complete all required fields.");
+      }
+
+      const slug = generateSlug(name);
+
+      let galleryData;
+      if (images.length > 0) {
+        // Only upload images if new ones are added
+        galleryData = await uploadImages(slug);
+      } else {
+        // Fetch current gallery data from Firebase if no new images are provided
+        const fairDoc = await getDoc(doc(firestore, "fairs", selectedFair));
+        galleryData = fairDoc.exists() ? fairDoc.data().gallery || [] : [];
+      }
+
+      const openingDateTimestamp = Timestamp.fromDate(new Date(openingDate));
+      const closingDateTimestamp = Timestamp.fromDate(new Date(closingDate));
+
+      const updatedFairData = {
+        ...formData,
+        slug,
+        gallery: galleryData,
+        openingDate: openingDateTimestamp,
+        closingDate: closingDateTimestamp,
+        artists: selectedArtists.map((artistSlug) => ({
+          artistSlug,
+          selectedArtworks: selectedArtworks[artistSlug] || [],
+        })),
+      };
+
+      // Update the fair in Firebase
+      await updateDoc(doc(firestore, "fairs", selectedFair), updatedFairData);
+
+      setSuccess("Fair updated successfully!");
+    } catch (error) {
+      console.error("Error updating fair:", error);
+      setError("Failed to update fair. Please try again.");
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.error("Error fetching fair:", error);
-  }
-};
-
-const updateFair = async () => {
-  setLoading(true);
-  setError(null);
-  setSuccess(null);
-
-  try {
-    if (!selectedFair) throw new Error("No fair selected for updating.");
-
-    const { name, openingDate, closingDate, location, direction } = formData;
-
-    if (!name || !openingDate || !closingDate || !location || !direction) {
-      throw new Error("Please complete all required fields.");
-    }
-
-    const slug = generateSlug(name);
-
-    let galleryData;
-    if (images.length > 0) {
-      // Only upload images if new ones are added
-      galleryData = await uploadImages(slug);
-    } else {
-      // Fetch current gallery data from Firebase if no new images are provided
-      const fairDoc = await getDoc(doc(firestore, "fairs", selectedFair));
-      galleryData = fairDoc.exists() ? fairDoc.data().gallery || [] : [];
-    }
-
-    const openingDateTimestamp = Timestamp.fromDate(new Date(openingDate));
-    const closingDateTimestamp = Timestamp.fromDate(new Date(closingDate));
-
-    const updatedFairData = {
-      ...formData,
-      slug,
-      gallery: galleryData,
-      openingDate: openingDateTimestamp,
-      closingDate: closingDateTimestamp,
-      artists: selectedArtists.map((artistSlug) => ({
-        artistSlug,
-        selectedArtworks: selectedArtworks[artistSlug] || [],
-      })),
-    };
-
-    // Update the fair in Firebase
-    await updateDoc(doc(firestore, "fairs", selectedFair), updatedFairData);
-
-    setSuccess("Fair updated successfully!");
-  } catch (error) {
-    console.error("Error updating fair:", error);
-    setError("Failed to update fair. Please try again.");
-  } finally {
-    setLoading(false);
-  }
-};
-
-
+  };
 
   useEffect(() => {
     const fetchArtistData = async () => {
@@ -168,7 +171,6 @@ const updateFair = async () => {
   
     fetchArtistData();
   }, []);
-  
 
   const handleArtistSelection = (artist) => {
     const isSelected = selectedArtists.includes(artist.slug);
@@ -178,11 +180,10 @@ const updateFair = async () => {
   
     setSelectedArtists(updatedArtists);
   
-
-    if (!isSelected) {
+    if (!isSelected && !selectedArtworks[artist.slug]) {
       setSelectedArtworks((prev) => ({
         ...prev,
-        [artist.slug]: [], 
+        [artist.slug]: [],
       }));
     }
   };
@@ -282,8 +283,8 @@ const updateFair = async () => {
     setImagePreviews([]);
     setNewCuratorialText("");
     if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
+      fileInputRef.current.value = null;
+    }    
   }
 
   const addNewFair = async () => {
@@ -399,7 +400,24 @@ const updateFair = async () => {
         <button onClick={addCuratorialText}>Add Curatorial Text</button>
         <ul>
           {formData.curatorialTexts.map((text, index) => (
-            <li key={`${text}-${index}`}>{text}</li>
+            <li key={`${text}-${index}`}>
+              <textarea
+                value={text}
+                onChange={(e) => {
+                  const updatedTexts = [...formData.curatorialTexts];
+                  updatedTexts[index] = e.target.value;
+                  setFormData((prev) => ({ ...prev, curatorialTexts: updatedTexts }));
+                }}
+              />
+              <button
+                onClick={() => {
+                  const updatedTexts = formData.curatorialTexts.filter((_, i) => i !== index);
+                  setFormData((prev) => ({ ...prev, curatorialTexts: updatedTexts }));
+                }}
+              >
+                Remove
+              </button>
+            </li>
           ))}
         </ul>
       </div>
@@ -444,9 +462,18 @@ const updateFair = async () => {
           <p>Loading artists...</p>
         )}
       </div>
-
       <div>
         <p>Fair Images</p>
+        {imagePreviews.map((preview, index) => (
+          <div key={`current-image-${index}`}>
+            <img src={preview} alt={`Current image ${index + 1}`} className={styles.artworkPreviewImage} />
+            <textarea
+              placeholder="Image Description"
+              value={imageDescriptions[index] || ""}
+              onChange={(e) => handleImageDescriptionChange(index, e.target.value)}
+            />
+          </div>
+        ))}
         <input type="file" multiple onChange={handleFileChange} ref={fileInputRef} />
         {images.map((_, index) => (
           <div key={`image-${index}`}>

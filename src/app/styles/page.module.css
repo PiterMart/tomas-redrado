@@ -113,7 +113,7 @@
   justify-content: normal;
   margin-top: 2rem;
   gap: 3rem;
-  width: 800px;
+  width: 950px;
   margin: auto;
   padding-top: 10rem;
 }
@@ -161,7 +161,7 @@
   gap: 5rem;
 }
 .exhibitions_page{
-  padding-top: 8rem;
+  padding-top: 6rem;
   display: flex;
   flex-direction: column;
   gap: 5rem;
@@ -263,6 +263,7 @@
   gap: 1.5rem;
   font-size: 1rem;
   max-width: 1000px;
+  width: 100%;
   border: 1px solid;
   padding: 1.5rem;
   margin: auto;

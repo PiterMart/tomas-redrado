@@ -12,7 +12,7 @@ const ExhibitionLayout = ({ slide }) => {
   };
 
   return (
-    <div className={styles.embla__slide__inner} style={{height: '50vh'}}>
+    <div className={styles.embla__slide__inner} style={{height: '75vh'}}>
       <div className={styles.embla__slide__text}>
         <p style={{ fontSize: "1.25rem", fontWeight: "600" }}>{slide.name}</p>
         <p style={{ fontSize: "1rem", fontWeight: "400" }}>Tomas Redrado Art - {slide.headquarterSlug}</p>

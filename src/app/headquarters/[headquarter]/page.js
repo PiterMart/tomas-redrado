@@ -151,6 +151,7 @@ export default function Headquarter({ params }) {
             <div style={{display: 'flex', flexDirection: 'column', gap: "1rem"}}>
               <p className={styles.title} >Arthouse</p>
               <p style={{textAlign: 'justify', lineHeight: '1.3rem'}}>{headquarters.arthouse}</p>
+              <img src={headquarters.arthouseimage} alt={headquarters.name} style={{ width: "100%" }} />
             </div>
           )}
           {/* Conditionally render the artist residencies section */}

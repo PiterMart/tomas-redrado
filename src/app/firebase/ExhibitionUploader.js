@@ -152,6 +152,29 @@ export default function ExhibitionForm() {
     }
   };
 
+  const [bannerImage, setBannerImage] = useState(null);
+  const [bannerPreview, setBannerPreview] = useState(null);
+
+  const handleBannerChange = (e) => {
+    const file = e.target.files[0];
+    setBannerImage(file);
+    setBannerPreview(file ? URL.createObjectURL(file) : null);
+  };
+
+  const uploadBannerImage = async (exhibitionSlug) => {
+    if (!bannerImage && images.length === 0) {
+      throw new Error("No images provided for the banner fallback.");
+    }
+
+    const bannerFile = bannerImage || images[0]; // Use the banner image or fallback to the first gallery image.
+    const bannerRef = ref(
+      storage,
+      `exhibitions/${exhibitionSlug}/images/${exhibitionSlug}_banner`
+    );
+    await uploadBytes(bannerRef, bannerFile);
+    return await getDownloadURL(bannerRef);
+  };
+
   const handleImageDescriptionChange = (index, value) => {
     const updatedDescriptions = [...imageDescriptions];
     updatedDescriptions[index] = value || "";
@@ -213,8 +236,11 @@ export default function ExhibitionForm() {
   
 
       const slug = generateSlug(name);
+
       const galleryData = await uploadImages(slug);
       if (!galleryData) throw new Error("Image upload failed.");
+
+      const bannerUrl = await uploadBannerImage(slug);
   
 
       const openingDateTimestamp = Timestamp.fromDate(new Date(openingDate));
@@ -225,6 +251,7 @@ export default function ExhibitionForm() {
         ...formData,
         slug,
         gallery: galleryData,
+        banner: bannerUrl,
         openingDate: openingDateTimestamp,
         closingDate: closingDateTimestamp,
         receptionTime: formData.receptionTime || "",
@@ -399,6 +426,17 @@ export default function ExhibitionForm() {
             )}
           </div>
         ))}
+      </div>
+      <div>
+        <p>Banner Image</p>
+        <input type="file" onChange={handleBannerChange} />
+        {bannerPreview && (
+          <img
+            src={bannerPreview}
+            alt="Banner Preview"
+            className={styles.artworkPreviewImage}
+          />
+        )}
       </div>
 
       {error && <p className={styles.error}>{error}</p>}
