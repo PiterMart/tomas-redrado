@@ -52,15 +52,19 @@ export default function Home() {
     fetchExhibitions();
   }, [exhibitionIds]);
 
-  const exhibitionSlides = exhibitions.map((exhibition) => ({
-    name: exhibition.name,
-    banner: exhibition.banner,
-    image: exhibition.gallery[0]?.url || "/placeholder.jpg", // Fallback si no hay imagen
-    openingDate: exhibition.openingDate,
-    closingDate: exhibition.closingDate,
-    slug: exhibition.slug,
-    headquarterSlug: headquarters.find((hq) => hq.exhibitions.includes(exhibition.id))?.name,
-  }));
+  const EXCLUDED_EXHIBITION_ID = "0yPGjAIuqI3m5Uw24T47"; // Replace with the ID of the exhibition to exclude
+
+  const exhibitionSlides = exhibitions
+    .filter((exhibition) => exhibition.id !== EXCLUDED_EXHIBITION_ID) // Exclude the specific exhibition
+    .map((exhibition) => ({
+      name: exhibition.name,
+      banner: exhibition.banner,
+      image: exhibition.gallery[0]?.url || "/placeholder.jpg", // Fallback if no image
+      openingDate: exhibition.openingDate,
+      closingDate: exhibition.closingDate,
+      slug: exhibition.slug,
+      headquarterSlug: headquarters.find((hq) => hq.exhibitions.includes(exhibition.id))?.name,
+    }));
   const OPTIONS = {}
   const SLIDE_COUNT = 5
 
