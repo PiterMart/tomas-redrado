@@ -7,12 +7,13 @@ import ExhibitionForm from "../firebase/ExhibitionUploader";
 import ExhibitionUpdater from "../firebase/ExhibitionUpdater";
 import FairUploader from "../firebase/FairUploader";
 import FairUpdater from "../firebase/FairUpdater";
+import ArtistUpdater from "../firebase/ArtistUpdater";
 
 export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main} style={{maxWidth: '1500px', paddingTop: '10rem'}}>
-        <div style={{display: "flex", flexDirection: "column", width: "100%", margin: "auto", gap: "1.5rem", alignItems: "center" }}>
+        {/* <div style={{display: "flex", flexDirection: "column", width: "100%", margin: "auto", gap: "1.5rem", alignItems: "center" }}>
           <p className={styles.title}>ARTIST UPLOADER</p>
           <ArtistUploader/>
         </div>
@@ -27,15 +28,19 @@ export default function Home() {
         <div style={{display: "flex", flexDirection: "column", width: "100%", margin: "auto", gap: "1.5rem", alignItems: "center" }}>
           <p className={styles.title}>FAIR UPLOADER</p>
           <FairUploader/>
-        </div>
-        <div style={{display: "flex", flexDirection: "column", width: "100%", margin: "auto", gap: "1.5rem", alignItems: "center" }}>
+        </div> */}
+        {/* <div style={{display: "flex", flexDirection: "column", width: "100%", margin: "auto", gap: "1.5rem", alignItems: "center" }}>
           <p className={styles.title}>FAIR UPDATER</p>
           <FairUpdater/>
-        </div>
-        <div style={{display: "flex", flexDirection: "column", width: "100%", margin: "auto", gap: "1.5rem", alignItems: "center" }}>
+        </div> */}
+        {/* <div style={{display: "flex", flexDirection: "column", width: "100%", margin: "auto", gap: "1.5rem", alignItems: "center" }}>
           <p className={styles.title}>ARTIST LIST</p>
           <ArtistList/>
-        </div>
+        </div> */}
+        {/* <div style={{display: "flex", flexDirection: "column", width: "100%", margin: "auto", gap: "1.5rem", alignItems: "center" }}>
+          <p className={styles.title}>ARTIST UPDATER</p>
+          <ArtistUpdater/>
+        </div> */}
       </main>
       <footer className={styles.footer}>
       </footer>

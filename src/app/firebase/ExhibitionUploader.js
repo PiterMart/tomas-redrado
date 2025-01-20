@@ -11,7 +11,6 @@ export default function ExhibitionForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-
   const [artists, setArtists] = useState([]);
   const [artworks, setArtworks] = useState({}); 
   const [selectedArtists, setSelectedArtists] = useState([]);

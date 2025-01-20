@@ -6,6 +6,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "../styles/page.module.css";
+import imageCompression from 'browser-image-compression';
 
 export default function FairUpdater() {
   const [loading, setLoading] = useState(false);
@@ -25,6 +26,7 @@ export default function FairUpdater() {
     location: "", // New field for location
     direction: "", // New field for direction
   });
+
   const [newCuratorialText, setNewCuratorialText] = useState("");
   const [images, setImages] = useState([]);
   const [imageDescriptions, setImageDescriptions] = useState([]);
@@ -248,18 +250,41 @@ export default function FairUpdater() {
     setImageDescriptions(updatedDescriptions);
   };
 
-  const uploadImages = async (fairSlug) => {
-    const galleryData = [];
-    for (let i = 0; i < images.length; i++) {
-      const imageFile = images[i];
-      const description = imageDescriptions[i] || "";
+const uploadImages = async (fairSlug) => {
+  const galleryData = [];
+  
+  for (let i = 0; i < images.length; i++) {
+    const imageFile = images[i];
+    const description = imageDescriptions[i] || "";
+
+    try {
+      // Compress the image before uploading
+      const compressedFile = await imageCompression(imageFile, {
+        maxSizeMB: 1.5, // Adjust the maximum size in MB
+        maxWidthOrHeight: 2000, // Adjust the maximum width or height
+        useWebWorker: true, // Use web workers for better performance
+      });
+
+      // Define the storage path
       const imageRef = ref(storage, `fairs/${fairSlug}/images/${fairSlug}_image_${i + 1}`);
-      await uploadBytes(imageRef, imageFile);
+      
+      // Upload the compressed file
+      await uploadBytes(imageRef, compressedFile);
+
+      // Get the download URL
       const downloadURL = await getDownloadURL(imageRef);
+
+      // Push the image URL and description to the gallery data
       galleryData.push({ url: downloadURL, description });
+    } catch (error) {
+      console.error(`Error compressing or uploading image ${i + 1}:`, error);
+      throw new Error(`Failed to upload image ${i + 1}`);
     }
-    return galleryData;
-  };
+  }
+
+  return galleryData;
+};
+
 
   const generateSlug = (name) => {
     return name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
@@ -276,6 +301,7 @@ export default function FairUpdater() {
       location: "",
       direction: "",
     });
+    setSelectedFair(null);
     setSelectedArtists([]);
     setSelectedArtworks({});
     setImages([]);
@@ -350,17 +376,26 @@ export default function FairUpdater() {
   return (
     <div className={styles.form}>
       <div>
-        <select onChange={(e) => handleFairSelection(e.target.value)} value={selectedFair || ""}>
-          <option value="" disabled>
-            Select a Fair to Edit
+      <select
+        onChange={(e) => handleFairSelection(e.target.value)}
+        value={selectedFair || ""}
+      >
+        <option value="" disabled>
+          Select a Fair to Edit
+        </option>
+        {fairs.map((fair) => (
+          <option key={fair.id} value={fair.id}>
+            {fair.name}
           </option>
-          {fairs.map((fair) => (
-            <option key={fair.id} value={fair.id}>
-              {fair.name}
-            </option>
-          ))}
-        </select>
+        ))}
+      </select>
+        {selectedFair && (
+          <button onClick={resetForm} style={{ marginLeft: "10px" }}>
+            Cancel
+          </button>
+        )}
       </div>
+
       <input
         name="name"
         placeholder="Fair Name"

@@ -42,11 +42,9 @@ export default function ArtistUploader() {
   const [newManifestoParagraph, setNewManifestoParagraph] = useState("");
   const [newBioParagraph, setNewBioParagraph] = useState("");
 
-
   const deleteArtwork = (index) => {
     setArtworks((prevArtworks) => prevArtworks.filter((_, i) => i !== index));
   };
-  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -154,7 +152,6 @@ export default function ArtistUploader() {
       throw new Error("Profile picture compression failed.");
     }
   };
-  
 
   const handleCvChange = (e) => {
     const file = e.target.files[0];
@@ -209,7 +206,6 @@ export default function ArtistUploader() {
         const imgDownloadURL = await getDownloadURL(detailImageRef);
         imagesData.push(imgDownloadURL);
       }
-  
         // Save artwork document to Firestore (Firestore auto-generates artworkId)
         const artworkDocRef = await addDoc(artworksCollection, {
           artworkSlug,  // Store artworkSlug for easy reference
@@ -234,9 +230,6 @@ export default function ArtistUploader() {
   
     return uploadedArtworkIds; // Return Firestore document IDs (artworkIds)
   };
-  
-  
-  
 
   const uploadCv = async (artistSlug) => {
     if (!cvFile) return null;
@@ -324,12 +317,10 @@ export default function ArtistUploader() {
       setLoading(false);
     }
   }
-  
-  
-
 
   return (
     <div className={styles.form}>
+      
       {/* Profile Picture Input */}
       <div className={styles.profilePictureContainer}>
         <input
@@ -347,7 +338,6 @@ export default function ArtistUploader() {
             className={styles.profilePreviewImage}
           />
         )}
-
       </div>
 
       {/* Name Input */}
@@ -368,6 +358,7 @@ export default function ArtistUploader() {
         onChange={handleChange}
       />
       <p className={styles.subtitle}>BIRTH DATEE</p>
+
       {/* Birth Date Input */}
       <input
         type="date"
@@ -421,7 +412,6 @@ export default function ArtistUploader() {
       {/* CV File Input */}
       <p className={styles.subtitle}>CV (PDF)</p>
       <input type="file" name="cv" accept=".pdf" onChange={handleCvChange} />
-
 
       {/* Gallery Images Input */}
       <p className={styles.subtitle}>Artworks</p>

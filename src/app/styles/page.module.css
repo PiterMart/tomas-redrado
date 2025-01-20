@@ -165,7 +165,7 @@
   display: flex;
   flex-direction: column;
   gap: 5rem;
-  width: 80vw;
+  width: 90vw;
   margin: auto;
 }
 
@@ -276,7 +276,7 @@
 .form textarea{
   font-size: 1rem;
   padding: 0.5rem;
-  height: 30vh;
+  height: 5rem;
   width: 100%;
 }
 
@@ -289,16 +289,19 @@
 }
 .artist_list ul {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: 1rem;
 }
 .artist_list li{
   display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  flex-direction: row;
+  gap: 0.5rem;
   max-width: 1000px;
+  width: 75%;
   padding: 1rem;
   border: 1px solid;
+  margin: auto;
 }
 .artist_list_information{
   display: flex;
@@ -383,14 +386,12 @@
     padding: 1rem;
     margin-top: 6rem;
   }
-  .artwork_details{
-    padding-left: 2rem;
-  }
   .exhibition_page{
     padding-top: 8rem;
     display: flex;
     flex-direction: column;
     gap: 3rem;
+    width: 95;
   }
   .video{
     width: 100%;

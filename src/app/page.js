@@ -55,16 +55,29 @@ export default function Home() {
   const EXCLUDED_EXHIBITION_ID = ""; // Replace with the ID of the exhibition to exclude
 
   const exhibitionSlides = exhibitions
-    .filter((exhibition) => exhibition.id !== EXCLUDED_EXHIBITION_ID) // Exclude the specific exhibition
-    .map((exhibition) => ({
+  .filter((exhibition) => exhibition.id !== EXCLUDED_EXHIBITION_ID) // Exclude the specific exhibition
+  .map((exhibition) => {
+    // Ensure proper conversion from Firestore Timestamp to Date
+    const openingDate = exhibition.openingDate instanceof Date
+      ? exhibition.openingDate
+      : exhibition.openingDate?.toDate ? exhibition.openingDate.toDate() : new Date(exhibition.openingDate);
+
+    const closingDate = exhibition.closingDate instanceof Date
+      ? exhibition.closingDate
+      : exhibition.closingDate?.toDate ? exhibition.closingDate.toDate() : new Date(exhibition.closingDate);
+
+    return {
       name: exhibition.name,
       banner: exhibition.banner,
       image: exhibition.gallery[0]?.url || "/placeholder.jpg", // Fallback if no image
-      openingDate: exhibition.openingDate,
-      closingDate: exhibition.closingDate,
+      openingDate,
+      closingDate,
       slug: exhibition.slug,
       headquarterSlug: headquarters.find((hq) => hq.exhibitions.includes(exhibition.id))?.name,
-    }));
+    };
+  })
+  .sort((a, b) => b.openingDate - a.openingDate); // Sort by most recent openingDate
+
   const OPTIONS = {}
   const SLIDE_COUNT = 5
 

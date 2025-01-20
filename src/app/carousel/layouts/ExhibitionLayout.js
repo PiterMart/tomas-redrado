@@ -5,11 +5,23 @@ import Image from "next/image"
 
 
 const ExhibitionLayout = ({ slide }) => {
-  const formatDate = (timestamp) => {
-    if (!timestamp || !timestamp.seconds) return "";
-    const date = new Date(timestamp.seconds * 1000);
-    return date.toLocaleDateString("en-GB", { day: "2-digit", month: "short" });
+  const formatDate = (date) => {
+    // Check if the date is a Firestore Timestamp or a JavaScript Date object
+    if (date instanceof Date && !isNaN(date)) {
+      return date.toLocaleDateString("en-GB", { day: "2-digit", month: "short" });
+    }
+  
+    // If it's a Firestore Timestamp, convert it to a Date object
+    if (date && date.seconds) {
+      const timestampDate = new Date(date.seconds * 1000);
+      return timestampDate.toLocaleDateString("en-GB", { day: "2-digit", month: "short" });
+    }
+  
+    // If it's neither, return an empty string
+    return "";
   };
+
+
 
   return (
     <div className={styles.embla__slide__inner}>
