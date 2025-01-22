@@ -60,6 +60,19 @@ button{
   padding: 0.5rem;
 }
 
+.toggleButton {
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.toggleButton:hover {
+  background-color: #0056b3;
+}
+
+
+
+
 a {
   color: inherit;
   text-decoration: none;

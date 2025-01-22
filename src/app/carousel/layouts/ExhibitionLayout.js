@@ -21,8 +21,6 @@ const ExhibitionLayout = ({ slide }) => {
     return "";
   };
 
-
-
   return (
     <div className={styles.embla__slide__inner}>
       <div className={styles.embla__slide__text}>

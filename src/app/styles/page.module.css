@@ -42,10 +42,15 @@
   font-size: 3rem;
   font-weight: 300;
   line-height: 1;
+  text-align: left;
 }
 .subtitle{
   font-size: 1.5rem;
   font-weight: 400;
+}
+.paragraph{
+  width: 70%;
+  margin: auto;
 }
 .hero{
   width: 100%;
@@ -396,6 +401,9 @@
   .video{
     width: 100%;
     height: auto;
+  }
+  .paragraph{
+    width: 100%;
   }
   
 }

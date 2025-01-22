@@ -9,6 +9,7 @@ export default function Exhibition({ params }) {
   const { exhibition: exhibitionSlug } = params; // Get slug from params
   const [exhibition, setExhibition] = useState(null); // State to store the exhibition data
   const [artistsData, setArtistsData] = useState([]); // State to store the artist details
+  const [isCuratorialTextOpen, setIsCuratorialTextOpen] = useState(false); // State for curatorial text visibility
 
   // Fetch the exhibition details based on the slug
   const fetchExhibition = async () => {
@@ -105,7 +106,43 @@ export default function Exhibition({ params }) {
           <div className={styles.exhibition_page}>
             <p className={styles.title}>{exhibition.name}</p>
             <EmblaCarousel slides={exhibitionSlides} type="picture" />
-            <p style={{fontSize: '2rem', width: '75%', margin: 'auto', textAlign: 'center', lineHeight: "2.25rem"}}>{exhibition.description}</p>
+            <p
+              className={styles.paragraph}
+              style={{ fontSize: "2rem", margin: "auto", textAlign: "center", lineHeight: "2.25rem" }}
+            >
+              {exhibition.description}
+            </p>
+            {exhibition.curatorialTexts && exhibition.curatorialTexts.length > 0 && (
+              <div className={styles.artist_page_contents_bio} style={{ position: "relative" }}>
+                <p className={styles.title} style={{ marginTop: "3rem", fontWeight: "200" }}>
+                  Curatorial Text
+                </p>
+                {isCuratorialTextOpen &&
+                  exhibition.curatorialTexts.map((paragraph, index) => (
+                    <div key={index}>
+                      <p className={styles.paragraph}>{paragraph}</p>
+                    </div>
+                  ))}
+                <button
+                  onClick={() => setIsCuratorialTextOpen(!isCuratorialTextOpen)}
+                  className={styles.toggleButton}
+                  style={{
+                    position: "absolute",
+                    bottom: "-45px",
+                    left: "1.25rem",
+                    transform: "translateX(-50%)",
+                    padding: "10px 20px",
+                    backgroundColor: "transparent",
+                    color: "black",
+                    border: "none",
+                    cursor: "pointer",
+                    fontWeight: "300",
+                  }}
+                >
+                  {isCuratorialTextOpen ? "Close" : "Read"}
+                </button>
+              </div>
+            )}
             <h2 style={{ marginTop: "3rem", fontWeight: "200" }} className={styles.title}>
               Represented Artists
             </h2>
