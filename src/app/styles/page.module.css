@@ -408,3 +408,76 @@
   
 }
 
+
+.artworkPreviewImage {
+  max-width: 400px;
+  margin: 10px 0;
+}
+
+.detailImagesContainer {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 10px 0;
+}
+
+.detailPreviewImage {
+  max-width: 150px;
+  max-height: 150px;
+  object-fit: contain;
+  border: 1px solid #ddd;
+}
+
+.paragraphContainer {
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #eee;
+}
+
+.paragraphContainer textarea {
+  width: 100%;
+  min-height: 80px;
+}
+
+.artworkFormSection {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.artworkMetadata {
+  display: grid;
+  grid-gap: 10px;
+  margin-bottom: 20px;
+}
+
+.uploadGroup {
+  margin: 15px 0;
+}
+
+.previews {
+  margin-top: 20px;
+}
+
+.mainPreview img {
+  max-width: 400px;
+  max-height: 400px;
+  object-fit: contain;
+}
+
+.detailPreviews {
+  margin-top: 15px;
+}
+
+.detailImages {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.detailImages img {
+  max-width: 150px;
+  max-height: 150px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}

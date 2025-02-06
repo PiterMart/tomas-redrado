@@ -2,7 +2,7 @@
 import { useEffect, useState, useRef } from "react";
 import { firestore, storage } from "./firebaseConfig";
 import { getDocs, addDoc, collection, doc, updateDoc, Timestamp, arrayUnion, getDoc } from "firebase/firestore"; 
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, refFromURL, uploadBytes, getDownloadURL } from "firebase/storage";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "../styles/page.module.css";
@@ -11,7 +11,6 @@ export default function ExhibitionUpdater() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-
   const [headquarters, setHeadquarters] = useState([]);
   const [selectedHeadquarters, setSelectedHeadquarters] = useState([]);
   const [formData, setFormData] = useState({
@@ -121,11 +120,6 @@ export default function ExhibitionUpdater() {
     }
   };
 
-  // Step 2: Handle form data updates, curatorial texts, image handling, etc. (same as you did in the fair updater)
-  
-  // ... [add form field handlers, upload logic, date handling, and image handling similar to the fair updater]
-  
-  // Step 3: Update or add an exhibition (handling logic for updating or creating exhibitions in Firestore)
   const updateExhibition = async () => {
     setLoading(true);
     setError(null);
@@ -284,16 +278,8 @@ const handleInputChange = (e) => {
 const handleImageChange = (e) => {
     const files = e.target.files;
     const fileArray = Array.from(files);
-  
     setImages((prevImages) => [...prevImages, ...fileArray]);
-  
-    // You can optionally handle any other image-specific processing here,
-    // such as updating state with image URLs, validation, or preview.
   };
-  
-  
-
-  // Step 4: UI components (render form fields, images, date pickers, artists checkboxes, etc.)
   
   return (
     <div className={styles.form}>
