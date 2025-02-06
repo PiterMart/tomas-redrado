@@ -1,6 +1,7 @@
 "use client";
 import styles from "../../../styles/page.module.css";
 import { firestore } from "../../../firebase/firebaseConfig";
+import Link from "next/link";
 import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import EmblaCarousel from "../../../carousel/EmblaCarousel";
@@ -163,11 +164,13 @@ export default function Exhibition({ params }) {
                   className={styles.artist}
                   style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
                 >
-                  <p style={{ fontWeight: "300", fontSize: "1.5rem" }}>{artist.name}</p>
+                  <Link href={`/artists/${artist.slug}`}>
+                    <p style={{ fontWeight: "300", fontSize: "1.5rem" }}>{artist.name}</p>
+                  </Link>
                   {artworkSlides.length > 0 ? (
                     <EmblaCarousel slides={artworkSlides} type="artwork" />
                   ) : (
-                    <p>No artworks found for this artist.</p>
+                    <p></p>
                   )}
                 </div>
               );
