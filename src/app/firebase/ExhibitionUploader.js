@@ -6,7 +6,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "../styles/page.module.css";
-import { deleteObject, ref as storageRef, refFromURL } from "firebase/storage";
+import { deleteObject, ref as storageRef } from "firebase/storage";
 import imageCompression from 'browser-image-compression';
 
 export default function ExhibitionForm() {
