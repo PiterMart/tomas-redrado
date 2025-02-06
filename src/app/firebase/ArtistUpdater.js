@@ -4,6 +4,7 @@ import { firestore, storage } from "./firebaseConfig";
 import { getDocs, addDoc, collection, doc, updateDoc, Timestamp, arrayUnion, getDoc } from "firebase/firestore";  
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import styles from "../styles/page.module.css";
+import DatePicker from "react-datepicker";
 import imageCompression from 'browser-image-compression';
 
 export default function ArtistUpdater() {
