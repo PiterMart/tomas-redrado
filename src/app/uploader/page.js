@@ -15,35 +15,35 @@ export default function Home() {
     <div className={styles.page}>
       <main className={styles.main} style={{ maxWidth: "1500px", paddingTop: "10rem" }}>
         {/* Navigation Buttons */}
-        <div style={{margin: 'auto'}}>
+        {/* <div style={{margin: 'auto'}}>
           <p className={styles.title}> What are you working on?</p>
         </div>
         <div style={{ display: "flex", justifyContent: "center", gap: "1rem", marginBottom: "2rem" }}>
           <button onClick={() => setActiveSection("artist")} className={styles.subtitle}>Artists</button>
           <button onClick={() => setActiveSection("exhibition")} className={styles.subtitle}>Exhibitions</button>
           <button onClick={() => setActiveSection("fair")} className={styles.subtitle}>Fairs</button>
-        </div>
+        </div> */}
         {/* Artist Section */}
-        {activeSection === "artist" && (
+        {/* {activeSection === "artist" && (
           <div id="artist" style={{ width: "100%", padding: "1rem", display: "flex", flexDirection: "column", gap: "2rem" }}>
             <div style={{ display: "flex", flexDirection: "column", width: "100%", margin: "auto", gap: "1.5rem", alignItems: "center" }}>
               <p className={styles.title}>ARTIST UPLOADER</p>
               <ArtistUploader />
             </div>
           </div>
-        )}
+        )} */}
         {/* Exhibition Section */}
-        {activeSection === "exhibition" && (
+        {/* {activeSection === "exhibition" && (
           <div id="exhibition" style={{ width: "100%", padding: "1rem", display: "flex", flexDirection: "column", gap: "2rem" }}>
             <div style={{ display: "flex", flexDirection: "column", width: "100%", margin: "auto", gap: "1.5rem", alignItems: "center" }}>
               <p className={styles.title}>EXHIBITION UPLOADER</p>
               <ExhibitionForm />
             </div>
           </div>
-        )}
+        )} */}
 
         {/* Fair Section */}
-        {activeSection === "fair" && (
+        {/* {activeSection === "fair" && (
           <div id="fair" style={{ width: "100%", padding: "1rem", display: "flex", flexDirection: "column", gap: "2rem" }}>
             <div style={{ display: "flex", flexDirection: "column", width: "100%", margin: "auto", gap: "1.5rem", alignItems: "center" }}>
               <p className={styles.title}>FAIR UPLOADER</p>
@@ -54,7 +54,7 @@ export default function Home() {
               <FairUpdater />
             </div>
           </div>
-        )}
+        )} */}
       </main>
       <footer className={styles.footer}></footer>
     </div>
