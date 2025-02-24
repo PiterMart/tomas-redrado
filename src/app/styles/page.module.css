@@ -319,6 +319,46 @@
   max-width: 50%;
 }
 
+/* login */
+
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.formGroup {
+  width: 100%;
+  max-width: 400px;
+}
+
+.input {
+  width: 100%;
+  padding: 0.8rem;
+  margin: 0.5rem 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+
+
+.loginButton:hover {
+  background-color: #000000;
+  color: white;
+}
+
+.error {
+  color: red;
+  margin: 1rem 0;
+}
+
+.loginTitle {
+  margin-bottom: 2rem;
+}
+
 
 @media (max-width: 1600px) {
   .artist_page_NameCard{
