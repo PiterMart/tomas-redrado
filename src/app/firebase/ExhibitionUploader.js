@@ -9,7 +9,7 @@ import styles from "../styles/page.module.css";
 import { deleteObject, ref as storageRef } from "firebase/storage";
 import imageCompression from 'browser-image-compression';
 
-export default function ExhibitionForm() {
+export default function ExhibitionUploader() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -44,11 +44,11 @@ export default function ExhibitionForm() {
 
   // Compression options reference
   const compressionOptions = {
-    maxSizeMB: 1.5,       // Maximum file size in MB
-    maxWidthOrHeight: 2000, // Maximum dimension (width/height)
+    maxSizeMB: 3,       // Maximum file size in MB
+    maxWidthOrHeight: 1920, // Maximum dimension (width/height)
     useWebWorker: true,   // Use web worker for better performance
     fileType: 'image/webp', // Optional: convert to webp
-    initialQuality: 0.8,  // Optional: initial quality (0-1)
+    initialQuality: 1,  // Optional: initial quality (0-1)
   };
 
   /*  FETCHING STUFF */

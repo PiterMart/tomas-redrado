@@ -4,9 +4,8 @@ import { signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebas
 import { auth } from "../firebase/firebaseConfig";
 import styles from "../styles/page.module.css";
 import ArtistUploader from "../firebase/ArtistUploader";
-import ExhibitionForm from "../firebase/ExhibitionUploader";
-import FairUploader from "../firebase/FairUploader";
-import FairUpdater from "../firebase/FairUpdater";
+import ExhibitionUploader from "../firebase/ExhibitionUploader";
+import FairUploader from "../firebase/FairUpdater";
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState("artist");
@@ -101,7 +100,7 @@ export default function Home() {
         {activeSection === "exhibition" && (
           <div id="exhibition" style={{ width: "100%", padding: "1rem", display: "flex", flexDirection: "column", gap: "2rem" }}>
             <p className={styles.title}>EXHIBITION UPLOADER</p>
-            <ExhibitionForm />
+            <ExhibitionUploader />
           </div>
         )}
 
@@ -109,7 +108,7 @@ export default function Home() {
         {activeSection === "fair" && (
           <div id="fair" style={{ width: "100%", padding: "1rem", display: "flex", flexDirection: "column", gap: "2rem" }}>
             <p className={styles.title}>FAIR UPDATER</p>
-            <FairUpdater />
+            <FairUploader />
           </div>
         )}
       </main>

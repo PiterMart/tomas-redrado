@@ -8,7 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import styles from "../styles/page.module.css";
 import imageCompression from 'browser-image-compression';
 
-export default function FairUpdater() {
+export default function FairUploader() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
