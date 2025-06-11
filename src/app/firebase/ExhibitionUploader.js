@@ -412,8 +412,8 @@ const uploadImages = async (slug) => {
     newImages.map(async (file, index) => {
       try {
         const compressedFile = await imageCompression(file, {
-          maxSizeMB: 1.5,
-          maxWidthOrHeight: 2000,
+          maxSizeMB: 5,
+          maxWidthOrHeight: 3000,
           useWebWorker: true,
         });
 
