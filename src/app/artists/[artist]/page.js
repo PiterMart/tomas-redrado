@@ -86,7 +86,7 @@ export default function Artist({ params }) {
     medium: artwork.medium,
     extras: artwork.extras,
     slug: artwork.artworkSlug,
-    date: convertTimestampToYear(artwork.date),
+    date: artwork.date,
     measurements: artwork.measurements,
     description: artwork.description,
   }));
