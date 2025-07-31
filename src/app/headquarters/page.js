@@ -41,14 +41,9 @@ export default function Home() {
                           <div className={styles.sedeCard} style={{marginTop: '1rem'}}>
                             <div style={{ height: 'auto', width: 'auto', paddingRight: '4rem', margin: 'auto' }}>
                               <p style={{fontSize: '5rem', fontWeight: '200', lineHeight: '4rem'}}>{hq.name}</p>
+                              <p style={{fontSize: '1.5rem', textAlign: "end"}}>{hq.country}</p>
                               <p style={{fontSize: '1rem', textAlign: "end"}}>({hq.type})</p>
                             </div>
-                            {/* <div className={styles2.embla__slide} style={{ width: '50%', height: 'auto' }}>
-                              <img
-                                src={hq.image}
-                                alt={hq.name}
-                              />
-                            </div> */}
                           </div>
                         </div>
                       </Link>
@@ -60,6 +55,7 @@ export default function Home() {
                           <div className={styles.sedeCard}>
                             <div style={{ height: 'auto', width: 'auto', paddingRight: '4rem', margin: 'auto' }}>
                               <p style={{fontSize: '5rem', fontWeight: '200', lineHeight: '4rem'}}>{hq.name}</p>
+                              <p style={{fontSize: '1.5rem', textAlign: "end"}}>{hq.country}</p>
                               <p style={{fontSize: '1rem', textAlign: "end"}}>({hq.type})</p>
                             </div>
                           </div>
@@ -73,14 +69,9 @@ export default function Home() {
                           <div className={styles.sedeCard} >
                             <div style={{ height: 'auto', width: 'auto', paddingRight: '4rem', margin: 'auto' }}>
                               <p style={{fontSize: '5rem', fontWeight: '200', lineHeight: '4rem'}}>{hq.name}</p>
+                              <p style={{fontSize: '1.5rem', textAlign: "end"}}>{hq.country}</p>
                               <p style={{fontSize: '1rem', textAlign: "end"}}>({hq.type})</p>
                             </div>
-                            {/* <div className={styles2.embla__slide} style={{ width: '50%', height: 'auto' }}>
-                              <img
-                                src={hq.image}
-                                alt={hq.name}
-                              />
-                            </div> */}
                           </div>
                         </div>
                       </Link>

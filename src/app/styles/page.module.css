@@ -445,6 +445,11 @@
   .paragraph{
     width: 100%;
   }
+  .sedeCard{
+    margin-left: 0;
+    height: auto;
+    width: 100%;
+  }
   
 }
 
