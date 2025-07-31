@@ -116,7 +116,11 @@ export default function Headquarter({ params }) {
             <img src={headquarters.image} alt={headquarters.name} style={{ width: "100%" }} />
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
               <h1 className={styles.title}>{headquarters.name}</h1>
-              {/* ... other details ... */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                <p>{headquarters.type}</p>
+                <p>{headquarters.location}</p>
+                <p>{headquarters.phone}</p>
+              </div>
             </div>
             
             {aboutContent && (

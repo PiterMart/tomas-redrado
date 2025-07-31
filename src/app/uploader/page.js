@@ -6,6 +6,7 @@ import styles from "../styles/page.module.css";
 import ArtistUploader from "../firebase/ArtistUploader";
 import ExhibitionUploader from "../firebase/ExhibitionUploader";
 import FairUploader from "../firebase/FairUpdater";
+import HeadquarterEditor from "../firebase/HeadquarterEditor";
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState("artist");
@@ -86,6 +87,7 @@ export default function Home() {
           <button onClick={() => setActiveSection("artist")} className={styles.subtitle}>Artists</button>
           <button onClick={() => setActiveSection("exhibition")} className={styles.subtitle}>Exhibitions</button>
           <button onClick={() => setActiveSection("fair")} className={styles.subtitle}>Fairs</button>
+          <button onClick={() => setActiveSection("headquarter")} className={styles.subtitle}>Headquarters</button>
         </div>
 
         {/* Artist Section */}
@@ -109,6 +111,14 @@ export default function Home() {
           <div id="fair" style={{ width: "100%", padding: "1rem", display: "flex", flexDirection: "column", gap: "2rem" }}>
             <p className={styles.title}>FAIR UPDATER</p>
             <FairUploader />
+          </div>
+        )}
+
+        {/* Headquarter Section */}
+        {activeSection === "headquarter" && (
+          <div id="headquarter" style={{ width: "100%", padding: "1rem", display: "flex", flexDirection: "column", gap: "2rem" }}>
+            <p className={styles.title}>HEADQUARTER EDITOR</p>
+            <HeadquarterEditor />
           </div>
         )}
       </main>
