@@ -12,8 +12,10 @@ export default function Headquarter({ params }) {
   const [headquarters, setHeadquarters] = useState(null);
   const [exhibitions, setExhibitions] = useState([]);
   const [exhibitionIds, setExhibitionIds] = useState([]);
-  
   const [residencyArtists, setResidencyArtists] = useState({});
+  
+  // NEW: State to manage the current language ('en' or 'es')
+  const [lang, setLang] = useState('en');
 
   const fetchHeadquartersData = async () => {
     try {
@@ -21,11 +23,8 @@ export default function Headquarter({ params }) {
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
-        // FIX: Get the full document snapshot, not just the data()
         const docSnap = querySnapshot.docs[0];
         const headquartersData = docSnap.data();
-
-        // FIX: Set state including the ID, just like the old working code
         setHeadquarters({ id: docSnap.id, ...headquartersData });
         setExhibitionIds(headquartersData.exhibitions || []);
         
@@ -89,24 +88,28 @@ export default function Headquarter({ params }) {
     }
   }, [exhibitionIds]);
 
+  // NEW: Function to toggle the language state
+  const toggleLanguage = () => {
+    setLang(prevLang => (prevLang === 'en' ? 'es' : 'en'));
+  };
+
   if (headquarters === null) return <p>Loading headquarters data...</p>;
   if (!headquarters) return <p>No headquarters found.</p>;
 
-  const exhibitionSlides = exhibitions.map((exhibition) => {
-    console.log('Exhibition data:', exhibition); // Debug log
-    return {
-      name: exhibition.name,
-      // FIX: Added banner property that ExhibitionLayout expects
-      banner: exhibition.banner,
-      image: exhibition.gallery[0]?.url || "/placeholder.jpg",
-      openingDate: exhibition.openingDate,
-      closingDate: exhibition.closingDate,
-      slug: exhibition.slug,
-      headquarterSlug: headquarters.slug,
-    };
-  });
+  const exhibitionSlides = exhibitions.map((exhibition) => ({
+    // FIX: Add the unique ID for each slide, which the carousel needs
+    id: exhibition.id,
+    name: exhibition.name,
+    banner: exhibition.banner,
+    image: exhibition.gallery[0]?.url || "/placeholder.jpg",
+    openingDate: exhibition.openingDate,
+    closingDate: exhibition.closingDate,
+    slug: exhibition.slug,
+    headquarterSlug: headquarters.slug,
+  }));
   
-  const aboutContent = headquarters.aboutEng || headquarters.about;
+  // UPDATED: Dynamically get 'about' content based on language state
+  const aboutContent = lang === 'en' ? headquarters.aboutEng : headquarters.about;
 
   return (
     <div className={styles.page}>
@@ -123,9 +126,17 @@ export default function Headquarter({ params }) {
               </div>
             </div>
             
+            {/* NEW: Language toggle button */}
+            <div style={{margin: '2rem 0'}}>
+                <button onClick={toggleLanguage} className={styles.language_button}>
+                    {lang === 'en' ? 'Ver en Español' : 'View in English'}
+                </button>
+            </div>
+
+            {/* UPDATED: About section with dynamic title */}
             {aboutContent && (
               <div style={{display: 'flex', flexDirection: 'column', gap: "1rem"}}>
-                <p className={styles.title}>About</p>
+                <p className={styles.title}>{lang === 'en' ? 'About' : 'About'}</p>
                 {Array.isArray(aboutContent) ? (
                   aboutContent.map((paragraph, index) => (
                     <p key={index} style={{textAlign: 'justify', lineHeight: '1.3rem'}}>
@@ -137,15 +148,23 @@ export default function Headquarter({ params }) {
                 )}
               </div>
             )}
+            
+            {/* NEW: Gallery Program section */}
+            {headquarters.galleryProgram?.[lang] && (
+                <div style={{display: 'flex', flexDirection: 'column', gap: "1rem"}}>
+                    <p className={styles.title}>{lang === 'en' ? 'Gallery Program' : 'Sobre la Galería'}</p>
+                    <p style={{textAlign: 'justify', lineHeight: '1.3rem'}}>{headquarters.galleryProgram[lang]}</p>
+                </div>
+            )}
 
+            {/* UPDATED: Residency Program section with dynamic titles and content */}
             {headquarters.residencyProgram && (
               <div style={{display: 'flex', flexDirection: 'column', gap: "1rem"}}>
-                <p className={styles.title}>Residency Program</p>
+                <p className={styles.title}>{lang === 'en' ? 'Residency Program' : 'Sobre la Residencia'}</p>
 
-                {/* FIX 2: Added missing code block to render the description */}
-                {headquarters.residencyProgram.description && (
+                {headquarters.residencyProgram.description?.[lang] && (
                   <div>
-                    {(headquarters.residencyProgram.description.en || headquarters.residencyProgram.description.es).map((paragraph, index) => (
+                    {headquarters.residencyProgram.description[lang].map((paragraph, index) => (
                       <p key={index} style={{textAlign: 'justify', lineHeight: '1.3rem', marginBottom: '1rem'}}>
                         {paragraph}
                       </p>
@@ -153,7 +172,6 @@ export default function Headquarter({ params }) {
                   </div>
                 )}
 
-                {/* Residency Schedule */}
                 {headquarters.residencyProgram.schedule && (
                   <div style={{marginTop: '1rem'}}>
                     {Object.keys(headquarters.residencyProgram.schedule).sort().map(year => (
@@ -163,7 +181,7 @@ export default function Headquarter({ params }) {
                           {headquarters.residencyProgram.schedule[year].map((slot, index) => (
                             <li key={index} style={{ marginBottom: '0.5rem', display: 'flex' }}>
                               <span style={{ width: '100px', fontWeight: 'bold' }}>
-                                {slot.month.en || slot.month.es}:
+                                {slot.month[lang]}:
                               </span>
                               <span>
                                 {slot.artists.map((artist, artistIndex) => {
