@@ -29,8 +29,16 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} ${inter.className}`}>
-        <Nav/>
-        {children}
+        {/* <Nav/> */}
+        {/* {children} */}
+        <div style={{maxWidth: '90%'}}>
+          <h1 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>
+            Site Temporarily Unavailable
+          </h1>
+          <p style={{ color: '#4b5563' }}>
+            This service has been temporarily suspended. Please contact the administrator for more information.
+          </p>
+        </div>
       </body>
     </html>
   );
